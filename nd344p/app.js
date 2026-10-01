@@ -3,7 +3,7 @@ import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=15.1
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
-import { manageTryonSession } from '../shared/tryon-session.js?v=5';
+import { manageTryonSession } from './tryon-session.js?v=11';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=15.1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
 import { manageModelResources } from './model-resources.js?v=15.1';
@@ -114,22 +114,18 @@ async function drain() {
   if (applied && JSON.stringify(applied) === JSON.stringify(desired)) return;
   const resumeView = tryonSession?.captureView();
   const resumeGeneration = tryonGeneration;
-  // In AR, swap the model on the finger instead of restarting the camera.
-  // Live swap is opt-in (?tryon=live) until it is confirmed on phones. Default: restart AR
-  // after the change, keeping the shopper's camera side.
-  let liveTryon = Boolean(resumeView) && new URLSearchParams(location.search).get('tryon') === 'live' && tryonSession.detach();
-  tryonResuming = Boolean(resumeView) && !liveTryon;
+  tryonResuming = Boolean(resumeView);
   busy = true; clearError(); render();
   let fading = false, shadowsChanged = false, capturesReleased = false;
   const finishSceneUpdate = beginSceneUpdate(viewer);
   // Never replace meshes or release their textures while Try-On owns the scene.
   try {
-    if (resumeView && !liveTryon) {
+    if (resumeView) {
       fading = true;
       await fadeViewer($('viewer'), true);
       await paintViewer();
     }
-    if (!liveTryon) await tryonSession?.stop();
+    await tryonSession?.stop();
   }
   catch (error) {
     console.error('ND344P Try-On stop failed', error);
@@ -142,7 +138,7 @@ async function drain() {
   try {
     // Serialize SDK calls; rapid clicks settle on the latest complete selection.
     while (!applied || JSON.stringify(applied) !== JSON.stringify(desired)) {
-      if (!fading && !liveTryon && needsModelTransition(applied, desired)) {
+      if (!fading && needsModelTransition(applied, desired)) {
         fading = true;
         await fadeViewer($('viewer'), true);
         await paintViewer();
@@ -228,12 +224,7 @@ async function drain() {
       console.warn('ND344P shadow refresh failed', error);
     }
     try {
-      if (liveTryon && !(applied && tryonSession.attach(window.ijewelViewer, resumeView))) {
-        // Live swap failed: fall back to restarting AR on the same camera side.
-        liveTryon = false;
-        try { await tryonSession.stop(); } catch (stopError) { console.warn('Try-On restart after live swap failed', stopError); }
-      }
-      if (!liveTryon && resumeView && applied && resumeGeneration === tryonGeneration && !document.hidden) {
+      if (resumeView && applied && resumeGeneration === tryonGeneration && !document.hidden) {
         // Rebuild the new assembly before resuming the existing AR experience.
         await openTryon({ generation: resumeGeneration, resumeView });
       }
@@ -297,7 +288,6 @@ function downloadTryon() {
   });
   return vtoDownload;
 }
-let preTryonView = null;
 async function openTryon({ generation = ++tryonGeneration, resumeView = null } = {}) {
   const cancelled = () => generation !== tryonGeneration || document.hidden;
   let prepared;
@@ -309,8 +299,6 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
     await viewer.getOrAddPlugin(window.ij_vto.TryonUIPlugin);
     if (cancelled()) return;
     // An automatic continuation retains the current plugin's fit and camera settings.
-    // Remember the studio camera so it can come back after AR.
-    if (!resumeView) preTryonView = captureView(viewer);
     if (!resumeView) await tryon.fromJSON({ ...savedTryonConfig, type: window.ij_vto.RingTryonPlugin.PluginType });
     if (cancelled()) return;
     if (ringPose.restore()) {
@@ -318,7 +306,7 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
       if (applied) applied.pose = 'upright';
       refreshSceneShadows(viewer);
     }
-    prepared = tryonSession.prepare(window.ijewelViewer, tryon);
+    prepared = window.ijewelViewer.prepareConfiguratorTryon(viewer, tryon);
     await tryon.start();
     if (cancelled()) { await tryonSession.stop(); prepared.restore(); return; }
     if (!tryon.running) {
@@ -326,7 +314,7 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
       showTryonError('Try-On could not start. Check camera access and try again.');
     } else {
       tryon.finger = $('finger').value;
-      await tryonSession.restoreView(resumeView);
+      tryonSession.restoreView(resumeView);
     }
   } catch (error) {
     try { await tryonSession?.stop(); }
@@ -350,7 +338,7 @@ $('flip-camera').addEventListener('click', async () => {
   const tryon = viewer?.getPluginByType('RingTryonPlugin');
   if (!tryon?.running) return;
   $('flip-camera').disabled = true;
-  try { await tryonSession.flipCamera(); }
+  try { await tryon.flipCamera(); }
   catch (error) { showTryonError('The camera could not switch. Please try again.'); }
   finally { $('flip-camera').disabled = false; }
 });
@@ -373,17 +361,7 @@ window.addEventListener('ijewel-viewer-ready',({detail})=> {
   viewer = detail.viewer;
   ringPose = manageRingPose(viewer, window);
   tryonSession = manageTryonSession(viewer, {
-    touchDevice: Boolean(profile.maxRenderScale), onChange: render,
-    // After an AR session with live ring swaps: rebuild diamonds, shadows and the studio view.
-    onRestored: () => {
-      if (busy || !ready) return;
-      try { refreshDiamondCuts(viewer, profile); } catch (error) { console.warn('Diamond refresh after AR failed', error); }
-      refreshSceneShadows(viewer);
-      // Restore the pre-AR viewing direction, then frame the ring now on screen.
-      preTryonView?.();
-      centerView(viewer);
-      render();
-    }
+    touchDevice: Boolean(profile.maxRenderScale), onChange: render
   });
   viewer.getPluginByType('RingConfigurator')?.addEventListener('componentProcessed',setup);
   viewer.getPluginByType('MaterialConfiguratorPlugin')?.addEventListener('refreshUi',setup);

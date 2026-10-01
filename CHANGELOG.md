@@ -2,6 +2,17 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-01 (f): Try-on reverted to the original behavior
+
+- **What:** Try-on code on all six rings is back to exactly the version from the portal
+  launch (a). The default ring (Oval 3 ct, yellow / white head) from (b) is kept.
+- **Why:** On iPhone, every attempt to change try-on behavior (live swap in (b)-(d), camera
+  side memory in (e)) left the page stuck on iJewel's white loading screen after leaving AR.
+  The original flow worked well, so it is restored until changes can be tested with
+  on-device logging.
+- **Where the experiment lives:** branch `experiment/live-tryon` keeps the live-swap,
+  camera-side and loading-screen work for a later, properly instrumented attempt.
+
 ## 2026-10-01 (e): Try-on back to the stable restart by default; loading screen fix
 
 - **What:** Changing the ring during try-on restarts AR again by default (the behavior before
