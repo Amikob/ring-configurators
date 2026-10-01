@@ -27,6 +27,12 @@ added there.
 3. Add the ring to `configurators.json` and a check in `tests/`.
 4. `npm test`, commit, push. GitHub Pages redeploys in about a minute.
 
+## Conventions
+
+- Default ring on every page: **Oval 3 ct, yellow gold**. Two-tone rings: **white head, yellow shank**. Bands: yellow. Set in `let desired` at the top of each `app.js` (checked by `tests/shared.check.mjs`).
+- Try-on changes swap the ring live on the finger (`shared/tryon-session.js`); see `CHANGELOG.md`.
+- Record every change in `CHANGELOG.md` with what changed and why.
+
 ## Notes
 
 - The sites load the pinned iJewel SDK (WebGI 0.22.0, mini-viewer 0.6.18, web-vto 0.3.3).

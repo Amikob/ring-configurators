@@ -1,9 +1,9 @@
-import { SHAPES, COLORS, GROUPS, label, createCatalog, resolveSelection } from './catalog.js';
+import { SHAPES, COLORS, GROUPS, label, createCatalog, resolveSelection, parseRing } from './catalog.js';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=15.1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
-import { manageTryonSession } from './tryon-session.js?v=11';
+import { manageTryonSession } from '../shared/tryon-session.js?v=2';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=15.1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
 import { manageModelResources } from './model-resources.js?v=15.1';
@@ -17,7 +17,7 @@ let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vt
 let tryonResuming = false, ringPose;
 let modelResources, selectedQuality, initialCamera;
 try { selectedQuality = Number(localStorage.getItem('dior-render-quality')) || undefined; } catch {}
-let desired = { shape: 'round', carat: 1, band: 'none', headGold: 'white', ringGold: 'yellow', bandGold: 'yellow', pose: 'upright' };
+let desired = { shape: 'oval', carat: 3, band: 'none', headGold: 'white', ringGold: 'yellow', bandGold: 'yellow', pose: 'upright' };
 let applied = null;
 let loadedRing = null, loadedBand = null;
 const groups = {};
@@ -114,18 +114,20 @@ async function drain() {
   if (applied && JSON.stringify(applied) === JSON.stringify(desired)) return;
   const resumeView = tryonSession?.captureView();
   const resumeGeneration = tryonGeneration;
-  tryonResuming = Boolean(resumeView);
+  // In AR, swap the model on the finger instead of restarting the camera.
+  let liveTryon = Boolean(resumeView) && tryonSession.detach();
+  tryonResuming = Boolean(resumeView) && !liveTryon;
   busy = true; clearError(); render();
   let fading = false, shadowsChanged = false, capturesReleased = false;
   const finishSceneUpdate = beginSceneUpdate(viewer);
   // Never replace meshes or release their textures while Try-On owns the scene.
   try {
-    if (resumeView) {
+    if (resumeView && !liveTryon) {
       fading = true;
       await fadeViewer($('viewer'), true);
       await paintViewer();
     }
-    await tryonSession?.stop();
+    if (!liveTryon) await tryonSession?.stop();
   }
   catch (error) {
     console.error('Dior Try-On stop failed', error);
@@ -138,7 +140,7 @@ async function drain() {
   try {
     // Serialize SDK calls; rapid clicks settle on the latest complete selection.
     while (!applied || JSON.stringify(applied) !== JSON.stringify(desired)) {
-      if (!fading && needsModelTransition(applied, desired)) {
+      if (!fading && !liveTryon && needsModelTransition(applied, desired)) {
         fading = true;
         await fadeViewer($('viewer'), true);
         await paintViewer();
@@ -224,7 +226,12 @@ async function drain() {
       console.warn('Dior shadow refresh failed', error);
     }
     try {
-      if (resumeView && applied && resumeGeneration === tryonGeneration && !document.hidden) {
+      if (liveTryon && !(applied && tryonSession.attach(window.ijewelViewer, resumeView))) {
+        // Live swap failed: fall back to restarting AR on the same camera side.
+        liveTryon = false;
+        try { await tryonSession.stop(); } catch (stopError) { console.warn('Try-On restart after live swap failed', stopError); }
+      }
+      if (!liveTryon && resumeView && applied && resumeGeneration === tryonGeneration && !document.hidden) {
         // Rebuild the new assembly before resuming the existing AR experience.
         await openTryon({ generation: resumeGeneration, resumeView });
       }
@@ -306,7 +313,7 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
       if (applied) applied.pose = 'upright';
       refreshSceneShadows(viewer);
     }
-    prepared = window.ijewelViewer.prepareConfiguratorTryon(viewer, tryon);
+    prepared = tryonSession.prepare(window.ijewelViewer, tryon);
     await tryon.start();
     if (cancelled()) { await tryonSession.stop(); prepared.restore(); return; }
     if (!tryon.running) {
@@ -314,7 +321,7 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
       showTryonError('Try-On could not start. Check camera access and try again.');
     } else {
       tryon.finger = $('finger').value;
-      tryonSession.restoreView(resumeView);
+      await tryonSession.restoreView(resumeView);
     }
   } catch (error) {
     try { await tryonSession?.stop(); }
@@ -338,7 +345,7 @@ $('flip-camera').addEventListener('click', async () => {
   const tryon = viewer?.getPluginByType('RingTryonPlugin');
   if (!tryon?.running) return;
   $('flip-camera').disabled = true;
-  try { await tryon.flipCamera(); }
+  try { await tryonSession.flipCamera(); }
   catch (error) { showTryonError('The camera could not switch. Please try again.'); }
   finally { $('flip-camera').disabled = false; }
 });
@@ -378,6 +385,15 @@ window.addEventListener('pagehide', stopBackgroundTryon);
 const startupTimeout = setTimeout(()=> {
   if (!ready) { $('startup-text').textContent = 'Dior is taking longer than expected.'; showError('The 3D project could not finish loading. Check your connection and try again.'); }
 },90000);
+// Start on the default ring directly, so the first visit downloads one model instead of two.
+function preselectRing(project) {
+  const ring = project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring');
+  const index = ring?.variations?.findIndex(variation => {
+    const item = parseRing(variation);
+    return item && item.shape === desired.shape && item.carat === desired.carat && (item.orientation || 'ns') === (desired.orientation || 'ns');
+  }) ?? -1;
+  if (index >= 0) ring.selectedIndex = index;
+}
 async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
@@ -388,6 +404,7 @@ async function start() {
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=2');
     const project = applySavedScene(baseline, await savedResponse.json());
+    preselectRing(project);
     initialCamera = project.cameraConfig;
     savedTryonConfig = project.tryonConfig;
     const miniViewer = new ijewelViewer.Viewer($('viewer'),project,{
