@@ -1,0 +1,9 @@
+{
+  "name": "ring-configurators",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "for t in tests/*.check.mjs; do node $t || exit 1; done",
+    "serve": "python3 -m http.server 8800 --bind 127.0.0.1"
+  }
+}

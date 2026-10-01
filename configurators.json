@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "brand": "Next Diamonds",
+  "storefrontTarget": "shopify",
+  "configurators": [
+    {
+      "id": "nd336",
+      "name": "ND336",
+      "path": "nd336/",
+      "ijewelProjectId": "DLVn0aVvScWnnSuKWGzUTg",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Pear",
+        "Marquise",
+        "Square Cushion"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": null,
+      "status": "new"
+    },
+    {
+      "id": "nd1061",
+      "name": "ND1061",
+      "path": "nd1061/",
+      "ijewelProjectId": "X_aH9Y3WTeCE95EBGa_PGQ",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Pear",
+        "Asscher",
+        "Emerald",
+        "Marquise",
+        "Old Cut Cushion",
+        "Elongated Cushion"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 70,
+      "bands": null,
+      "eastWest": true,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_ns_1a07e05d92.png?h=ijewel3d.com",
+      "status": "live"
+    },
+    {
+      "id": "nd344p",
+      "name": "ND344P",
+      "path": "nd344p/",
+      "ijewelProjectId": "XE0n9hw5RjWMfkqA07oA4Q",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Emerald",
+        "Elongated Radiant",
+        "Pear",
+        "Marquise",
+        "Square Cushion"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": {
+        "files": 4,
+        "styles": [
+          "Plain",
+          "Pave"
+        ]
+      },
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank",
+        "Band"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_d9be99018c.png?h=ijewel3d.com",
+      "status": "live"
+    },
+    {
+      "id": "erica",
+      "name": "Erica",
+      "path": "erica/",
+      "ijewelProjectId": "adW2878KSNyM3S02rbE_gg",
+      "shapes": [
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Old Cut Cushion",
+        "Oval",
+        "Square Cushion",
+        "Square Radiant"
+      ],
+      "carats": [
+        3,
+        7
+      ],
+      "rings": 40,
+      "bands": {
+        "files": 22,
+        "styles": [
+          "Plain",
+          "Half Eternity"
+        ]
+      },
+      "eastWest": false,
+      "metalZones": [
+        "Ring",
+        "Band"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3ct_oval_0f3c15bd0d.png?h=ijewel3d.com",
+      "status": "live"
+    },
+    {
+      "id": "dior",
+      "name": "Dior",
+      "sku": "ND423",
+      "path": "dior/",
+      "ijewelProjectId": "KoYeWRAoRNyz8HNa9FuYZQ",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Cushion",
+        "Emerald",
+        "Square Cushion",
+        "Pear",
+        "Marquise",
+        "Asscher"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": {
+        "files": 4,
+        "styles": [
+          "Plain",
+          "Pave"
+        ]
+      },
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank",
+        "Band"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_4857c7adc7.png?h=ijewel3d.com",
+      "status": "live"
+    },
+    {
+      "id": "arlet",
+      "name": "Arlet",
+      "sku": "NDB568",
+      "path": "arlet/",
+      "ijewelProjectId": "fjrrx7obS2afI0O-XSxDlg",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Cushion",
+        "Emerald",
+        "Radiant",
+        "Pear",
+        "Marquise",
+        "Asscher"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": {
+        "files": 30,
+        "styles": [
+          "Plain",
+          "Pave"
+        ]
+      },
+      "eastWest": false,
+      "metalZones": [
+        "Ring",
+        "Band"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_d1435c9390.png?h=ijewel3d.com",
+      "status": "live"
+    }
+  ]
+}

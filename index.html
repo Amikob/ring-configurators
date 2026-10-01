@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ring Configurators | Next Diamonds</title>
+  <meta name="description" content="Next Diamonds 3D ring configurators: choose a ring to customize shape, carat, gold and matching bands.">
+  <link rel="icon" type="image/png" href="./assets/monogram-champagne.png">
+  <style>
+    /* Layout: quiet catalog page. Brand bar, one-line intro, filter row, then a card per ring. */
+    :root {
+      --bg: #ffffff;
+      --surface: #f6f8f7;
+      --ink: #272b2b;
+      --muted: #6f7776;
+      --line: #e4e8e6;
+      --accent: #345b59;
+      --accent-soft: #e9f0ee;
+      --champagne: #b8a07a;
+      --display: Georgia, 'Times New Roman', serif;
+      --body: Arial, Helvetica, sans-serif;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left)); }
+    header.top { border-bottom: 1px solid var(--line); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; }
+    header.top img { width: 168px; height: auto; display: block; }
+    header.top .count { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+    .intro { padding-block: 44px 20px; display: grid; gap: 10px; }
+    .intro h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 4.4vw, 44px); line-height: 1.1; margin: 0; text-wrap: balance; }
+    .intro p { margin: 0; color: var(--muted); max-width: 60ch; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 8px 24px; }
+    .filters button { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+    .filters button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filters button:focus-visible, .card a:focus-visible, .card button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding-bottom: 56px; }
+    .card { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--bg); min-width: 0; transition: border-color .15s, box-shadow .15s; }
+    .card:hover { border-color: #c9d6d2; box-shadow: 0 6px 22px #1d3b3412; }
+    .thumb { position: relative; display: block; aspect-ratio: 4 / 3; background: var(--surface); }
+    .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 18px; mix-blend-mode: multiply; }
+    .thumb img.fallback { padding: 30%; opacity: .55; mix-blend-mode: normal; }
+    .badge { position: absolute; top: 12px; left: 12px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; background: var(--champagne); color: #fff; border-radius: 4px; padding: 3px 7px; }
+    .body { display: flex; flex-direction: column; gap: 12px; padding: 16px 18px 18px; flex: 1; }
+    .title { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+    .title h2 { font-family: var(--display); font-weight: 400; font-size: 24px; line-height: 1.15; margin: 0; }
+    .title .sku { color: var(--muted); font-size: 12px; letter-spacing: .04em; }
+    dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13px; }
+    dt { color: var(--muted); }
+    dd { margin: 0; min-width: 0; font-variant-numeric: tabular-nums; }
+    .shapes { color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .actions { display: flex; gap: 8px; margin-top: auto; padding-top: 4px; }
+    .actions a, .actions button { font: inherit; font-size: 14px; border-radius: 6px; padding: 9px 14px; cursor: pointer; text-decoration: none; text-align: center; }
+    .actions a { flex: 1; background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .actions a:hover { background: #2a4b49; }
+    .actions button { background: var(--bg); color: var(--ink); border: 1px solid var(--line); }
+    .actions button:hover { border-color: #c9d6d2; }
+    .empty { color: var(--muted); padding-block: 24px 60px; }
+    footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    footer .wrap { padding-block: 18px 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+    @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <img src="./assets/wordmark-1row-black.png" alt="Next Diamonds" width="1818" height="201">
+      <span class="count" id="count"></span>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="intro">
+      <h1>Ring configurators</h1>
+      <p>Open a ring to view it in 3D, change the diamond shape, carat and gold colors, add a matching band where available, and try it on your hand from a phone.</p>
+    </section>
+    <div class="filters" role="group" aria-label="Filter rings">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="bands" aria-pressed="false">With matching bands</button>
+      <button type="button" data-filter="eastWest" aria-pressed="false">East-West option</button>
+    </div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+    <p class="empty" id="empty" hidden>No rings match this filter.</p>
+  </main>
+  <footer>
+    <div class="wrap">
+      <span>Next Diamonds internal preview. Prices and availability are not shown here.</span>
+      <span>3D by iJewel</span>
+    </div>
+  </footer>
+  <script>
+    const grid = document.getElementById('grid');
+    let rings = [], filter = 'all';
+    const text = (tag, value, className) => { const el = document.createElement(tag); el.textContent = value; if (className) el.className = className; return el; };
+
+    function card(ring) {
+      const url = new URL(ring.path, location.href).href;
+      const article = document.createElement('article');
+      article.className = 'card';
+
+      const thumb = document.createElement('a');
+      thumb.className = 'thumb'; thumb.href = ring.path; thumb.setAttribute('aria-label', `Open ${ring.name}`);
+      const img = document.createElement('img');
+      img.alt = ''; img.loading = 'lazy';
+      const fallback = () => { img.src = './assets/monogram-champagne.png'; img.className = 'fallback'; };
+      if (ring.thumbnail) { img.src = ring.thumbnail; img.onerror = fallback; } else fallback();
+      thumb.append(img);
+      if (ring.status === 'new') thumb.append(text('span', 'New', 'badge'));
+
+      const body = document.createElement('div'); body.className = 'body';
+      const title = document.createElement('div'); title.className = 'title';
+      title.append(text('h2', ring.name));
+      if (ring.sku) title.append(text('span', ring.sku, 'sku'));
+
+      const dl = document.createElement('dl');
+      const row = (k, v) => dl.append(text('dt', k), text('dd', v));
+      row('Center stone', `${ring.carats[0]}-${ring.carats[1]} ct, ${ring.shapes.length} shapes`);
+      row('Gold', ring.metalZones.join(' / ') + ', each in white, yellow or rose');
+      row('Matching band', ring.bands ? ring.bands.styles.join(' or ') : 'Coming soon');
+      if (ring.eastWest) row('Setting', 'North-South or East-West');
+
+      const actions = document.createElement('div'); actions.className = 'actions';
+      const open = text('a', 'Open in 3D'); open.href = ring.path;
+      const copy = text('button', 'Copy link'); copy.type = 'button';
+      copy.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(url); copy.textContent = 'Copied'; }
+        catch { window.prompt('Copy this link', url); }
+        setTimeout(() => { copy.textContent = 'Copy link'; }, 1600);
+      });
+      actions.append(open, copy);
+
+      body.append(title, dl, text('p', ring.shapes.join(', '), 'shapes'), actions);
+      article.append(thumb, body);
+      return article;
+    }
+
+    function render() {
+      const shown = rings.filter(r => filter === 'all' || (filter === 'bands' ? Boolean(r.bands) : r.eastWest));
+      grid.replaceChildren(...shown.map(card));
+      document.getElementById('empty').hidden = shown.length > 0;
+      for (const b of document.querySelectorAll('[data-filter]')) b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
+    }
+    for (const b of document.querySelectorAll('[data-filter]')) b.addEventListener('click', () => { filter = b.dataset.filter; render(); });
+
+    fetch('./configurators.json', { cache: 'no-cache' })
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(data => {
+        rings = data.configurators;
+        const total = rings.reduce((n, r) => n + r.rings, 0);
+        document.getElementById('count').textContent = `${rings.length} collections · ${total} ring models`;
+        render();
+      })
+      .catch(() => { grid.replaceChildren(text('p', 'The ring list could not load. Refresh the page to try again.', 'empty')); });
+  </script>
+</body>
+</html>

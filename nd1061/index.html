@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Customize the ND1061 ring shape, carat, orientation, and gold colors.">
+  <title>ND1061 | Next Diamonds</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23181818'/%3E%3Ccircle cx='16' cy='19' r='8' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M11 8l5-5 5 5-5 5z' fill='%239cb8c0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css?v=nd1061-ui2">
+  <link rel="stylesheet" href="../shared/ring-switcher.css?v=1">
+</head>
+<body>
+  <div class="app">
+    <main class="stage" aria-label="ND1061 3D ring">
+      <div class="stage-brand"><img src="./assets/wordmark-1row-black.png" alt="Next Diamonds" width="1800" height="220"><span>ND1061</span></div>
+      <div id="viewer" aria-label="Interactive 3D viewer"></div>
+      <div id="startup" class="startup" role="status"><img class="loading-monogram" src="./assets/monogram-champagne.png" alt="Next Diamonds" width="960" height="960"><span class="spinner"></span><span id="startup-text">Opening ND1061...</span></div>
+      <div class="viewer-footer">
+      <div class="stage-caption"><span id="selection-summary">ND1061</span><span id="update-status" role="status" aria-live="polite"></span></div>
+      <div class="viewer-tools" role="group" aria-label="Viewer controls">
+        <div id="pose" role="group" aria-label="Ring pose"><button id="pose-toggle" class="icon-tool labeled-tool" type="button" title="Rest ring on floor" data-tooltip="Rest ring on floor" aria-label="Rest ring on floor" aria-pressed="false" disabled><img src="./assets/icons/rotate-3d.svg" alt=""><span id="pose-label">Rest</span></button></div>
+        <button id="center-view" class="icon-tool" type="button" title="Center view" data-tooltip="Center view" aria-label="Center view" disabled><img src="./assets/icons/focus.svg" alt=""></button>
+        <div id="quality-control" class="quality-control"><div id="quality" class="quality-buttons" role="group" aria-label="Render quality"><button type="button" data-quality="1" title="Medium quality" aria-label="Medium quality" aria-pressed="true" disabled>Med</button><button type="button" data-quality="1.5" title="High quality" aria-label="High quality" aria-pressed="false" disabled>High</button><button type="button" data-quality="2" title="Ultra quality" aria-label="Ultra quality" aria-pressed="false" disabled>Ultra</button></div></div>
+        <button id="tryon" class="icon-tool labeled-tool" type="button" title="Try on your hand" data-tooltip="Try on your hand" aria-label="Try on" hidden disabled><img src="./assets/icons/hand.svg" alt=""><span id="tryon-label">Try on</span></button>
+        <button id="flip-camera" class="icon-tool" type="button" title="Flip camera" data-tooltip="Flip camera" aria-label="Flip camera" hidden><img src="./assets/icons/switch-camera.svg" alt=""></button>
+        <select id="finger" aria-label="Try-On finger" hidden><option value="thumb">Thumb</option><option value="index">Index</option><option value="middle">Middle</option><option value="ring" selected>Ring finger</option><option value="pinky">Pinky</option></select>
+      </div>
+      </div>
+    </main>
+    <aside class="panel" aria-label="Customize ND1061">
+      <header><h1>ND1061</h1></header>
+      <fieldset id="shape-field"><legend>Diamond shape <span id="shape-label">Round</span></legend><div id="shapes" class="shape-grid"></div></fieldset>
+      <fieldset id="carat-field"><legend>Center stone <span id="carat-label">1 ct</span></legend><div id="carats" class="segments"></div></fieldset>
+      <fieldset id="orientation-field"><legend>Stone orientation</legend><div id="orientations" class="segments"></div></fieldset>
+      <div class="metal-fields">
+        <fieldset id="head-gold-field"><legend>Head gold</legend><div id="head-gold" class="gold-options"></div></fieldset>
+        <fieldset id="ring-gold-field"><legend>Shank gold</legend><div id="ring-gold" class="gold-options"></div></fieldset>
+      </div>
+      <p id="error" class="error" role="alert" hidden></p>
+      <button id="retry" class="retry" type="button" hidden>Try again</button>
+    </aside>
+  </div>
+  <script src="https://releases.ijewel3d.com/libs/webgi-v0/bundle-0.22.0.js"></script>
+  <script>window.webgi = window;</script>
+  <script src="https://releases.ijewel3d.com/libs/mini-viewer/0.6.18/bundle.nowebgi.iife.js"></script>
+  <script type="module" src="./app.js?v=nd1061-ui2"></script>
+  <script src="../shared/ring-switcher.js?v=1" defer></script>
+</body>
+</html>

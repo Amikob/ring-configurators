@@ -1,0 +1,10 @@
+.ring-switch { display: flex; align-items: center; gap: 6px; pointer-events: auto; font-size: 12px; }
+.ring-switch-home { color: #767d7c; text-decoration: none; padding: 6px 8px; border-radius: 5px; }
+.ring-switch-home:hover, .ring-switch-home:focus-visible { color: #345b59; background: #f3f5f4; }
+.ring-switch select {
+  appearance: none; -webkit-appearance: none; border: 1px solid #e7e9e8; border-radius: 6px; background: #fff;
+  padding: 6px 26px 6px 10px; font: inherit; font-weight: 600; color: #272b2b; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, #767d7c 50%), linear-gradient(135deg, #767d7c 50%, transparent 50%);
+  background-position: calc(100% - 13px) 50%, calc(100% - 9px) 50%; background-size: 4px 4px; background-repeat: no-repeat;
+}
+.ring-switch select:focus-visible, .ring-switch-home:focus-visible { outline: 2px solid #345b59; outline-offset: 2px; }
