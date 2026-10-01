@@ -3,7 +3,7 @@ import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=15.1
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
-import { manageTryonSession } from '../shared/tryon-session.js?v=3';
+import { manageTryonSession } from '../shared/tryon-session.js?v=4';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=15.1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
 import { manageModelResources } from './model-resources.js?v=15.1';
@@ -115,7 +115,8 @@ async function drain() {
   const resumeView = tryonSession?.captureView();
   const resumeGeneration = tryonGeneration;
   // In AR, swap the model on the finger instead of restarting the camera.
-  let liveTryon = Boolean(resumeView) && tryonSession.detach();
+  // Add ?tryon=restart to the page address to compare with the old restart behavior.
+  let liveTryon = Boolean(resumeView) && new URLSearchParams(location.search).get('tryon') !== 'restart' && tryonSession.detach();
   tryonResuming = Boolean(resumeView) && !liveTryon;
   busy = true; clearError(); render();
   let fading = false, shadowsChanged = false, capturesReleased = false;
@@ -377,7 +378,9 @@ window.addEventListener('ijewel-viewer-ready',({detail})=> {
       if (busy || !ready) return;
       try { refreshDiamondCuts(viewer, profile); } catch (error) { console.warn('Diamond refresh after AR failed', error); }
       refreshSceneShadows(viewer);
-      if (preTryonView) preTryonView(); else centerView(viewer);
+      // Restore the pre-AR viewing direction, then frame the ring now on screen.
+      preTryonView?.();
+      centerView(viewer);
       render();
     }
   });

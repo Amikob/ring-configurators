@@ -11,6 +11,28 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
   // Model scale before AR moved the ring onto the finger. The assembly restores this on exit,
   // so it must be the studio scale, never the finger-fitted scale seen during a live swap.
   let studioScale, liveSwapped = false;
+  // Studio transforms of the model root and every component container, recorded before the
+  // try-on plugin moves them onto the finger. A ring swapped in during AR is a new object the
+  // plugin's own exit reset does not know about, so we put everything back ourselves.
+  const studio = new Map();
+  const transformOf = object => ({ position: object.position.toArray(), quaternion: object.quaternion.toArray(), scale: object.scale.toArray() });
+  function remember() {
+    const root = viewer.scene.modelRoot;
+    if (!plugin?.running) { studio.clear(); studio.set(root, transformOf(root)); }
+    for (const child of root.children) if (!studio.has(child)) studio.set(child, transformOf(child));
+  }
+  function restoreStudio() {
+    const root = viewer.scene.modelRoot;
+    for (const [object, saved] of studio) {
+      if (object !== root && !object.parent) continue;
+      object.position.fromArray(saved.position);
+      object.quaternion.fromArray(saved.quaternion);
+      object.scale.fromArray(saved.scale);
+    }
+    studio.clear();
+    root.updateMatrixWorld(true);
+    viewer.setDirty();
+  }
 
   function limitRendering() {
     if (!touchDevice) return;
@@ -33,7 +55,10 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
       liveSwapped = false;
       // Models loaded during AR were placed while the ring sat on the finger. Once the SDK has
       // restored the studio scene (next frames), let the app re-bake shadows and reframe.
-      requestAnimationFrame(() => requestAnimationFrame(() => onRestored()));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        try { restoreStudio(); } catch (error) { console.warn('Studio transform restore failed', error); }
+        onRestored();
+      }));
     }
   }
   function bind() {
@@ -78,6 +103,7 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
     const root = viewer.scene.modelRoot;
     if (!plugin?.running) studioScale = root.scale.toArray();
     else if (studioScale) root.scale.fromArray(studioScale);
+    remember();
     prepared = api.prepareConfiguratorTryon(viewer, tryon);
     return prepared;
   }

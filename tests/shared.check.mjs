@@ -26,8 +26,15 @@ const plugin = {
   async flipCamera() { this.flips++; }, async stop() { this.running = false; listeners.stop?.(); }
 };
 // Minimal stand-in for the scene: scale is a 3-number array like three.js toArray/fromArray.
-const scale = { v: [0.1, 0.1, 0.1], toArray() { return [...this.v]; }, fromArray(a) { this.v = [...a]; } };
-const viewer = { renderer: { displayCanvasScaling: 1 }, scene: { modelRoot: { scale } }, getPluginByType: () => plugin, addEventListener() {}, setDirty() {} };
+const vec = v => ({ v: [...v], toArray() { return [...this.v]; }, fromArray(a) { this.v = [...a]; } });
+const object3d = (s = [1, 1, 1]) => ({ position: vec([0, 0, 0]), quaternion: vec([0, 0, 0, 1]), scale: vec(s), parent: null, children: [] });
+const root = object3d([0.1, 0.1, 0.1]);
+root.updateMatrixWorld = () => {};
+const scale = root.scale;
+const addChild = child => { child.parent = root; root.children.push(child); return child; };
+const removeChild = child => { child.parent = null; root.children.splice(root.children.indexOf(child), 1); };
+const oldRing = addChild(object3d());
+const viewer = { renderer: { displayCanvasScaling: 1 }, scene: { modelRoot: root }, getPluginByType: () => plugin, addEventListener() {}, setDirty() {} };
 globalThis.requestAnimationFrame = fn => setTimeout(fn, 0);
 let assemblies = 0, restored = 0, repaired = 0;
 // Mirrors the SDK assembly: remember the current scale, use unit scale in AR, restore on exit.
@@ -46,7 +53,9 @@ assert.equal(view.flipped, true);
 assert.equal(session.detach(), true);
 assert.equal(restored, 1);
 scale.fromArray([7, 7, 7]); // AR fits the ring to the finger between frames
+removeChild(oldRing); const newRing = addChild(object3d()); // the configurator swaps the ring model
 assert.equal(session.attach(api, view), true);
+newRing.position.fromArray([30, -12, 4]); newRing.quaternion.fromArray([0.5, 0.5, 0.5, 0.5]); // tracked on the finger
 assert.equal(assemblies, 2);
 assert.equal(plugin.running, true, 'AR keeps running during a live swap');
 // Exiting AR after a live swap returns the studio scale (the bug: the ring came back zoomed in).
@@ -56,6 +65,9 @@ assembly.restore(); // the SDK restores its assembly from its own stop listener
 assert.deepEqual(scale.v, [0.1, 0.1, 0.1], 'studio scale is back after AR');
 await new Promise(r => setTimeout(r, 10));
 assert.equal(repaired, 1, 'scene repair runs once after a session with live swaps');
+assert.deepEqual(newRing.position.v, [0, 0, 0], 'swapped-in ring returns to its studio position');
+assert.deepEqual(newRing.quaternion.v, [0, 0, 0, 1], 'swapped-in ring returns to its studio rotation');
+assert.deepEqual(root.scale.v, [0.1, 0.1, 0.1]);
 plugin.running = true;
 // Fallback restart: a fresh start resets the camera; restoreView flips it back once.
 listeners.start(); listeners.initialized();

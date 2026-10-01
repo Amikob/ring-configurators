@@ -2,6 +2,23 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-01 (d): Ring stuck off-screen after leaving try-on
+
+- **What:** After (c), leaving try-on on iPhone could show an empty scene with only the
+  floor visible edge-on (a thin grey bar). The ring was still there, but in the wrong place.
+- **Why:** The try-on plugin moves the ring onto the finger and resets it on exit, but it only
+  knows the ring it started with. A ring swapped in during AR is a new object, so it kept its
+  finger position and rotation when AR ended. Restoring the old camera then pointed at empty
+  floor.
+- **How:** `shared/tryon-session.js` now records the studio position, rotation and scale of
+  the model root and of every ring/band container (including ones swapped in during AR) and
+  puts them back after AR ends. The app then refreshes diamonds and shadows, restores the
+  pre-AR viewing direction and frames the ring on screen.
+- **Comparison switch:** add `?tryon=restart` to any ring address to use the old behavior
+  (AR restarts on each change), for side-by-side testing on a phone.
+- **Test:** `tests/shared.check.mjs` simulates a ring swapped in during AR and checks it
+  returns to its studio position, rotation and scale.
+
 ## 2026-10-01 (c): Fix zoomed-in ring and missing shadow after leaving try-on
 
 - **What:** After a live ring swap in try-on, leaving AR showed the ring hugely zoomed in
