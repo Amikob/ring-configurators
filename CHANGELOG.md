@@ -2,6 +2,21 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-01 (e): Try-on back to the stable restart by default; loading screen fix
+
+- **What:** Changing the ring during try-on restarts AR again by default (the behavior before
+  (b)), but the camera now **stays on the side the shopper chose**. The live swap still exists
+  but is opt-in: add `?tryon=live` to a ring address.
+- **Why:** On iPhone the live swap showed iJewel's white loading screen with a progress bar
+  over the camera while the next ring downloaded, and after leaving AR the page could stay
+  stuck on that white screen. Three fixes in a row could not be verified on a phone from
+  here, so the stable flow is the default until the live swap is confirmed on real devices.
+- **Loading screen fix (both flows):** after AR ends, the page hides iJewel's loading overlay
+  if nothing is still loading. The native iJewel viewer does the same after AR. During a live
+  swap the overlay is switched off so it cannot cover the camera.
+- **Test:** `tests/shared.check.mjs` checks the overlay is off during a live swap and not left
+  on screen after AR, and that live swap is opt-in on every ring.
+
 ## 2026-10-01 (d): Ring stuck off-screen after leaving try-on
 
 - **What:** After (c), leaving try-on on iPhone could show an empty scene with only the
@@ -14,8 +29,7 @@ All changes to the Next Diamonds ring configurators. Newest first.
   the model root and of every ring/band container (including ones swapped in during AR) and
   puts them back after AR ends. The app then refreshes diamonds and shadows, restores the
   pre-AR viewing direction and frames the ring on screen.
-- **Comparison switch:** add `?tryon=restart` to any ring address to use the old behavior
-  (AR restarts on each change), for side-by-side testing on a phone.
+- **Comparison switch:** `?tryon=restart` (replaced in (e): live swap is now opt-in with `?tryon=live`).
 - **Test:** `tests/shared.check.mjs` simulates a ring swapped in during AR and checks it
   returns to its studio position, rotation and scale.
 

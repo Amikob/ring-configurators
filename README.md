@@ -30,7 +30,7 @@ added there.
 ## Conventions
 
 - Default ring on every page: **Oval 3 ct, yellow gold**. Two-tone rings: **white head, yellow shank**. Bands: yellow. Set in `let desired` at the top of each `app.js` (checked by `tests/shared.check.mjs`).
-- Try-on changes swap the ring live on the finger (`shared/tryon-session.js`); see `CHANGELOG.md`.
+- Try-on: a ring change restarts AR and keeps the camera side. Live swap on the finger is opt-in with `?tryon=live` until verified on phones (`shared/tryon-session.js`, `CHANGELOG.md`).
 - Record every change in `CHANGELOG.md` with what changed and why.
 
 ## Notes

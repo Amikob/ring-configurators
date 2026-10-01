@@ -21,6 +21,18 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
     if (!plugin?.running) { studio.clear(); studio.set(root, transformOf(root)); }
     for (const child of root.children) if (!studio.has(child)) studio.set(child, transformOf(child));
   }
+  // iJewel's loading overlay (white screen + progress bar) can stay up after AR. The native
+  // iJewel viewer hides it after AR the same way: only when nothing is still loading.
+  function hideIdleLoadingScreen() {
+    const loading = viewer.getPluginByType('LoadingScreenPlugin');
+    if (!loading) return;
+    if (loading.enabled === false) loading.enabled = true;
+    if (loading.visible && !(loading.processState?.size)) loading.hide();
+  }
+  function suppressLoadingScreen() {
+    const loading = viewer.getPluginByType('LoadingScreenPlugin');
+    if (loading) loading.enabled = false;
+  }
   function restoreStudio() {
     const root = viewer.scene.modelRoot;
     for (const [object, saved] of studio) {
@@ -51,6 +63,9 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
   function initialized() { limitRendering(); update('running'); }
   function stopped() {
     prepared = undefined; restoreRendering(); update('idle');
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      try { hideIdleLoadingScreen(); } catch (error) { console.warn('Loading screen reset failed', error); }
+    }));
     if (liveSwapped) {
       liveSwapped = false;
       // Models loaded during AR were placed while the ring sat on the finger. Once the SDK has
@@ -111,6 +126,8 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
   function detach() {
     if (!plugin?.running || !prepared || phase !== 'running') return false;
     try {
+      // No white loading overlay over the camera while the next ring downloads.
+      suppressLoadingScreen();
       prepared.restore();
       prepared = undefined;
       return true;
@@ -125,6 +142,7 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
     try {
       prepare(api, plugin);
       liveSwapped = true;
+      hideIdleLoadingScreen();
       // Re-assigning the finger makes the plugin re-read the ring it is placing.
       plugin.finger = view?.finger ?? plugin.finger;
       viewer.setDirty();

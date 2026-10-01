@@ -3,7 +3,7 @@ import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=nd10
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd1061-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nd1061-1';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=nd1061-1';
-import { manageTryonSession } from '../shared/tryon-session.js?v=4';
+import { manageTryonSession } from '../shared/tryon-session.js?v=5';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd1061-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=nd1061-1';
 import { manageModelResources } from './model-resources.js?v=nd1061-1';
@@ -116,8 +116,9 @@ async function drain() {
   const resumeView = tryonSession?.captureView();
   const resumeGeneration = tryonGeneration;
   // In AR, swap the model on the finger instead of restarting the camera.
-  // Add ?tryon=restart to the page address to compare with the old restart behavior.
-  let liveTryon = Boolean(resumeView) && new URLSearchParams(location.search).get('tryon') !== 'restart' && tryonSession.detach();
+  // Live swap is opt-in (?tryon=live) until it is confirmed on phones. Default: restart AR
+  // after the change, keeping the shopper's camera side.
+  let liveTryon = Boolean(resumeView) && new URLSearchParams(location.search).get('tryon') === 'live' && tryonSession.detach();
   tryonResuming = Boolean(resumeView) && !liveTryon;
   busy = true; clearError(); render();
   let fading = false, shadowsChanged = false, capturesReleased = false;

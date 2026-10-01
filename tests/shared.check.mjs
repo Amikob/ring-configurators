@@ -16,6 +16,7 @@ for (const site of sites) {
   if ('bandGold' in desired) assert.equal(desired.bandGold, 'yellow', site);
   assert(app.includes("from '../shared/tryon-session.js"), `${site}: uses shared try-on session`);
   assert(app.includes('tryonSession.detach()') && app.includes('tryonSession.attach('), `${site}: live swap wired`);
+  assert(app.includes("get('tryon') === 'live'"), `${site}: live swap is opt-in`);
 }
 
 // 2. Live swap keeps AR running and the camera side survives a fallback restart.
@@ -34,7 +35,8 @@ const scale = root.scale;
 const addChild = child => { child.parent = root; root.children.push(child); return child; };
 const removeChild = child => { child.parent = null; root.children.splice(root.children.indexOf(child), 1); };
 const oldRing = addChild(object3d());
-const viewer = { renderer: { displayCanvasScaling: 1 }, scene: { modelRoot: root }, getPluginByType: () => plugin, addEventListener() {}, setDirty() {} };
+const loading = { enabled: true, visible: false, processState: new Set(), hide() { this.visible = false; } };
+const viewer = { renderer: { displayCanvasScaling: 1 }, scene: { modelRoot: root }, getPluginByType: type => type === 'LoadingScreenPlugin' ? loading : plugin, addEventListener() {}, setDirty() {} };
 globalThis.requestAnimationFrame = fn => setTimeout(fn, 0);
 let assemblies = 0, restored = 0, repaired = 0;
 // Mirrors the SDK assembly: remember the current scale, use unit scale in AR, restore on exit.
@@ -52,6 +54,8 @@ const view = session.captureView();
 assert.equal(view.flipped, true);
 assert.equal(session.detach(), true);
 assert.equal(restored, 1);
+assert.equal(loading.enabled, false, 'no white loading overlay during a live swap');
+loading.visible = true; // the overlay was shown anyway
 scale.fromArray([7, 7, 7]); // AR fits the ring to the finger between frames
 removeChild(oldRing); const newRing = addChild(object3d()); // the configurator swaps the ring model
 assert.equal(session.attach(api, view), true);
@@ -68,6 +72,8 @@ assert.equal(repaired, 1, 'scene repair runs once after a session with live swap
 assert.deepEqual(newRing.position.v, [0, 0, 0], 'swapped-in ring returns to its studio position');
 assert.deepEqual(newRing.quaternion.v, [0, 0, 0, 1], 'swapped-in ring returns to its studio rotation');
 assert.deepEqual(root.scale.v, [0.1, 0.1, 0.1]);
+assert.equal(loading.enabled, true);
+assert.equal(loading.visible, false, 'loading overlay is not left on screen after AR');
 plugin.running = true;
 // Fallback restart: a fresh start resets the camera; restoreView flips it back once.
 listeners.start(); listeners.initialized();
