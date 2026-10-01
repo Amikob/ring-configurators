@@ -2,6 +2,22 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-01 (c): Fix zoomed-in ring and missing shadow after leaving try-on
+
+- **What:** After a live ring swap in try-on, leaving AR showed the ring hugely zoomed in
+  (only the shank visible). Re-centering fixed the framing but the floor shadow was gone and
+  the studio scene looked wrong. Now the ring returns at its normal size, the shadow is
+  re-baked, diamonds are refreshed, and the camera goes back to the view from before AR.
+- **Why it happened:** Yes, the live swap from (b) caused it. iJewel's try-on assembly saves
+  the model's scale when it is built and puts it back when AR ends. On a live swap the
+  assembly was rebuilt while AR was running, so it saved the finger-fitted scale instead of
+  the studio scale, and restored that wrong scale on exit. New models were also loaded
+  while the ring sat on the finger, so the floor shadow was baked for the wrong position.
+- **How:** `shared/tryon-session.js` records the studio scale before AR starts and uses it
+  for every rebuild during AR. After an AR session that had live swaps, it calls the app's
+  new `onRestored` step (diamonds, shadows, saved camera) once the SDK has restored the scene.
+- **Test:** `tests/shared.check.mjs` now simulates the exit and fails on the previous code.
+
 ## 2026-10-01 (b): Live ring swap in try-on, new default ring
 
 ### Try-on: change the ring without restarting the camera

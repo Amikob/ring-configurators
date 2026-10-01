@@ -6,8 +6,11 @@
 // afterwards, so the new ring appears on the same finger with the same camera.
 // If live swap fails, the app falls back to a restart and restoreView() puts the
 // camera back on the same side (front/back) the shopper had chosen.
-export function manageTryonSession(viewer, { touchDevice = false, onChange = () => {} } = {}) {
+export function manageTryonSession(viewer, { touchDevice = false, onChange = () => {}, onRestored = () => {} } = {}) {
   let plugin, phase = 'idle', previousScale, stopping, prepared, flipped = false;
+  // Model scale before AR moved the ring onto the finger. The assembly restores this on exit,
+  // so it must be the studio scale, never the finger-fitted scale seen during a live swap.
+  let studioScale, liveSwapped = false;
 
   function limitRendering() {
     if (!touchDevice) return;
@@ -24,7 +27,15 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
   // Every fresh start opens the plugin's default camera.
   function started() { flipped = false; limitRendering(); update('starting'); }
   function initialized() { limitRendering(); update('running'); }
-  function stopped() { prepared = undefined; restoreRendering(); update('idle'); }
+  function stopped() {
+    prepared = undefined; restoreRendering(); update('idle');
+    if (liveSwapped) {
+      liveSwapped = false;
+      // Models loaded during AR were placed while the ring sat on the finger. Once the SDK has
+      // restored the studio scene (next frames), let the app re-bake shadows and reframe.
+      requestAnimationFrame(() => requestAnimationFrame(() => onRestored()));
+    }
+  }
   function bind() {
     const next = viewer.getPluginByType('RingTryonPlugin');
     if (!next || next === plugin) return;
@@ -64,6 +75,9 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
   // Group the ring (and band) into the single assembly the Try-On plugin tracks.
   function prepare(api, tryon) {
     prepared?.restore();
+    const root = viewer.scene.modelRoot;
+    if (!plugin?.running) studioScale = root.scale.toArray();
+    else if (studioScale) root.scale.fromArray(studioScale);
     prepared = api.prepareConfiguratorTryon(viewer, tryon);
     return prepared;
   }
@@ -84,6 +98,7 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
     if (!plugin?.running) return false;
     try {
       prepare(api, plugin);
+      liveSwapped = true;
       // Re-assigning the finger makes the plugin re-read the ring it is placing.
       plugin.finger = view?.finger ?? plugin.finger;
       viewer.setDirty();

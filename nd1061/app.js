@@ -3,7 +3,7 @@ import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=nd10
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd1061-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nd1061-1';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=nd1061-1';
-import { manageTryonSession } from '../shared/tryon-session.js?v=2';
+import { manageTryonSession } from '../shared/tryon-session.js?v=3';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd1061-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=nd1061-1';
 import { manageModelResources } from './model-resources.js?v=nd1061-1';
@@ -285,6 +285,7 @@ function downloadTryon() {
   });
   return vtoDownload;
 }
+let preTryonView = null;
 async function openTryon({ generation = ++tryonGeneration, resumeView = null } = {}) {
   const cancelled = () => generation !== tryonGeneration || document.hidden;
   let prepared;
@@ -296,6 +297,8 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
     await viewer.getOrAddPlugin(window.ij_vto.TryonUIPlugin);
     if (cancelled()) return;
     // An automatic continuation retains the current plugin's fit and camera settings.
+    // Remember the studio camera so it can come back after AR.
+    if (!resumeView) preTryonView = captureView(viewer);
     if (!resumeView) await tryon.fromJSON({ ...savedTryonConfig, type: window.ij_vto.RingTryonPlugin.PluginType });
     if (cancelled()) return;
     if (ringPose.restore()) {
@@ -358,7 +361,15 @@ window.addEventListener('ijewel-viewer-ready',({detail})=> {
   viewer = detail.viewer;
   ringPose = manageRingPose(viewer, window);
   tryonSession = manageTryonSession(viewer, {
-    touchDevice: Boolean(profile.maxRenderScale), onChange: render
+    touchDevice: Boolean(profile.maxRenderScale), onChange: render,
+    // After an AR session with live ring swaps: rebuild diamonds, shadows and the studio view.
+    onRestored: () => {
+      if (busy || !ready) return;
+      try { refreshDiamondCuts(viewer, profile); } catch (error) { console.warn('Diamond refresh after AR failed', error); }
+      refreshSceneShadows(viewer);
+      if (preTryonView) preTryonView(); else centerView(viewer);
+      render();
+    }
   });
   viewer.getPluginByType('RingConfigurator')?.addEventListener('componentProcessed',setup);
   viewer.getPluginByType('MaterialConfiguratorPlugin')?.addEventListener('refreshUi',setup);
