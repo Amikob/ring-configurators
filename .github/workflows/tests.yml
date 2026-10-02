@@ -1,0 +1,24 @@
+# Runs every check in tests/ on GitHub's computers after each push, so changes can be
+# verified even from a machine without Node.js. Green check = all good, red X = something broke.
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax check every JavaScript module
+        run: |
+          for f in */*.js; do
+            cp "$f" /tmp/check.mjs
+            node --check /tmp/check.mjs || { echo "Syntax error in $f"; exit 1; }
+          done
+      - name: Run catalog and default checks
+        run: npm test

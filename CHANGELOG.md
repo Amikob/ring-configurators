@@ -2,6 +2,14 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-02 (b): Automatic tests on GitHub
+
+- **What:** Added `.github/workflows/tests.yml`. On every push, GitHub syntax-checks every
+  configurator JavaScript file and runs `npm test`. Results show on the repo's Actions page
+  and as a green check or red X next to each commit.
+- **Why:** The next assistant (Astra) works on Windows without Node.js and could not run the
+  tests, so a broken change could have gone live unnoticed. HANDOFF.md section 8 explains it.
+
 ## 2026-10-02: Handoff document
 
 - **What:** Added `HANDOFF.md`, a complete guide for the next assistant or developer: how the

@@ -268,6 +268,11 @@ in the existing code, adding a band forces the ring upright (Rest is ring-only).
 
 ## 8. Testing
 
+- **Automatic on GitHub:** `.github/workflows/tests.yml` runs a syntax check of every
+  `*/*.js` module plus `npm test` on every push and pull request. You do not need Node.js
+  locally: push, then open https://github.com/Amikob/ring-configurators/actions and wait for
+  the **Tests** run. Green check = pass. Red X = open the run, read the failing step, fix it
+  before telling Jacob it is done. A green Tests run does not prove AR works (see below).
 - `npm test` runs every `tests/*.check.mjs`: catalog coverage for every shape/carat/gold/band
   combination, metal group IDs, diamond mappings, shape images, and the default ring on every
   site. Erica's test uses `tests/fixtures-erica.json` (names copied from the live iJewel config).
