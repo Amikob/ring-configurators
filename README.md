@@ -1,5 +1,7 @@
 # Next Diamonds ring configurators
 
+> **New assistant or developer? Start with [`HANDOFF.md`](HANDOFF.md).**
+
 Static site hosted on GitHub Pages. The root page lists every ring collection; each
 collection lives in its own folder and opens a 3D configurator powered by iJewel.
 

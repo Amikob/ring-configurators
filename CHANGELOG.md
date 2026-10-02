@@ -2,6 +2,15 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-02: Handoff document
+
+- **What:** Added `HANDOFF.md`, a complete guide for the next assistant or developer: how the
+  site and each configurator work, exact facts for all six collections, iJewel workflow, how
+  to add rings and bands, deploying and testing, the full try-on history with SDK findings and
+  a recommended next step, and Jacob's working preferences. `README.md` now points to it.
+- **Why:** Jacob is handing the project to another assistant (Astra), which works from GitHub.
+  Earlier notes lived outside the repo where it could not see them.
+
 ## 2026-10-01 (f): Try-on reverted to the original behavior
 
 - **What:** Try-on code on all six rings is back to exactly the version from the portal
