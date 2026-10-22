@@ -76,10 +76,13 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
         const size = bounds.getSize(new Vector3());
         const axis = size.x < size.z ? new Vector3(1, 0, 0) : new Vector3(0, 0, 1);
         let side = 1;
-        if (Box3) {
-          const bandBox = new Box3().setFromObject(options.band);
+        const band = [options.band, options.band?.modelObject, options.band?.object, options.band?.scene, options.band?.model]
+          .find(o => o?.isObject3D);
+        if (Box3 && band) {
+          const bandBox = new Box3().setFromObject(band);
           if (!bandBox.isEmpty()) side = bandBox.getCenter(new Vector3()).dot(axis) >= center.dot(axis) ? 1 : -1;
         }
+        if (new URLSearchParams(location.search).has('debug')) window.__poseDbg = { axis: axis.toArray(), side, bandFound: Boolean(band), keys: Object.keys(options.band || {}).slice(0, 20) };
         resting = new Quaternion().setFromUnitVectors(axis.multiplyScalar(side), new Vector3(0, 1, 0));
       } else resting = stableRotation(root);
       if (root.getWorldQuaternion) {
@@ -108,6 +111,11 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
       }
       root.position.add(center.sub(nextCenter));
       refresh();
+      if (window.__poseDbg && options.band && Box3) {
+        const band = [options.band, options.band?.modelObject].find(o => o?.isObject3D);
+        const all = viewer.scene.getModelBounds(true, true, true);
+        if (band) window.__poseDbg.after = { bandMinY: new Box3().setFromObject(band).min.y, setMinY: all.min.y, setMaxY: all.max.y };
+      }
     } catch (error) { restore(); throw error; }
   }
   return { apply, restore, get current() { return saved ? 'flat' : 'upright'; } };
