@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-22 - arlet: ring + band rest pose
+- **What:** Rest (lying) pose now also works with Plain/Pave bands. Ring and band rest together as one set, finger hole vertical, band on top, rocked so the head edge and shank both touch the floor. Ported from arlet-test (no debug overlay). Files: `arlet/ring-pose.js`, `arlet/app.js`, `arlet/index.html` cache tag.
+- **Why:** Kobi's request (MatrixGold reference); approved after iPhone testing on arlet-test.
+
 ## 2026-10-21 - arlet-test (hidden test page)
 - **What:** Added hidden `arlet-test/` page (not in configurators.json) using private-turned-public iJewel project `DqnBsNzCTB2Wd2geOWbcYw` with 70% metal-reduced Arlet rings, for iPhone reload testing. Live Arlet unchanged.
 
