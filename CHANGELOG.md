@@ -2,6 +2,9 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-21 - arlet-test (hidden test page)
+- **What:** Added hidden `arlet-test/` page (not in configurators.json) using private-turned-public iJewel project `DqnBsNzCTB2Wd2geOWbcYw` with 70% metal-reduced Arlet rings, for iPhone reload testing. Live Arlet unchanged.
+
 ## 2026-10-02 (b): Automatic tests on GitHub
 
 - **What:** Added `.github/workflows/tests.yml`. On every push, GitHub syntax-checks every
