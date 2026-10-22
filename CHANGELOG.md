@@ -2,6 +2,11 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-22 - ada (ND334): new configurator page, not listed yet
+
+- Added `ada/` (copied from nd344p): iJewel project XVul_Ld1QDO2v6zXE0CUgw, 40 rings + 2 Pave bands (1-3 ct, 4-5 ct), Head = Metal 01, Shank = Metal 02, Band = Metal 03, Gem 01/02/03 ND334 <Shape> + Gem 03 ND334 Band mapped to diamond. Band rest pose (ring-pose.js v16.3). Band options: No band / Pave only.
+- Why: pilot set for Kobi's review. Not added to configurators.json yet, so the portal does not show it. Needs the iJewel configurator to be Public to load.
+
 ## 2026-10-22 - nd344p: ring + band rest pose
 
 - Ported the Arlet ring+band rest pose (ring-pose.js v16.3); Rest now works with a band. No model changes. app.js cache tag 20261022a.
