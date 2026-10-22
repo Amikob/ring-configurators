@@ -4,7 +4,7 @@ import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
 import { manageTryonSession } from './tryon-session.js?v=11';
-import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.0';
+import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
 import { initDebugOverlay, noteSwitch } from './debug-overlay.js?v=1';
 import { manageModelResources } from './model-resources.js?v=15.1';
@@ -15,7 +15,7 @@ const PROJECT_ID = 'DqnBsNzCTB2Wd2geOWbcYw';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, bandComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
-let tryonResuming = false, ringPose;
+let tryonResuming = false, ringPose, bandModel;
 let modelResources, selectedQuality;
 try { selectedQuality = Number(localStorage.getItem('arlet-test-render-quality')) || undefined; } catch {}
 let desired = { shape: 'oval', carat: 3, band: 'none', ringGold: 'yellow', bandGold: 'yellow', pose: 'upright' };
@@ -172,7 +172,7 @@ async function drain() {
       if (bandChanged) {
         const model = await bandComponent.applyVariation(band.variation,true);
         if (!model) throw new Error('Band download failed.');
-        loadedBand = band.variation;
+        loadedBand = band.variation; bandModel = model;
       }
       // Presets initialize the diamonds; restore the independently chosen gold afterward.
       if (ringChanged || bandChanged || !applied || applied.ringGold !== target.ringGold) await applyGold('ringGold',target.ringGold);
@@ -182,7 +182,7 @@ async function drain() {
         refreshDiamondCuts(viewer, profile);
         capturesReleased = false;
       }
-      if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat', {withBand: Boolean(band)});
+      if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat', {band: band ? bandModel : undefined});
       if (ringChanged || bandChanged) {
         modelResources?.endLoad();
         modelResources?.cleanup();

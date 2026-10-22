@@ -6,10 +6,10 @@ export function normalizePose(selection) {
 }
 
 // Presentation only: restore the imported transform before replacement or Try-On.
-export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D, PosePlugin }) {
+export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D, PosePlugin, Box3 }) {
   let saved;
   const rotations = new Map();
-  function stableRotation(root, fingerAxis) {
+  function stableRotation(root) {
     // The SDK hull includes hidden geometry. Supply only the displayed ring,
     // borrowing geometry without allocating GPU meshes or changing the scene.
     const proxy = new Object3D();
@@ -28,24 +28,14 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
       for (const child of node.children) collect(child);
     }
     collect(root);
-    const key = signature.join(',') + (fingerAxis ? '|' + fingerAxis.toArray().join(',') : '');
+    const key = signature.join(',');
     if (rotations.has(key)) return rotations.get(key).clone();
     const poses = new PosePlugin().computeStablePoses(proxy);
     if (!poses.length) throw new Error('No stable resting pose was found.');
     // Same Y-up transform used by PosePlugin.setMostStablePose (pose zero).
     // Apply it ourselves to preserve the saved ground and AR configuration.
-    const toPose = (pose) => new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
-      .multiply(pose.xform.clone().invert());
-    let transform = toPose(poses[0]);
-    if (fingerAxis) {
-      // A ring+band set must tip over onto head edge + shank (finger axis
-      // roughly horizontal), never lie flat on the band face.
-      for (const pose of poses) {
-        const candidate = toPose(pose);
-        const up = fingerAxis.clone().transformDirection(candidate);
-        if (Math.abs(up.y) < 0.7) { transform = candidate; break; }
-      }
-    }
+    const transform = new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
+      .multiply(poses[0].xform.clone().invert());
     const rotation = new Quaternion().setFromRotationMatrix(transform);
     if (rotations.size >= 8) rotations.delete(rotations.keys().next().value);
     rotations.set(key, rotation.clone());
@@ -78,12 +68,20 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
     saved = { root, position: root.position.clone(), quaternion: root.quaternion.clone() };
     try {
       const parentRotation = root.parent?.getWorldQuaternion(new Quaternion()) || new Quaternion();
-      // With a band shown, rest the whole visible set (ring + band) as one.
-      // The finger axis is the thinnest horizontal extent of the upright set.
-      const size = bounds.getSize(new Vector3());
-      const withBand = Boolean(options.withBand);
-      const fingerAxis = withBand ? (size.x < size.z ? new Vector3(1, 0, 0) : new Vector3(0, 0, 1)) : undefined;
-      const resting = stableRotation(root, fingerAxis);
+      let resting;
+      if (options.band) {
+        // Ring+band set lies like a set dropped on a table: finger-hole axis
+        // vertical, band stacked on top of the ring, head pointing sideways.
+        // The finger axis is the thinnest horizontal extent of the upright set.
+        const size = bounds.getSize(new Vector3());
+        const axis = size.x < size.z ? new Vector3(1, 0, 0) : new Vector3(0, 0, 1);
+        let side = 1;
+        if (Box3) {
+          const bandBox = new Box3().setFromObject(options.band);
+          if (!bandBox.isEmpty()) side = bandBox.getCenter(new Vector3()).dot(axis) >= center.dot(axis) ? 1 : -1;
+        }
+        resting = new Quaternion().setFromUnitVectors(axis.multiplyScalar(side), new Vector3(0, 1, 0));
+      } else resting = stableRotation(root);
       if (root.getWorldQuaternion) {
         // Use the model's fixed forward direction, never the current camera.
         // Orbiting then replacing a ring must not turn its head toward us.
