@@ -6,6 +6,7 @@ import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
 import { manageTryonSession } from './tryon-session.js?v=11';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=15.1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
+import { initDebugOverlay, noteSwitch } from './debug-overlay.js?v=1';
 import { manageModelResources } from './model-resources.js?v=15.1';
 import { captureView, centerView } from './view-controls.js?v=15.1';
 
@@ -190,7 +191,7 @@ async function drain() {
       restoreView();
       if (enteringRest || applied && target.pose !== applied.pose) centerView(viewer, {resting:enteringRest});
       shadowsChanged ||= target.pose !== applied?.pose;
-      applied = target;
+      applied = target; noteSwitch(target);
       render();
     }
   } catch (error) {
@@ -352,6 +353,7 @@ window.addEventListener('ijewel-file-data', ({ detail }) => {
 window.addEventListener('ijewel-scene-ready',()=> { sceneReady = true; setup(); },{once:true});
 window.addEventListener('ijewel-viewer-ready',({detail})=> {
   viewer = detail.viewer;
+  initDebugOverlay(() => viewer);
   ringPose = manageRingPose(viewer, window);
   tryonSession = manageTryonSession(viewer, {
     touchDevice: Boolean(profile.maxRenderScale), onChange: render
