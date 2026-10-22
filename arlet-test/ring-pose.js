@@ -100,6 +100,62 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
         .multiply(parentRotation);
       root.quaternion.premultiply(rotation);
       root.updateWorldMatrix(true, true);
+      if (options.band) {
+        // A set lying on its side rests on the head edge AND the shank, like a
+        // ring dropped on a table. Tip it about the horizontal axis across the
+        // head until the shank side touches the same floor plane as the head.
+        const h = new Vector3(0, 1, 0).applyQuaternion(resting); h.y = 0;
+        if (h.lengthSq() > 1e-6) {
+          h.normalize();
+          const points = [];
+          const P = new Vector3();
+          root.traverseVisible(node => {
+            const position = node.geometry?.attributes?.position;
+            if (!position || node.userData?.bboxVisible === false) return;
+            const step = Math.max(1, Math.floor(position.count / 20000));
+            for (let i = 0; i < position.count; i += step) points.push(P.fromBufferAttribute(position, i).applyMatrix4(node.matrixWorld).clone());
+          });
+          // Rock about the horizontal axis across the head until the centre
+          // of the set lies between two floor contacts (head edge + shank).
+          const up = new Vector3(0, 1, 0);
+          const total = new Quaternion();
+          const centre = new Vector3();
+          for (const point of points) centre.add(point);
+          centre.divideScalar(points.length || 1);
+          for (let pass = 0; pass < 16 && points.length; pass++) {
+            let minY = Infinity;
+            for (const point of points) minY = Math.min(minY, point.y);
+            const floor = points.filter(point => point.y - minY < 1e-5);
+            const along = point => point.clone().sub(centre).dot(h);
+            const lo = Math.min(...floor.map(along)), hi = Math.max(...floor.map(along));
+            // Stable once the floor contacts surround the centre.
+            if (lo <= 0 && hi >= 0) break;
+            const dir = h.clone().multiplyScalar(hi < 0 ? 1 : -1);
+            let low = floor[0];
+            for (const point of floor) if (point.clone().sub(low).dot(dir) > 0) low = point;
+            const offset = centre.clone().sub(low).dot(dir);
+            let tilt = Infinity, reach = 0;
+            for (const point of points) {
+              const d = point.clone().sub(low).dot(dir);
+              if (d > 1e-6) {
+                const angle = Math.atan2(point.y - low.y, d);
+                if (angle < tilt) { tilt = angle; reach = d; }
+              }
+            }
+            if (!Number.isFinite(tilt) || tilt <= 1e-5) break;
+            const step = new Quaternion().setFromAxisAngle(new Vector3().crossVectors(up, dir).normalize(), tilt);
+            for (const point of points) point.applyQuaternion(step);
+            centre.applyQuaternion(step);
+            total.premultiply(step);
+          }
+          const tiltDeg = 2 * Math.acos(Math.min(1, Math.abs(total.w))) * 180 / Math.PI;
+          if (window.__poseDbg) window.__poseDbg.tiltDeg = tiltDeg;
+          if (tiltDeg < 60) {
+            root.quaternion.premultiply(parentRotation.clone().invert().multiply(total).multiply(parentRotation));
+            root.updateWorldMatrix(true, true);
+          }
+        }
+      }
       const rotated = viewer.scene.getModelBounds(true, true, true);
       const nextCenter = rotated.getCenter(new Vector3());
       const ground = viewer.getPluginByType('Ground');

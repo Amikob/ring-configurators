@@ -4,7 +4,7 @@ import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
 import { manageTryonSession } from './tryon-session.js?v=11';
-import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.2';
+import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.3';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
 import { initDebugOverlay, noteSwitch } from './debug-overlay.js?v=1';
 import { manageModelResources } from './model-resources.js?v=15.1';
