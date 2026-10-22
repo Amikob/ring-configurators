@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-22 - dior: ring + band rest pose
+
+- Ported the Arlet ring+band rest pose (ring-pose.js v16.3): Rest is available with a band; the set lies with the finger axis vertical, rocked onto the head edge and shank. No model changes. app.js cache tag 20261022a.
+
 ## 2026-10-22 - arlet: ring + band rest pose
 - **What:** Rest (lying) pose now also works with Plain/Pave bands. Ring and band rest together as one set, finger hole vertical, band on top, rocked so the head edge and shank both touch the floor. Ported from arlet-test (no debug overlay). Files: `arlet/ring-pose.js`, `arlet/app.js`, `arlet/index.html` cache tag.
 - **Why:** Kobi's request (MatrixGold reference); approved after iPhone testing on arlet-test.
