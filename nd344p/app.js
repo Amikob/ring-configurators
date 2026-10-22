@@ -4,7 +4,7 @@ import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
 import { manageTryonSession } from './tryon-session.js?v=11';
-import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=15.1';
+import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.3';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
 import { manageModelResources } from './model-resources.js?v=15.1';
 import { captureView, centerView } from './view-controls.js?v=15.1';
@@ -14,7 +14,7 @@ const PROJECT_ID = 'XE0n9hw5RjWMfkqA07oA4Q';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, bandComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
-let tryonResuming = false, ringPose;
+let tryonResuming = false, ringPose, bandModel;
 let modelResources, selectedQuality, initialCamera;
 try { selectedQuality = Number(localStorage.getItem('nd344p-render-quality')) || undefined; } catch {}
 let desired = { shape: 'oval', carat: 3, band: 'none', headGold: 'white', ringGold: 'yellow', bandGold: 'yellow', pose: 'upright' };
@@ -61,7 +61,7 @@ function render() {
   $('viewer').setAttribute('aria-busy', String(busy));
   $('viewer').inert = busy;
   const inTryon = tryonSession?.phase === 'running';
-  $('pose').hidden = desired.band !== 'none' || inTryon || tryonLoading || tryonResuming;
+  $('pose').hidden = inTryon || tryonLoading || tryonResuming;
   $('pose-toggle').disabled = !ready || busy || tryonLoading || inTryon;
   $('pose-toggle').setAttribute('aria-pressed', String(desired.pose === 'flat'));
   $('pose-toggle').title = desired.pose === 'flat' ? 'Stand ring upright' : 'Rest ring on floor';
@@ -151,7 +151,7 @@ async function drain() {
       const bandChanged = band && loadedBand !== band.variation;
       const bandVisibilityChanged = Boolean(band) !== Boolean(applied && applied.band !== 'none');
       // Material-only changes must retain the resting transform and view.
-      if (ringChanged || bandChanged || target.pose !== ringPose.current) {
+      if (ringChanged || bandChanged || bandVisibilityChanged || target.pose !== ringPose.current) {
         shadowsChanged = ringPose.restore() || shadowsChanged;
       }
       shadowsChanged ||= ringChanged || bandChanged || needsModelTransition(applied, target);
@@ -171,7 +171,7 @@ async function drain() {
       if (bandChanged) {
         const model = await bandComponent.applyVariation(band.variation,true);
         if (!model) throw new Error('Band download failed.');
-        loadedBand = band.variation;
+        loadedBand = band.variation; bandModel = model;
       }
       // Presets initialize the diamonds; restore the independently chosen gold afterward.
       if (ringChanged || bandChanged || !applied || applied.headGold !== target.headGold) await applyGold('headGold',target.headGold);
@@ -182,7 +182,7 @@ async function drain() {
         refreshDiamondCuts(viewer, profile);
         capturesReleased = false;
       }
-      if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat');
+      if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat', {band: band ? bandModel : undefined});
       if (ringChanged || bandChanged) {
         modelResources?.endLoad();
         modelResources?.cleanup();
@@ -419,7 +419,7 @@ if (document.modelContext?.registerTool) {
   const definitions = [
     { name:'get_nd344p_diagnostics',title:'Read viewer diagnostics',description:'Read resource counts and view transforms for diagnosing repeated model changes. Does not alter the viewer.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>viewerDiagnostics(viewer,window.Cache) },
     { name:'get_nd344p_configuration',title:'Read ND344P selection',description:'Read the current ND344P ring and matching-band selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
-    { name:'configure_nd344p',title:'Configure ND344P',description:'Choose a ring shape, exact carat, optional matching band, independent gold colors, and upright or flat ring-only pose. Updates the visible 3D configurator; does not place an order.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'integer',minimum:1,maximum:5},band:{type:'string',enum:['none','plain','pave']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},bandGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
+    { name:'configure_nd344p',title:'Configure ND344P',description:'Choose a ring shape, exact carat, optional matching band, independent gold colors, and upright or flat resting pose (ring alone or ring+band set). Updates the visible 3D configurator; does not place an order.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'integer',minimum:1,maximum:5},band:{type:'string',enum:['none','plain','pave']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},bandGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
       if (!ready) throw new Error('ND344P is not ready.');
       if (busy) throw new Error('A selection is still loading. Please wait.');
       if (tryonLoading || tryonSession?.phase === 'starting') throw new Error('Try-On is still starting. Please wait.');
