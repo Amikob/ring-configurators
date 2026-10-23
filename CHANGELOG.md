@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - serenity: new configurator page, listed
+
+- Serenity: 40 rings; 5Ct Oval marked (verified vs upload); default 4ct (no 3ct)
+
 ## 2026-10-23 - nd1043: new configurator page, listed
 
 - ND1043: 30 rings; 10Ct Oval re-uploaded marked; default 4ct (no 3ct)

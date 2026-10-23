@@ -841,6 +841,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_8b15fcb414.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "serenity",
+      "name": "Serenity",
+      "path": "serenity/",
+      "ijewelProjectId": "eXZCjLeNQIWm2nPk90tixA",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Asscher",
+        "Square Radiant"
+      ],
+      "carats": [
+        4,
+        10
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_8d112f6a8b.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
