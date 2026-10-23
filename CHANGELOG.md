@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nd1055: new configurator page, listed
+
+- ND1055
+
 ## 2026-10-23 - nd1041: new configurator page, listed
 
 - ND1041
