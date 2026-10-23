@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nd1043: new configurator page, listed
+
+- ND1043: 30 rings; 10Ct Oval re-uploaded marked; default 4ct (no 3ct)
+
 ## 2026-10-23 - aaron: new configurator page, listed
 
 - Aaron: 40 rings re-verified after re-upload; 2Ct Elongated Cushion head restored
