@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - eva: new configurator page, listed
+
+- Eva: 33 rings (no 3ct Round/Pear); 4 rings unmarked by design; 3Ct Emerald mark -2 faces
+
 ## 2026-10-23 - serenity: new configurator page, listed
 
 - Serenity: 40 rings; 5Ct Oval marked (verified vs upload); default 4ct (no 3ct)
