@@ -613,6 +613,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_01240299bf.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "nd1050",
+      "name": "ND1050",
+      "path": "nd1050/",
+      "ijewelProjectId": "HsUaNsb6Rxm3cd-2hHFwbQ",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Old Cut Cushion",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Pear"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_203eea213f.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
