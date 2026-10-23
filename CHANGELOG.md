@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - lacey: new configurator page, listed
+
+- Added `lacey/` (nd1046 template, no band): iJewel configurator HS4izdbHQyqgC2MblePQUw, 40 rings (8 shapes x 3/4/5/6/8 ct), Head = Metal 01, Shank = Metal 02, Gem 01/02 Lacey <Shape> mapped to diamond.
+
 ## 2026-10-23 - nd1051: new configurator page, listed
 
 - Added `nd1051/` (nd1046 template, no band): iJewel configurator QboCIydQQ7O1g26-teg1Lg, 40 rings (8 shapes x 2-6 ct), Head = Metal 01, Shank = Metal 02, Gem 01-03 ND1051 <Shape> plus the right-side side stones (source materials Cutting/Setting/Finger) mapped to diamond.

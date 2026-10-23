@@ -500,6 +500,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_012c5f8dfc.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "lacey",
+      "name": "Lacey",
+      "path": "lacey/",
+      "ijewelProjectId": "HS4izdbHQyqgC2MblePQUw",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Asscher",
+        "Elongated Cushion",
+        "Emerald",
+        "Marquise",
+        "Square Cushion",
+        "Square Radiant"
+      ],
+      "carats": [
+        3,
+        8
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_c1d6bd6955.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
