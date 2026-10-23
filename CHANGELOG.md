@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - malani: new configurator page, listed
+
+- Malani: 35 rings, 7 shapes x 1-5ct; User 01 side stones mapped to diamond; 1Ct Emerald unmarked (approved); 5Ct Emerald mark -2 faces
+
 ## 2026-10-23 - nd1042: new configurator page, listed
 
 - Added `nd1042/` (nd1046 template, no band): iJewel configurator VGa_aop-R8CTUeGDlo2isA, 35 rings (7 shapes x 4/5/6/8/10 ct; no 3 ct so it opens on 4Ct Oval), Head = Metal 01, Shank = Metal 02, Gem 01/02 ND1042 <Shape> mapped to diamond. tests/shared.check: default carat is 3, or the smallest carat when a set has no 3 ct.
