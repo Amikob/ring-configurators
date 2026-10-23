@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - renie: new configurator page, listed
+
+- Renie: 30 rings, one-piece metal (Metal 02 body = Gold control; tiny Metal 01 fragment static white gold); 5Ct Oval/7Ct Emerald marks -2/-4 faces
+
 ## 2026-10-23 - aiko: new configurator page, listed
 
 - Aiko: 40 rings, 2-3 gems per ring; 1Ct Emerald + 1Ct Pear unmarked by design

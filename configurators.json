@@ -927,6 +927,32 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_75ebb3431c.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "renie",
+      "name": "Renie",
+      "path": "renie/",
+      "ijewelProjectId": "RdmFXIuLQ2SlW7U5cdzCHQ",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Emerald",
+        "Marquise",
+        "Square Cushion",
+        "Square Radiant"
+      ],
+      "carats": [
+        3,
+        7
+      ],
+      "rings": 30,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Ring"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_a4ef052e8e.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
