@@ -442,6 +442,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_9ca7cc22ee.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "nd366p",
+      "name": "ND366P",
+      "path": "nd366p/",
+      "ijewelProjectId": "PFzcPKloTkONn-4ZwCrF3Q",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Pear",
+        "Square Cushion"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_0a414c4c2c.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
