@@ -1,0 +1,1876 @@
+{
+  "name": "Romy",
+  "plugins": {
+    "RingConfigurator": {
+      "type": "RingConfigurator",
+      "components": [
+        {
+          "name": "Ring",
+          "title": "",
+          "selectedIndex": 21,
+          "visible": true,
+          "variations": [
+            {
+              "name": "1Ct Asscher",
+              "title": "1Ct Asscher",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_asscher_04ff79e15a.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_asscher_f75b6ff5b5.png?h=ijewel3d.com",
+              "fileId": "UQ2EHVbeRZGhyiH9wGFvdQ",
+              "tags": []
+            },
+            {
+              "name": "1Ct Elongated Cushion",
+              "title": "1Ct Elongated Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_elongated_cushion_8a755908b4.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_elongated_cushion_1be16e594b.png?h=ijewel3d.com",
+              "fileId": "Ryfc6bPWRgulGz-GMH9f3w",
+              "tags": []
+            },
+            {
+              "name": "1Ct Elongated Radiant",
+              "title": "1Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_elongated_radiant_0a1edf9519.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_elongated_radiant_40e44afb5a.png?h=ijewel3d.com",
+              "fileId": "KQJCPSHFTX6_wIQXPOK6wQ",
+              "tags": []
+            },
+            {
+              "name": "1Ct Emerald",
+              "title": "1Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_emerald_695e15cf1c.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_emerald_7c25d61326.png?h=ijewel3d.com",
+              "fileId": "a-uQiJ8IQPqp77bHoKCUxw",
+              "tags": []
+            },
+            {
+              "name": "1Ct Marquise",
+              "title": "1Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_marquise_345eab0f5c.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_marquise_513aae748b.png?h=ijewel3d.com",
+              "fileId": "VlLbXHGBRgKoR1lnXb6RXA",
+              "tags": []
+            },
+            {
+              "name": "1Ct Oval",
+              "title": "1Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_oval_152136c95d.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_oval_6adca3be1e.png?h=ijewel3d.com",
+              "fileId": "YTYB7-mOTwu86P0sBQF3rg",
+              "tags": []
+            },
+            {
+              "name": "1Ct Pear",
+              "title": "1Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_pear_b650dac28a.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_pear_50b6b9085e.png?h=ijewel3d.com",
+              "fileId": "Rte2GiO-Q6K_tqAZyFiEsg",
+              "tags": []
+            },
+            {
+              "name": "1Ct Round",
+              "title": "1Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_round_5e79f6ee14.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_round_c3b57000b9.png?h=ijewel3d.com",
+              "fileId": "PSUSJuz3QOm5P6HgcTlwBA",
+              "tags": []
+            },
+            {
+              "name": "2Ct Asscher",
+              "title": "2Ct Asscher",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_asscher_7b7aa7f9b2.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_asscher_e2ab517d83.png?h=ijewel3d.com",
+              "fileId": "cwuP2QUcQz-SJCuvqtVr_g",
+              "tags": []
+            },
+            {
+              "name": "2Ct Elongated Cushion",
+              "title": "2Ct Elongated Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_elongated_cushion_e66d3a6657.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_elongated_cushion_277bf273d3.png?h=ijewel3d.com",
+              "fileId": "aktCnwadSaGwM-XEbYRljQ",
+              "tags": []
+            },
+            {
+              "name": "2Ct Elongated Radiant",
+              "title": "2Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_elongated_radiant_b487415932.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_elongated_radiant_8ffdb9b88f.png?h=ijewel3d.com",
+              "fileId": "bNpPff9sR7O6PjRet_5Ruw",
+              "tags": []
+            },
+            {
+              "name": "2Ct Emerald",
+              "title": "2Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_emerald_7556e62d13.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_emerald_54c8b4594d.png?h=ijewel3d.com",
+              "fileId": "eEx7LwSwSqevEwmy_dAeqQ",
+              "tags": []
+            },
+            {
+              "name": "2Ct Marquise",
+              "title": "2Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_marquise_aa02c4250f.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_marquise_78d2049ca9.png?h=ijewel3d.com",
+              "fileId": "RWYbcB87QeaHcWM2LTWq0Q",
+              "tags": []
+            },
+            {
+              "name": "2Ct Oval",
+              "title": "2Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_oval_fa7f374268.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_oval_9c270ec172.png?h=ijewel3d.com",
+              "fileId": "TMV0P6fVTxWdEy8jLk-uZA",
+              "tags": []
+            },
+            {
+              "name": "2Ct Pear",
+              "title": "2Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_pear_53a4411ed6.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_pear_3f2207978a.png?h=ijewel3d.com",
+              "fileId": "JPTC-8ZaT6as8pLWu7ZM-Q",
+              "tags": []
+            },
+            {
+              "name": "2Ct Round",
+              "title": "2Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_round_2d5a58bd14.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_round_e3f6c29a14.png?h=ijewel3d.com",
+              "fileId": "Lw0kA_NaQbmfDr3YhBAZAQ",
+              "tags": []
+            },
+            {
+              "name": "3Ct Asscher",
+              "title": "3Ct Asscher",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_asscher_92cb8743f0.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_asscher_a8600fdb24.png?h=ijewel3d.com",
+              "fileId": "Zyz52eDKQbSA0FFq5c1Zcg",
+              "tags": []
+            },
+            {
+              "name": "3Ct Elongated Cushion",
+              "title": "3Ct Elongated Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_elongated_cushion_d4f8773a28.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_elongated_cushion_2bb6fb1810.png?h=ijewel3d.com",
+              "fileId": "FAX6WLoATPqZgTzkKIqfkw",
+              "tags": []
+            },
+            {
+              "name": "3Ct Elongated Radiant",
+              "title": "3Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_elongated_radiant_37a2c4159b.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_elongated_radiant_174b818f8a.png?h=ijewel3d.com",
+              "fileId": "MQTr6Z5DT7y_I1cqZlZOEQ",
+              "tags": []
+            },
+            {
+              "name": "3Ct Emerald",
+              "title": "3Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_emerald_1419cc0111.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_emerald_f37e6bf77d.png?h=ijewel3d.com",
+              "fileId": "VyL-4WU9RMSQvI9JYfk4RA",
+              "tags": []
+            },
+            {
+              "name": "3Ct Marquise",
+              "title": "3Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_marquise_f2abe21956.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_marquise_49bbabb7af.png?h=ijewel3d.com",
+              "fileId": "erYU6fhJShugXwgD293ZMw",
+              "tags": []
+            },
+            {
+              "name": "3Ct Oval",
+              "title": "3Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_oval_5e65413c54.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_oval_55d68ee3e1.png?h=ijewel3d.com",
+              "fileId": "OVpPZfj_Sqa9NQhT-y6hFw",
+              "tags": []
+            },
+            {
+              "name": "3Ct Pear",
+              "title": "3Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_pear_1fda4204ea.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_pear_3f5af72aa8.png?h=ijewel3d.com",
+              "fileId": "YepE-fBSRNCxqGqO0_75ZA",
+              "tags": []
+            },
+            {
+              "name": "3Ct Round",
+              "title": "3Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_round_5983f251f3.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_round_4db85c9dc5.png?h=ijewel3d.com",
+              "fileId": "DAEnJiEcTtKCzmu9WacfYg",
+              "tags": []
+            },
+            {
+              "name": "4Ct Asscher",
+              "title": "4Ct Asscher",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_asscher_884cea1ee8.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_asscher_fb37fafc25.png?h=ijewel3d.com",
+              "fileId": "L_AakUgETJKM7bTPWB8GLw",
+              "tags": []
+            },
+            {
+              "name": "4Ct Elongated Cushion",
+              "title": "4Ct Elongated Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_elongated_cushion_174a11d27f.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_elongated_cushion_f5012fd74b.png?h=ijewel3d.com",
+              "fileId": "JXiqajRpThaJEK_7Zprw3A",
+              "tags": []
+            },
+            {
+              "name": "4Ct Elongated Radiant",
+              "title": "4Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_elongated_radiant_31108324d1.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_elongated_radiant_d48c10c214.png?h=ijewel3d.com",
+              "fileId": "KfT7BiTURbuJzCHIBmhFAA",
+              "tags": []
+            },
+            {
+              "name": "4Ct Emerald",
+              "title": "4Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_emerald_a398a3e91e.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_emerald_93c797ee0d.png?h=ijewel3d.com",
+              "fileId": "M5d3wbGERy-LS-6ek9XSug",
+              "tags": []
+            },
+            {
+              "name": "4Ct Marquise",
+              "title": "4Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_marquise_028eedcc76.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_marquise_542a310bbc.png?h=ijewel3d.com",
+              "fileId": "AMSW606dRuCec-rbAWmXFA",
+              "tags": []
+            },
+            {
+              "name": "4Ct Oval",
+              "title": "4Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_oval_10e547884c.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_oval_11e2fb044f.png?h=ijewel3d.com",
+              "fileId": "YIG-y33QQNOy7A0p7Nz7Rg",
+              "tags": []
+            },
+            {
+              "name": "4Ct Pear",
+              "title": "4Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_pear_e7ea6f2542.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_pear_a055898939.png?h=ijewel3d.com",
+              "fileId": "GBmmsFPERgiXB_ZubuSF9Q",
+              "tags": []
+            },
+            {
+              "name": "4Ct Round",
+              "title": "4Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_round_fe3d7f9e67.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_round_f6d73549d9.png?h=ijewel3d.com",
+              "fileId": "CCFdCvKPR1aP2-pVwRtlCQ",
+              "tags": []
+            },
+            {
+              "name": "5Ct Asscher",
+              "title": "5Ct Asscher",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_asscher_9a412bf2da.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_asscher_05ea4d67de.png?h=ijewel3d.com",
+              "fileId": "Zujazgw7RDGYbah-YVf9ow",
+              "tags": []
+            },
+            {
+              "name": "5Ct Elongated Cushion",
+              "title": "5Ct Elongated Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_elongated_cushion_4654b06862.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_elongated_cushion_308528300d.png?h=ijewel3d.com",
+              "fileId": "E_vyHzRZTmSYuiAkbV6vkA",
+              "tags": []
+            },
+            {
+              "name": "5Ct Elongated Radiant",
+              "title": "5Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_elongated_radiant_9bd0f260bc.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_elongated_radiant_54b2cf03cf.png?h=ijewel3d.com",
+              "fileId": "Ap-CFEHBTgGxFgwFzNJnoQ",
+              "tags": []
+            },
+            {
+              "name": "5Ct Emerald",
+              "title": "5Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_emerald_e3e748dfde.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_emerald_a273809172.png?h=ijewel3d.com",
+              "fileId": "Vw6vKZZTRkSjvoQEvUWS2g",
+              "tags": []
+            },
+            {
+              "name": "5Ct Marquise",
+              "title": "5Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_marquise_d469924902.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_marquise_d526589872.png?h=ijewel3d.com",
+              "fileId": "P4IORX9qQ6i9JWIdX6RjwA",
+              "tags": []
+            },
+            {
+              "name": "5Ct Oval",
+              "title": "5Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_oval_14f90dde06.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_oval_8ab38e9a05.png?h=ijewel3d.com",
+              "fileId": "HCtQIaGZTVapGGoLSsa9LA",
+              "tags": []
+            },
+            {
+              "name": "5Ct Pear",
+              "title": "5Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_pear_d5154b4bae.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_pear_1c3093c305.png?h=ijewel3d.com",
+              "fileId": "V2bZ1Y_mRjeptKtgayqaXQ",
+              "tags": []
+            },
+            {
+              "name": "5Ct Round",
+              "title": "5Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_round_b37f7a110c.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_round_e6ee02aa93.png?h=ijewel3d.com",
+              "fileId": "dwpey_XGT1e4c498-o78KA",
+              "tags": []
+            }
+          ],
+          "fileId": "dDHB9cYZSMmtr8yCZf4okw"
+        }
+      ]
+    },
+    "SimpleBackgroundEnvUiPlugin2": {
+      "sceneEnvironmentRotation": 0,
+      "sceneEnvironmentIntensity": 1,
+      "sceneEnvironmentFixedDirection": true,
+      "tonemapBackground": false,
+      "tonemapGround": false,
+      "ssbevelEnabled": false,
+      "ssbevelIntensity": null,
+      "type": "SimpleBackgroundEnvUiPlugin2"
+    },
+    "materialConfiguratorPlugin": {
+      "applyOnLoad": true,
+      "variations": [
+        {
+          "uuid": "Metal 01",
+          "title": "Head gold",
+          "preview": "generate:sphere",
+          "materials": [
+            {
+              "uuid": "91647830-492f-4de6-99bd-91c90b9fe0d0",
+              "resource": "materials"
+            },
+            {
+              "uuid": "4a9d8bcb-d255-4500-9943-5acb64a72633",
+              "resource": "materials"
+            },
+            {
+              "uuid": "27e9b4e2-992c-419d-a365-ecc3a1d4a436",
+              "resource": "materials"
+            }
+          ],
+          "regex": true,
+          "selectedIndex": 0
+        },
+        {
+          "uuid": "Metal 02",
+          "title": "Shank gold",
+          "preview": "generate:sphere",
+          "materials": [
+            {
+              "uuid": "19dfb373-cb79-4a59-b156-f24ab66b8dc4",
+              "resource": "materials"
+            },
+            {
+              "uuid": "4cfc6256-802d-4590-adcc-692037a3cb4d",
+              "resource": "materials"
+            },
+            {
+              "uuid": "1c3e7176-edb6-47b3-b567-74e00484c1d0",
+              "resource": "materials"
+            }
+          ],
+          "regex": true,
+          "selectedIndex": 0
+        }
+      ],
+      "type": "MaterialConfiguratorPlugin",
+      "resources": {
+        "geometries": {},
+        "materials": {
+          "4f821747-808c-4d24-b4b6-be055e2fa09f": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "4f821747-808c-4d24-b4b6-be055e2fa09f",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_gold_polished_2689daba05.pmat",
+            "color": 15053687,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "cloneId": "0_1_1",
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_gold_polished_2689daba05.pmat",
+              "gltfExtensions": {},
+              "cloneCount": 0,
+              "icon": "https://packs.ijewel3d.com/files/1_metal_gold_polished_5bdbd506e2.png",
+              "uuid": "4f821747-808c-4d24-b4b6-be055e2fa09f"
+            }
+          },
+          "d0b3da12-f95b-432f-a54a-d2141e7230e1": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "d0b3da12-f95b-432f-a54a-d2141e7230e1",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_rosegold_polished_a05ee2dd11.pmat",
+            "color": 15904643,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_2_1",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_a05ee2dd11.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_ad37f22b2e.png",
+              "uuid": "d0b3da12-f95b-432f-a54a-d2141e7230e1"
+            }
+          },
+          "383a64b9-d36e-4ce6-9aef-890915bdb07c": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "383a64b9-d36e-4ce6-9aef-890915bdb07c",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_whitegold_polished_0db3fb834b.pmat",
+            "color": 12763843,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_15",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0bfa185673.png",
+              "uuid": "383a64b9-d36e-4ce6-9aef-890915bdb07c"
+            }
+          },
+          "f94f5f09-763c-4e48-82d7-285b5eb9164d": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "f94f5f09-763c-4e48-82d7-285b5eb9164d",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_gold_polished_2689daba05.pmat",
+            "color": 15053687,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "cloneId": "0_1_2",
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_gold_polished_2689daba05.pmat",
+              "gltfExtensions": {},
+              "cloneCount": 0,
+              "icon": "https://packs.ijewel3d.com/files/1_metal_gold_polished_5bdbd506e2.png",
+              "uuid": "f94f5f09-763c-4e48-82d7-285b5eb9164d"
+            }
+          },
+          "e068a1ee-97c0-4e8a-9cc1-920d36e8dcce": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "e068a1ee-97c0-4e8a-9cc1-920d36e8dcce",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_rosegold_polished_a05ee2dd11.pmat",
+            "color": 15904643,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_2_2",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_a05ee2dd11.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_ad37f22b2e.png",
+              "uuid": "e068a1ee-97c0-4e8a-9cc1-920d36e8dcce"
+            }
+          },
+          "453ab9d5-4708-4d8e-8ee4-47b3711c3ed8": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "453ab9d5-4708-4d8e-8ee4-47b3711c3ed8",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_whitegold_polished_0db3fb834b.pmat",
+            "color": 12763843,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_23",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0bfa185673.png",
+              "uuid": "453ab9d5-4708-4d8e-8ee4-47b3711c3ed8"
+            }
+          },
+          "5b053828-82a1-4cbd-85d6-afcbecddd113": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "5b053828-82a1-4cbd-85d6-afcbecddd113",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_gold_polished_2689daba05.pmat",
+            "color": 15053687,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "cloneId": "0_1_1",
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_gold_polished_2689daba05.pmat",
+              "gltfExtensions": {},
+              "cloneCount": 0,
+              "icon": "https://packs.ijewel3d.com/files/1_metal_gold_polished_5bdbd506e2.png",
+              "uuid": "5b053828-82a1-4cbd-85d6-afcbecddd113"
+            }
+          },
+          "6b439ade-e909-471b-96ba-444a31a20be4": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "6b439ade-e909-471b-96ba-444a31a20be4",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_rosegold_polished_a05ee2dd11.pmat",
+            "color": 15904643,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_2_1",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_a05ee2dd11.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_ad37f22b2e.png",
+              "uuid": "6b439ade-e909-471b-96ba-444a31a20be4"
+            }
+          },
+          "7c416629-7c6f-4db5-8fd3-64df579906d7": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "7c416629-7c6f-4db5-8fd3-64df579906d7",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_whitegold_polished_0db3fb834b.pmat",
+            "color": 12763843,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_15",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0bfa185673.png",
+              "uuid": "7c416629-7c6f-4db5-8fd3-64df579906d7"
+            }
+          },
+          "035b8fdd-c3fa-4bf5-bb56-498d63ea0418": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "035b8fdd-c3fa-4bf5-bb56-498d63ea0418",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_gold_polished_2689daba05.pmat",
+            "color": 15053687,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "cloneId": "0_1_1",
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_gold_polished_2689daba05.pmat",
+              "gltfExtensions": {},
+              "cloneCount": 0,
+              "icon": "https://packs.ijewel3d.com/files/1_metal_gold_polished_5bdbd506e2.png",
+              "uuid": "035b8fdd-c3fa-4bf5-bb56-498d63ea0418"
+            }
+          },
+          "b7619ea3-6945-4ad3-8ee9-2e14df359ea1": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "b7619ea3-6945-4ad3-8ee9-2e14df359ea1",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_rosegold_polished_a05ee2dd11.pmat",
+            "color": 15904643,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_2_1",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_a05ee2dd11.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_ad37f22b2e.png",
+              "uuid": "b7619ea3-6945-4ad3-8ee9-2e14df359ea1"
+            }
+          },
+          "1959cfef-a5c8-4d88-b3db-f24abbe74d12": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "1959cfef-a5c8-4d88-b3db-f24abbe74d12",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_whitegold_polished_0db3fb834b.pmat",
+            "color": 12763843,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_15",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0bfa185673.png",
+              "uuid": "1959cfef-a5c8-4d88-b3db-f24abbe74d12"
+            }
+          },
+          "54222b62-71e3-4377-adcf-e7a1f9026e46": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "54222b62-71e3-4377-adcf-e7a1f9026e46",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_gold_polished_2689daba05.pmat",
+            "color": 15053687,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "cloneId": "0_1_1",
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_gold_polished_2689daba05.pmat",
+              "gltfExtensions": {},
+              "cloneCount": 0,
+              "icon": "https://packs.ijewel3d.com/files/1_metal_gold_polished_5bdbd506e2.png",
+              "uuid": "54222b62-71e3-4377-adcf-e7a1f9026e46"
+            }
+          },
+          "5db5bcd8-ade1-42b3-af58-9e95e058e3b1": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "5db5bcd8-ade1-42b3-af58-9e95e058e3b1",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_rosegold_polished_a05ee2dd11.pmat",
+            "color": 15904643,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_2_1",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_a05ee2dd11.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_ad37f22b2e.png",
+              "uuid": "5db5bcd8-ade1-42b3-af58-9e95e058e3b1"
+            }
+          },
+          "889e3544-c7f8-4fc3-abc1-b1c47866db98": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "889e3544-c7f8-4fc3-abc1-b1c47866db98",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_whitegold_polished_0db3fb834b.pmat",
+            "color": 12763843,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_15",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0bfa185673.png",
+              "uuid": "889e3544-c7f8-4fc3-abc1-b1c47866db98"
+            }
+          },
+          "91647830-492f-4de6-99bd-91c90b9fe0d0": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "91647830-492f-4de6-99bd-91c90b9fe0d0",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_gold_polished_2689daba05.pmat",
+            "color": 15053687,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "cloneId": "0_1_1",
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_gold_polished_2689daba05.pmat",
+              "gltfExtensions": {},
+              "cloneCount": 0,
+              "icon": "https://packs.ijewel3d.com/files/1_metal_gold_polished_5bdbd506e2.png",
+              "uuid": "91647830-492f-4de6-99bd-91c90b9fe0d0"
+            }
+          },
+          "4a9d8bcb-d255-4500-9943-5acb64a72633": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "4a9d8bcb-d255-4500-9943-5acb64a72633",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_rosegold_polished_a05ee2dd11.pmat",
+            "color": 15904643,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_2_1",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_a05ee2dd11.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_ad37f22b2e.png",
+              "uuid": "4a9d8bcb-d255-4500-9943-5acb64a72633"
+            }
+          },
+          "27e9b4e2-992c-419d-a365-ecc3a1d4a436": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "27e9b4e2-992c-419d-a365-ecc3a1d4a436",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_whitegold_polished_0db3fb834b.pmat",
+            "color": 12763843,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_15",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0bfa185673.png",
+              "uuid": "27e9b4e2-992c-419d-a365-ecc3a1d4a436"
+            }
+          },
+          "19dfb373-cb79-4a59-b156-f24ab66b8dc4": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "19dfb373-cb79-4a59-b156-f24ab66b8dc4",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_gold_polished_2689daba05.pmat",
+            "color": 15053687,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "cloneId": "0_1_1",
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_gold_polished_2689daba05.pmat",
+              "gltfExtensions": {},
+              "cloneCount": 0,
+              "icon": "https://packs.ijewel3d.com/files/1_metal_gold_polished_5bdbd506e2.png",
+              "uuid": "19dfb373-cb79-4a59-b156-f24ab66b8dc4"
+            }
+          },
+          "4cfc6256-802d-4590-adcc-692037a3cb4d": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "4cfc6256-802d-4590-adcc-692037a3cb4d",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_rosegold_polished_a05ee2dd11.pmat",
+            "color": 15904643,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_2_1",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_a05ee2dd11.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_ad37f22b2e.png",
+              "uuid": "4cfc6256-802d-4590-adcc-692037a3cb4d"
+            }
+          },
+          "1c3e7176-edb6-47b3-b567-74e00484c1d0": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "1c3e7176-edb6-47b3-b567-74e00484c1d0",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_whitegold_polished_0db3fb834b.pmat",
+            "color": 12763843,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_15",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0bfa185673.png",
+              "uuid": "1c3e7176-edb6-47b3-b567-74e00484c1d0"
+            }
+          },
+          "eab7dc79-a863-4a35-8597-b2933618079a": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "eab7dc79-a863-4a35-8597-b2933618079a",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_gold_polished_2689daba05.pmat",
+            "color": 15053687,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "cloneId": "0_1_1",
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_gold_polished_2689daba05.pmat",
+              "gltfExtensions": {},
+              "cloneCount": 0,
+              "icon": "https://packs.ijewel3d.com/files/1_metal_gold_polished_5bdbd506e2.png",
+              "uuid": "eab7dc79-a863-4a35-8597-b2933618079a"
+            }
+          },
+          "d2f4ea5d-5f93-49c1-9173-98adc89f4152": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "d2f4ea5d-5f93-49c1-9173-98adc89f4152",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_rosegold_polished_a05ee2dd11.pmat",
+            "color": 15904643,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_2_1",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_a05ee2dd11.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_rosegold_polished_ad37f22b2e.png",
+              "uuid": "d2f4ea5d-5f93-49c1-9173-98adc89f4152"
+            }
+          },
+          "f500675a-eb8a-439c-b288-d544ccbebcaa": {
+            "metadata": {
+              "version": 4.6001,
+              "type": "Material",
+              "generator": "Material.toJSON"
+            },
+            "uuid": "f500675a-eb8a-439c-b288-d544ccbebcaa",
+            "type": "MeshStandardMaterial2",
+            "name": "1_metal_whitegold_polished_0db3fb834b.pmat",
+            "color": 12763843,
+            "roughness": 0,
+            "metalness": 1,
+            "sheen": 0,
+            "sheenColor": 0,
+            "sheenRoughness": 1,
+            "emissive": 0,
+            "specularIntensity": 1,
+            "specularColor": 16777215,
+            "clearcoat": 0,
+            "clearcoatRoughness": 0,
+            "dispersion": 0,
+            "iridescence": 0,
+            "iridescenceIOR": 1.3,
+            "iridescenceThicknessRange": [
+              100,
+              400
+            ],
+            "anisotropy": 0,
+            "anisotropyRotation": 0,
+            "envMapRotation": [
+              0,
+              0,
+              0,
+              "XYZ"
+            ],
+            "envMapIntensity": 1,
+            "reflectivity": 0.49999999999999983,
+            "transmission": 0,
+            "thickness": 0,
+            "attenuationDistance": 0,
+            "attenuationColor": 16777215,
+            "side": 2,
+            "blendColor": 0,
+            "fog": false,
+            "userData": {
+              "gltfExtensions": {},
+              "cloneId": "0_1_15",
+              "_6b1395aa-194b-4458-bd49-22ec4592cfc2_version": 1,
+              "cloneCount": 0,
+              "rootPath": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat",
+              "icon": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0bfa185673.png",
+              "uuid": "f500675a-eb8a-439c-b288-d544ccbebcaa"
+            }
+          }
+        },
+        "textures": {},
+        "images": {},
+        "shapes": {},
+        "skeletons": {},
+        "animations": {},
+        "extras": {}
+      }
+    }
+  },
+  "version": "v9",
+  "isDefault": true,
+  "sceneConfig": {
+    "Environment": {
+      "id": "NCWhGT8nRmGiBdp6Bq5pyQ",
+      "path": "https://packs.ijewel3d.com/files/env_metal_002_56e651d175.exr",
+      "icon": "https://packs.ijewel3d.com/files/env_metal_002_e6de2a06c9.png",
+      "name": "env-metal-002.exr",
+      "isStuller": true
+    },
+    "Ground": {
+      "id": "a13zMnObRxSkov5UMW1lWA",
+      "path": "https://packs.ijewel3d.com/files/ground_shadow_backleft_0c7760bf57.json",
+      "icon": "https://packs.ijewel3d.com/files/ground_shadow_backleft_f0c3683ee9.png",
+      "name": "ground-shadow-backleft.json",
+      "isStuller": true
+    },
+    "VJSON": {
+      "id": "NuMldUsbQQC0SzFt2VJRww",
+      "path": "https://packs.ijewel3d.com/files/ss_001_d80b3d4be5.vjson",
+      "icon": "https://packs.ijewel3d.com/files/ss_001_91adff20cb.png",
+      "name": "ss-001.vjson",
+      "isStuller": true
+    },
+    "type": "PresetLibraryPlugin"
+  },
+  "materialConfig": {
+    "mapping": [
+      {
+        "name": "Metal 01",
+        "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
+      },
+      {
+        "name": "Metal 02",
+        "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
+      },
+      {
+        "name": "Gem 01 Romy Asscher",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 Romy Elongated Cushion",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 Romy Elongated Radiant",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 Romy Emerald",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 Romy Marquise",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 Romy Oval",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 Romy Pear",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 Romy Round",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      }
+    ],
+    "type": "MaterialPresetPlugin"
+  },
+  "cameraConfig": {
+    "userData": {},
+    "camControls": {
+      "type": "OrbitControls",
+      "dollyZoom": false,
+      "zoomToCursor": false,
+      "enableDamping": true,
+      "dampingFactor": 0.08,
+      "autoRotate": false,
+      "autoRotateSpeed": 2,
+      "enableZoom": true,
+      "zoomSpeed": 0.15,
+      "maxZoomSpeed": 0.2,
+      "enableRotate": true,
+      "rotateSpeed": 2,
+      "enablePan": true,
+      "panSpeed": 1,
+      "autoPushTarget": false,
+      "autoPullTarget": false,
+      "minDistance": 0.35,
+      "maxDistance": 1000,
+      "minZoom": 0.01,
+      "maxZoom": 1000,
+      "minPolarAngle": 0,
+      "maxPolarAngle": 1.5707963267948966,
+      "minAzimuthAngle": -1000000,
+      "maxAzimuthAngle": 1000000,
+      "clampMin": {
+        "x": -1000000,
+        "y": -1000000,
+        "z": -1000000,
+        "isVector3": true
+      },
+      "clampMax": {
+        "x": 1000000,
+        "y": 1000000,
+        "z": 1000000,
+        "isVector3": true
+      },
+      "screenSpacePanning": true,
+      "keyPanSpeed": 7
+    },
+    "camOptions": {
+      "type": "PerspectiveCamera",
+      "aspect": "auto",
+      "focus": 10,
+      "fov": 25,
+      "zoom": 1,
+      "frustumSize": 1,
+      "top": 1,
+      "bottom": -1,
+      "left": -1,
+      "right": 1,
+      "controlsMode": "orbit",
+      "controlsEnabled": true
+    },
+    "position": {
+      "x": 0.9228672122585924,
+      "y": 2.9266577661934,
+      "z": -1.6362297002000894,
+      "isVector3": true
+    },
+    "target": {
+      "x": -3.4265994580673365e-7,
+      "y": 0.06763885608983722,
+      "z": -0.041713794167153685,
+      "isVector3": true
+    }
+  },
+  "basePath": "https://amikob.ijewel3d.com/files/",
+  "tryonConfig": {
+    "enabled": true,
+    "ssr": {
+      "enabled": true,
+      "intensity": 1.5,
+      "radius": 2,
+      "tolerance": 5
+    },
+    "ssao": {
+      "enabled": false,
+      "intensity": 0.2,
+      "radius": 1.07,
+      "falloff": 0.33,
+      "bias": 0.00001,
+      "smoothEnabled": true,
+      "sssAoPower": 1,
+      "sssExponents": {
+        "x": 0.68,
+        "y": 0.88,
+        "z": 1.4,
+        "isVector3": true
+      },
+      "sssChromaticity": 0.55
+    },
+    "modelScaleFactor": 0.057735999944336154,
+    "modelPosition": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "isVector3": true
+    },
+    "modelRotation": {
+      "x": 1.5707963267948963,
+      "y": -1.0017768124246595e-7,
+      "z": 1.017453856186509e-7,
+      "isVector3": true
+    }
+  },
+  "modelUrl": "https://amikob.ijewel3d.com/files/file_23c4639ccd.txt"
+}
