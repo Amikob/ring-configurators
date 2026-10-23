@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nd1042: new configurator page, listed
+
+- Added `nd1042/` (nd1046 template, no band): iJewel configurator VGa_aop-R8CTUeGDlo2isA, 35 rings (7 shapes x 4/5/6/8/10 ct; no 3 ct so it opens on 4Ct Oval), Head = Metal 01, Shank = Metal 02, Gem 01/02 ND1042 <Shape> mapped to diamond. tests/shared.check: default carat is 3, or the smallest carat when a set has no 3 ct.
+
 ## 2026-10-23 - nd1050: new configurator page, listed
 
 - Added `nd1050/` (nd1046 template, no band): iJewel configurator HsUaNsb6Rxm3cd-2hHFwbQ, 40 rings (8 shapes x 1-5 ct), Head = Metal 01, Shank = Metal 02, Gem 01-03 ND1050 <Shape> plus 1Ct Oval left side stones (source material Setting) mapped to diamond.

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-// Every ring opens on Oval 3 ct. Single-tone gold is yellow; two-tone is white head + yellow shank.
+// Every ring opens on Oval 3 ct (smallest carat if no 3 ct). Single-tone gold is yellow; two-tone is white head + yellow shank.
 const sites = JSON.parse(fs.readFileSync(new URL('../configurators.json', import.meta.url))).configurators.map(c => c.id);
 for (const site of sites) {
   const app = fs.readFileSync(new URL(`../${site}/app.js`, import.meta.url), 'utf8');
@@ -9,7 +9,9 @@ for (const site of sites) {
   assert(line, `${site}: default selection not found`);
   const desired = Function(`return ${line}`)();
   assert.equal(desired.shape, 'oval', site);
-  assert.equal(desired.carat, 3, site);
+  // Oval 3 ct, or the smallest carat when the set has no 3 ct (e.g. 4-10 ct sets).
+  const carats = (fs.existsSync(new URL(`../${site}/catalog.js`, import.meta.url)) ? fs.readFileSync(new URL(`../${site}/catalog.js`, import.meta.url), 'utf8') : '').match(/CARATS\s*=\s*\[([^\]]*)\]/)?.[1]?.split(',').map(Number).filter(n => !isNaN(n));
+  assert.equal(desired.carat, !carats || carats.includes(3) ? 3 : Math.min(...carats), site);
   if ('headGold' in desired) assert.equal(desired.headGold, 'white', site);
   assert.equal(desired.ringGold, 'yellow', site);
   if ('bandGold' in desired) assert.equal(desired.bandGold, 'yellow', site);
