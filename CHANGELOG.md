@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nd1048: new configurator page, listed
+
+- Added `nd1048/` (nd1046 template, no band): iJewel configurator aq1Mle6ZRFKbKB7WMKoHPA, 40 rings (8 shapes x 2-6 ct), Head = Metal 01, Shank = Metal 02, Gem 01/02 ND1048 <Shape> mapped to diamond. Square Radiant icon reuses the radiant image.
+
 ## 2026-10-23 - nd1049: new configurator page, listed
 
 - Added `nd1049/` (nd1046 template, no band): iJewel configurator AO5SX214REyP6y4SWb5vQA, 40 rings (8 shapes x 2-6 ct), Head = Metal 01, Shank = Metal 02 (checked in GLBs), Gem 01/02/03 ND1049 <Shape> mapped to diamond.
