@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nd1060: new configurator page, listed
+
+- ND1060: 70 rings (40 NS + 30 East-West for oval, elongated cushion, emerald, marquise, old cut cushion, pear), no band
+
 ## 2026-10-23 - renie: new configurator page, listed
 
 - Renie: 30 rings, one-piece metal (Metal 02 body = Gold control; tiny Metal 01 fragment static white gold); 5Ct Oval/7Ct Emerald marks -2/-4 faces
