@@ -756,6 +756,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_55d68ee3e1.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "emi",
+      "name": "Emi",
+      "path": "emi/",
+      "ijewelProjectId": "I-M1ypjsQK2UiDo1wHHGig",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Asscher",
+        "Old Cut Cushion"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_fd850f9e60.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
