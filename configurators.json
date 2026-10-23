@@ -204,6 +204,42 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_d1435c9390.png?h=ijewel3d.com",
       "status": "live"
+    },
+    {
+      "id": "ada",
+      "name": "Ada",
+      "sku": "ND334",
+      "path": "ada/",
+      "ijewelProjectId": "XVul_Ld1QDO2v6zXE0CUgw",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Emerald",
+        "Elongated Radiant",
+        "Pear",
+        "Marquise",
+        "Square Cushion"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": {
+        "files": 2,
+        "styles": [
+          "Pave"
+        ]
+      },
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank",
+        "Band"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_0ecaa5ddc8.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
