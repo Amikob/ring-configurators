@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nd1047: new configurator page, listed
+
+- Added `nd1047/` (nd1046 template, no band): iJewel configurator PsLA_p4tS5ehJ0WpbwZa_w, 39 rings (8 shapes x 2-6 ct; 6 ct Old Cut Cushion was never made, so that button is disabled), Head = Metal 01, Shank = Metal 02, Gem 01 ND1047 <Shape> mapped to diamond. Catalog gains a MISSING list. Listed in configurators.json.
+
 ## 2026-10-22 - nd1046: new configurator page, listed
 
 - Added `nd1046/` (copied from nd336, no band; ring-pose.js v16.3 from ada): iJewel configurator D8dC3VBDQkCNfUjhbHg9GQ, 40 rings (8 shapes x 3/4/5/6/8 ct, hidden ND mark), Head = Metal 01, Shank = Metal 02, Gem 01 ND1046 <Shape> mapped to diamond. Catalog uses a CARATS list. Built by tools/build-nd1046-project.mjs; listed in configurators.json.
