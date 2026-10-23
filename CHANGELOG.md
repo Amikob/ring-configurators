@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - aaron: new configurator page, listed
+
+- Aaron: 40 rings re-verified after re-upload; 2Ct Elongated Cushion head restored
+
 ## 2026-10-23 - emi: new configurator page, listed
 
 - Emi: 40 rings, 8 shapes x 1-5ct; 8 rings unmarked by design
