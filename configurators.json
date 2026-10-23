@@ -471,6 +471,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_0a414c4c2c.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "nd1051",
+      "name": "ND1051",
+      "path": "nd1051/",
+      "ijewelProjectId": "QboCIydQQ7O1g26-teg1Lg",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Asscher",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Square Radiant"
+      ],
+      "carats": [
+        2,
+        6
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_012c5f8dfc.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
