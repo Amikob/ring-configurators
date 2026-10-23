@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nd801: new configurator page, listed
+
+- Added `nd801/` (Claudia, nd1046 template, no band): iJewel configurator T1-MdGeHQCeJTHXf-TZwWw, 40 rings (8 shapes x 2-6 ct). One-piece metal: everything on Metal 01, so the page shows a single Gold row (head gold row hidden). Gem 01 ND801 <Shape> mapped to diamond. Listed as Claudia (ND801).
+
 ## 2026-10-23 - nd1047: new configurator page, listed
 
 - Added `nd1047/` (nd1046 template, no band): iJewel configurator PsLA_p4tS5ehJ0WpbwZa_w, 39 rings (8 shapes x 2-6 ct; 6 ct Old Cut Cushion was never made, so that button is disabled), Head = Metal 01, Shank = Metal 02, Gem 01 ND1047 <Shape> mapped to diamond. Catalog gains a MISSING list. Listed in configurators.json.
