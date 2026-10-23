@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-22 - nd1046: new configurator page, listed
+
+- Added `nd1046/` (copied from nd336, no band; ring-pose.js v16.3 from ada): iJewel configurator D8dC3VBDQkCNfUjhbHg9GQ, 40 rings (8 shapes x 3/4/5/6/8 ct, hidden ND mark), Head = Metal 01, Shank = Metal 02, Gem 01 ND1046 <Shape> mapped to diamond. Catalog uses a CARATS list. Built by tools/build-nd1046-project.mjs; listed in configurators.json.
+
 ## 2026-10-22 - ada (ND334): new configurator page, not listed yet
 
 - Added `ada/` (copied from nd344p): iJewel project XVul_Ld1QDO2v6zXE0CUgw, 40 rings + 2 Pave bands (1-3 ct, 4-5 ct), Head = Metal 01, Shank = Metal 02, Band = Metal 03, Gem 01/02/03 ND334 <Shape> + Gem 03 ND334 Band mapped to diamond. Band rest pose (ring-pose.js v16.3). Band options: No band / Pave only.
