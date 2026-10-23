@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - valeria: new configurator page, listed
+
+- Valeria with pave band
+
 ## 2026-10-23 - nd1060: new configurator page, listed
 
 - ND1060: 70 rings (40 NS + 30 East-West for oval, elongated cushion, emerald, marquise, old cut cushion, pear), no band

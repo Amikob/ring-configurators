@@ -982,6 +982,41 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_5762033950.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "valeria",
+      "name": "Valeria",
+      "path": "valeria/",
+      "ijewelProjectId": "B2OfIEYqTHCetDoB4ExULg",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Square Cushion",
+        "Square Radiant",
+        "Asscher"
+      ],
+      "carats": [
+        3,
+        7
+      ],
+      "rings": 40,
+      "bands": {
+        "files": 1,
+        "styles": [
+          "Pave"
+        ]
+      },
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank",
+        "Band"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_edf7a46449.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
