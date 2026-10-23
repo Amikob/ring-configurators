@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nicolette: new configurator page, listed
+
+- Nicolette: 40 rings, 8 shapes x 1-5ct, solitaire
+
 ## 2026-10-23 - malani: new configurator page, listed
 
 - Malani: 35 rings, 7 shapes x 1-5ct; User 01 side stones mapped to diamond; 1Ct Emerald unmarked (approved); 5Ct Emerald mark -2 faces
