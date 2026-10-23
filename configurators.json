@@ -1017,6 +1017,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_edf7a46449.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "alana",
+      "name": "Alana",
+      "path": "alana/",
+      "ijewelProjectId": "XFmlJeB9R_igniTk7ZsNyw",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Pear",
+        "Asscher"
+      ],
+      "carats": [
+        3,
+        8
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_8f30de97a6.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }

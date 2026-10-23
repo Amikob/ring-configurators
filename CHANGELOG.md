@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - alana: new configurator page, listed
+
+- Alana
+
 ## 2026-10-23 - valeria: new configurator page, listed
 
 - Valeria with pave band
