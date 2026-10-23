@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - aiko: new configurator page, listed
+
+- Aiko: 40 rings, 2-3 gems per ring; 1Ct Emerald + 1Ct Pear unmarked by design
+
 ## 2026-10-23 - eva: new configurator page, listed
 
 - Eva: 33 rings (no 3ct Round/Pear); 4 rings unmarked by design; 3Ct Emerald mark -2 faces
