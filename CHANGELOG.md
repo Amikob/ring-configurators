@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-23 - nd336ph: new configurator page, listed
+
+- ND336PH
+
 ## 2026-10-23 - nd334ph: new configurator page, listed
 
 - ND334PH
