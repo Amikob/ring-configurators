@@ -10,7 +10,7 @@ import { manageModelResources } from './model-resources.js?v=eva-1';
 import { captureView, centerView } from './view-controls.js?v=eva-1';
 
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'HsFsb04_SraDOxpD5Z8uXA';
+const PROJECT_ID = 'FXbR9KQhRXybzhrhpRSoHA';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;

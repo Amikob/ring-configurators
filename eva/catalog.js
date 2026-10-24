@@ -5,9 +5,9 @@ export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant'
 export const CARATS = [1, 2, 3, 4, 5];
 export const EAST_WEST = new Set();
 export const COLORS = ['white', 'yellow', 'rose'];
-export const RING_COUNT = 33;
+export const RING_COUNT = 35;
 // Shape:carat combinations that were never made.
-export const MISSING = new Set(['round:3', 'pear:3']);
+export const MISSING = new Set([]);
 export const available = (shape, carat) => !MISSING.has(`${shape}:${carat}`);
 export const label = value => value.replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
 export const MATERIAL_TARGETS = { headGold: 'Metal 01', ringGold: 'Metal 02' };
