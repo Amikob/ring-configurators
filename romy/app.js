@@ -10,7 +10,7 @@ import { manageModelResources } from './model-resources.js?v=romy-1';
 import { captureView, centerView } from './view-controls.js?v=romy-1';
 
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'RdwuijHoRou8DBg0ko4qSw';
+const PROJECT_ID = 'ZFHV75eWRJOqJGvWc2DeCg';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;

@@ -5,7 +5,7 @@ import {applySavedScene} from '../romy/saved-project.js';
 
 const project = JSON.parse(fs.readFileSync(new URL('../romy/project.json', import.meta.url)));
 const variations = project.plugins.RingConfigurator.components.find(item => item.name === 'Ring').variations;
-assert.equal(variations.length, 40);
+assert.equal(variations.length, 30);
 const catalog = createCatalog(variations);
 let combinations = 0;
 for (const shape of SHAPES) for (const carat of CARATS) {
@@ -17,13 +17,13 @@ for (const shape of SHAPES) for (const carat of CARATS) {
     combinations++;
   }
 }
-assert.equal(combinations, 360);
+assert.equal(combinations, 270);
 assert.equal(MISSING.size, 0);
 assert.equal(EAST_WEST.size, 0);
 assert.throws(() => resolveSelection(catalog, {shape: 'oval', carat: 1, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
 assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ["Metal 01", "Metal 02"]);
-const gems = project.materialConfig.mapping.filter(item => / Romy /.test(item.name));
-assert.equal(gems.length, 8);
+const gems = project.materialConfig.mapping.filter(item => /^Gem \d+ /.test(item.name));
+assert.equal(gems.length, 6);
 assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
 const saved = {plugins: {RingConfigurator: project.plugins.RingConfigurator}, sceneConfig: {type: 'PresetLibraryPlugin'}};
 const merged = applySavedScene(project, {config: JSON.stringify(saved)});
@@ -32,4 +32,4 @@ const html = fs.readFileSync(new URL('../romy/index.html', import.meta.url), 'ut
 assert(html.includes("Romy"));
 assert(!/336|1061|1046/.test(html + fs.readFileSync(new URL('../romy/app.js', import.meta.url), 'utf8')));
 for (const shape of SHAPES) assert(fs.existsSync(new URL(`../romy/assets/shapes/${shape}.png`, import.meta.url)));
-console.log('Romy: 40 models, 360 valid shape/carat/gold selections, 8 diamond layers mapped.');
+console.log('Romy: 30 models, 270 valid shape/carat/gold selections, 6 diamond layers mapped.');
