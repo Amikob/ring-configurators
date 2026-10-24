@@ -2,7 +2,7 @@
 // plus the live ND1047 iJewel configurator saved at tools/snapshots/nd1047-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/PsLA_p4tS5ehJ0WpbwZa_w?select=id,name,file,config' > tools/snapshots/nd1047-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/IXk__-jiRWW0LBCi7J3YoQ?select=id,name,file,config' > tools/snapshots/nd1047-public.json
 // then run: node tools/build-nd1047-project.mjs
 import fs from 'node:fs';
 
