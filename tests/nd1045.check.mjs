@@ -22,7 +22,7 @@ assert.equal(MISSING.size, 0);
 assert.equal(EAST_WEST.size, 0);
 assert.throws(() => resolveSelection(catalog, {shape: 'oval', carat: 1, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
 assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ["Metal 01", "Metal 04"]);
-const gems = project.materialConfig.mapping.filter(item => / ND1045 /.test(item.name));
+const gems = project.materialConfig.mapping.filter(item => /^Gem \d+ /.test(item.name));
 assert.equal(gems.length, 21);
 assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
 const saved = {plugins: {RingConfigurator: project.plugins.RingConfigurator}, sceneConfig: {type: 'PresetLibraryPlugin'}};
