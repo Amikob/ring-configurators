@@ -2,7 +2,7 @@
 // plus the live ND366P iJewel configurator saved at tools/snapshots/nd366p-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/PFzcPKloTkONn-4ZwCrF3Q?select=id,name,file,config' > tools/snapshots/nd366p-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/a_AGHXkbTXCOvwzglehdQg?select=id,name,file,config' > tools/snapshots/nd366p-public.json
 // then run: node tools/build-nd366p-project.mjs
 import fs from 'node:fs';
 
