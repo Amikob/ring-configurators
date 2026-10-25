@@ -1249,6 +1249,33 @@
       "status": "new"
     },
     {
+      "id": "bn630",
+      "name": "BN630",
+      "path": "bn630/",
+      "ijewelProjectId": "CDMnHkUYTR6kspmu_OJkoQ",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Pear"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 35,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Ring"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_4cdc459ca1.png?h=ijewel3d.com",
+      "status": "new"
+    },
+    {
       "id": "bn635",
       "name": "BN635",
       "path": "bn635/",
@@ -1274,33 +1301,6 @@
         "Shank"
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_b26287928d.png?h=ijewel3d.com",
-      "status": "new"
-    },
-    {
-      "id": "bn630",
-      "name": "BN630",
-      "path": "bn630/",
-      "ijewelProjectId": "CDMnHkUYTR6kspmu_OJkoQ",
-      "shapes": [
-        "Round",
-        "Oval",
-        "Elongated Cushion",
-        "Elongated Radiant",
-        "Emerald",
-        "Marquise",
-        "Pear"
-      ],
-      "carats": [
-        1,
-        5
-      ],
-      "rings": 35,
-      "bands": null,
-      "eastWest": false,
-      "metalZones": [
-        "Ring"
-      ],
-      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_4cdc459ca1.png?h=ijewel3d.com",
       "status": "new"
     }
   ]
