@@ -10,7 +10,7 @@ import { manageModelResources } from './model-resources.js?v=nd1060-1';
 import { captureView, centerView } from './view-controls.js?v=nd1060-1';
 
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'VlO1pHk5RFWrDu-jOEU0uQ';
+const PROJECT_ID = 'QWpKXqXhSpS-dh8F2rqWhA';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
