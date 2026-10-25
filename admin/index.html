@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Portal start settings · Next Diamonds</title>
+<link rel="stylesheet" href="admin.css?v=1">
+</head>
+<body>
+<header class="top">
+  <h1>Portal start settings</h1>
+  <p class="lede">Choose how the ring pages <em>open</em>: scene, carat, colors, angle, standing or lying. Pick rings with the filters, set what you want, press Apply, then Save.</p>
+  <div id="status" class="status" role="status" aria-live="polite"></div>
+</header>
+
+<main>
+<section class="card" id="sec-pick" aria-labelledby="h-pick">
+  <h2 id="h-pick"><span class="num">1</span> Choose rings</h2>
+  <div class="filters">
+    <label>Tone
+      <select id="f-tone"><option value="">All</option><option value="two">Two-tone (head + shank)</option><option value="one">One-tone</option></select>
+    </label>
+    <label>Band
+      <select id="f-band"><option value="">All</option><option value="yes">Has band</option><option value="no">No band</option></select>
+    </label>
+    <label>Collection
+      <input id="f-text" type="search" placeholder="Search name, e.g. Erica" autocomplete="off">
+    </label>
+    <label>Settings
+      <select id="f-set"><option value="">All</option><option value="has">Has saved overrides</option><option value="none">No overrides</option></select>
+    </label>
+  </div>
+  <div class="bar">
+    <button type="button" id="sel-visible" class="ghost">Select all shown</button>
+    <button type="button" id="sel-none" class="ghost">Clear selection</button>
+    <strong id="summary" class="summary">0 rings in 0 collections selected</strong>
+  </div>
+  <div class="tablewrap">
+    <table id="collections">
+      <thead><tr><th class="c-check"><span class="sr">Select</span></th><th>Collection</th><th>Tone</th><th>Band</th><th>Rings</th><th>Carats</th><th>Opens with</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card" id="sec-set" aria-labelledby="h-set">
+  <h2 id="h-set"><span class="num">2</span> Settings <small>every setting is optional</small></h2>
+  <div class="settings" id="settings">
+    <fieldset data-key="scene">
+      <legend>Opening scene</legend>
+      <div class="modes"></div>
+      <div class="controls"><select id="v-scene"></select><span class="hint">Lighting of the first view. Your saved iJewel scene stays the base.</span></div>
+    </fieldset>
+    <fieldset data-key="carat">
+      <legend>Starting carat</legend>
+      <div class="modes"></div>
+      <div class="controls"><select id="v-carat"></select><span class="hint">Applied only where that carat exists.</span></div>
+    </fieldset>
+    <fieldset data-key="colors">
+      <legend>Color combination</legend>
+      <div class="modes"></div>
+      <div class="controls grid3">
+        <label>Head <select id="v-headColor"><option value="white">White</option><option value="yellow">Yellow</option><option value="rose">Rose</option></select></label>
+        <label>Body / shank <select id="v-bodyColor"><option value="white">White</option><option value="yellow">Yellow</option><option value="rose">Rose</option></select></label>
+        <label>Band <select id="v-bandColor"><option value="white">White</option><option value="yellow">Yellow</option><option value="rose">Rose</option></select></label>
+        <div class="quick">
+          <button type="button" data-quick="white-yellow" class="ghost small">Two-tone: white head + yellow body</button>
+          <button type="button" data-quick="all-yellow" class="ghost small">All yellow</button>
+          <button type="button" data-quick="all-white" class="ghost small">All white</button>
+          <button type="button" data-quick="all-rose" class="ghost small">All rose</button>
+        </div>
+        <span class="hint">One-tone rings use “Body / shank” for the whole ring; Head is used by two-tone rings only; Band only by rings with a band.</span>
+      </div>
+    </fieldset>
+    <fieldset data-key="angle">
+      <legend>Opening angle</legend>
+      <div class="modes"></div>
+      <div class="controls grid3">
+        <label>Turn (°) <input id="v-azimuth" type="number" step="1" value="30"></label>
+        <label>Height (°) <input id="v-elevation" type="number" step="1" min="-5" max="89" value="20"></label>
+        <div><button type="button" id="use-angle" class="primary small">Use current angle</button></div>
+        <span class="hint">Drag the ring in the preview below, then press “Use current angle”. Turn 0 = camera on the +Z side; 90 = from the right. Height 0 = side view, 90 = from above.</span>
+      </div>
+    </fieldset>
+    <fieldset data-key="pose">
+      <legend>Standing or lying</legend>
+      <div class="modes"></div>
+      <div class="controls"><label class="inline"><input type="radio" name="v-pose" value="standing" checked> Standing (upright)</label> <label class="inline"><input type="radio" name="v-pose" value="lying"> Lying (resting view)</label></div>
+    </fieldset>
+  </div>
+
+  <div class="target">
+    <h3>Write to</h3>
+    <label class="inline"><input type="radio" name="target" value="collections" checked> Each selected collection <span class="hint">(per-collection override)</span></label>
+    <label class="inline"><input type="radio" name="target" value="rule"> A filter rule <span class="hint">(all rings matching the Tone / Band filters, including future ones)</span></label>
+    <label class="inline"><input type="radio" name="target" value="global"> Global default <span class="hint">(every ring page)</span></label>
+    <div id="rule-name-wrap" hidden><label>Rule name <input id="rule-name" type="text" maxlength="60" placeholder="e.g. Two-tone with band"></label></div>
+  </div>
+  <div class="bar">
+    <button type="button" id="apply" class="primary">Apply to selection</button>
+    <button type="button" id="reset-form" class="ghost">Reset form</button>
+    <span id="apply-note" class="hint"></span>
+  </div>
+</section>
+
+<section class="card" id="sec-preview" aria-labelledby="h-prev">
+  <h2 id="h-prev"><span class="num">3</span> Live preview</h2>
+  <div class="bar">
+    <label>Preview ring <select id="preview-slug"></select></label>
+    <button type="button" id="preview-refresh" class="ghost">Reload preview</button>
+    <span class="hint" id="preview-note"></span>
+  </div>
+  <div class="previewwrap"><iframe id="preview" title="Ring preview" loading="lazy" allow="xr-spatial-tracking; fullscreen"></iframe></div>
+  <p class="hint">The preview shows the ring as it would open <b>with the form values applied</b> (and the saved settings for everything the form leaves unchanged).</p>
+</section>
+
+<section class="card" id="sec-presets" aria-labelledby="h-pre">
+  <h2 id="h-pre"><span class="num">4</span> Presets</h2>
+  <p class="hint">Save the current form as a named template, load it later, or apply it straight to the selected rings.</p>
+  <div class="bar">
+    <input id="preset-name" type="text" maxlength="60" placeholder="Preset name, e.g. Hero view">
+    <button type="button" id="preset-save" class="primary small">Save form as preset</button>
+  </div>
+  <ul id="presets" class="presets"></ul>
+</section>
+
+<section class="card" id="sec-over" aria-labelledby="h-over">
+  <h2 id="h-over"><span class="num">·</span> Saved overrides <small>what is in the file right now</small></h2>
+  <p class="hint">Order of precedence for every setting: <b>collection</b> beats <b>filter rule</b> beats <b>global</b> beats the page's own default.</p>
+  <ul id="overrides" class="presets"></ul>
+</section>
+
+<section class="card" id="sec-save" aria-labelledby="h-save">
+  <h2 id="h-save"><span class="num">5</span> Save <small id="dirty" class="dirty"></small></h2>
+  <div class="saveopts">
+    <div>
+      <h3>Save to GitHub</h3>
+      <p class="hint">Needs a fine-grained personal access token for the repository with <b>Contents: Read and write</b>. It is kept only in this browser (localStorage) and is sent only to api.github.com.</p>
+      <label>Token <input id="token" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+      <div class="two">
+        <label>Repository <input id="repo" type="text" value="Amikob/ring-configurators"></label>
+        <label>Branch <input id="branch" type="text" value="main"></label>
+      </div>
+      <div class="bar">
+        <button type="button" id="save-gh" class="primary">Save to GitHub</button>
+        <button type="button" id="forget-token" class="ghost">Forget token</button>
+      </div>
+      <p class="hint">Pages pick up a saved change about a minute after the commit (GitHub Pages deploy).</p>
+    </div>
+    <div>
+      <h3>Or download the file</h3>
+      <p class="hint">Fallback: download <code>portal-settings.json</code> and put it in the repository root.</p>
+      <div class="bar">
+        <button type="button" id="download" class="ghost">Download settings JSON</button>
+        <label class="filebtn ghost">Import JSON <input id="import" type="file" accept="application/json,.json" hidden></label>
+        <button type="button" id="reload" class="ghost">Reload saved file</button>
+      </div>
+    </div>
+  </div>
+  <details><summary>Current settings JSON</summary><textarea id="json" readonly spellcheck="false" rows="14"></textarea></details>
+</section>
+</main>
+<script type="module" src="admin.js?v=1"></script>
+</body>
+</html>

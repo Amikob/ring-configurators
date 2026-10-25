@@ -26,8 +26,20 @@ added there.
 2. Copy the closest existing folder (`nd336/` for ring-only, `nd344p/` for shared bands,
    `arlet/` or `erica/` for grouped bands) and adjust `catalog.js`, the project ID in
    `app.js`, and the material mapping in `project.json`.
-3. Add the ring to `configurators.json` and a check in `tests/`.
+3. Add the ring to `configurators.json` and a check in `tests/`. Run `python3 tools/apply-portal-settings.py <repo>` so the page reads `portal-settings.json` and has no fade (`redo/newpage.py` does it).
 4. `npm test`, commit, push. GitHub Pages redeploys in about a minute.
+
+## Portal start settings (admin page)
+
+`/admin/` (https://amikob.github.io/ring-configurators/admin/) sets how the ring pages open - for all rings, a
+filtered group (two-tone / one-tone, with or without band) or a whole collection such as Erica at once: opening scene,
+carat, colors, opening angle and standing/lying, plus saved presets. There is no starting-shape setting (shape is chosen on
+the store website). Settings live in `portal-settings.json` (global < filter rules < per-collection override; an empty or
+missing file changes nothing). The admin page saves it through the GitHub API with a fine-grained token pasted once and kept
+only in the browser, or you can download the JSON and commit it. Pages read the file at load through `shared/portal-settings.js`.
+
+Selection changes in the configurator swap rings directly (no white fade): `viewer-transition.js` is a no-fade module in every
+page; `python3 tools/apply-portal-settings.py [--check]` re-applies the wiring to a page copied from an older template.
 
 ## Conventions
 

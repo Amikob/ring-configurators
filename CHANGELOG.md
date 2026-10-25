@@ -2,6 +2,17 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-25 - Portal start settings (admin page) and no white fade between selections
+
+- New admin page `/admin/` (https://amikob.github.io/ring-configurators/admin/): choose rings by filter (tone: two-tone / one-tone, band: has / no band, name search such as "Erica") or by ticking collections, see "N rings in M collections selected", set what the pages should OPEN with, and apply to the whole selection in one action.
+- Settings (all optional): opening scene, starting carat, color combination (head / body-shank / band; one-tone rings use body for the whole ring), opening angle (turn + height, with "Use current angle" captured from a live preview), standing or lying. There is deliberately NO "starting shape" setting: the stone shape is chosen on the store website.
+- Saved presets: save the form as a named template, load, rename, delete, or apply straight to any selection.
+- Central file `portal-settings.json` (global defaults, per-collection overrides, filter rules, presets, custom scenes). Precedence per setting: collection override > filter rule (later rule wins) > global > the page's own default. Missing, empty or broken file = pages open exactly as before. Impossible values for a set (e.g. a carat it does not have) are skipped; an impossible combination falls back to the page defaults.
+- Every page reads the file at load via `shared/portal-settings.js` (wired in each `<slug>/app.js`).
+- Saving: "Save to GitHub" commits `portal-settings.json` through the GitHub contents API using a fine-grained token (Contents: read and write) that Koby pastes once; it is kept only in the browser's localStorage and sent only to api.github.com. "Download settings JSON" is the fallback. Pages pick up a saved change about a minute after the commit.
+- No more white fade: every selection change (carat/size, shape, band, color, scene) now keeps the previous ring on screen until the new one is built and then swaps directly. `viewer-transition.js` no longer animates opacity in any page; `tools/apply-portal-settings.py` (idempotent, `--check`) re-applies the wiring and `redo/newpage.py` runs it for every new page.
+- Tests: `tests/portal-settings.check.mjs` (schema, precedence, filters, no fade, all pages wired); Playwright frame captures before/after show no white frames.
+
 ## 2026-10-23 - nd336ph: new configurator page, listed
 
 - ND336PH

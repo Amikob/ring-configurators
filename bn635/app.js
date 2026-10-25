@@ -1,7 +1,7 @@
 import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=bn635-1';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=bn635-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=bn635-1';
-import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=bn635-1';
+import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=bn635-1';
 import { manageTryonSession } from './tryon-session.js?v=bn635-1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=bn635-1';
@@ -9,6 +9,7 @@ import { viewerDiagnostics } from './viewer-diagnostics.js?v=bn635-1';
 import { manageModelResources } from './model-resources.js?v=bn635-1';
 import { captureView, centerView } from './view-controls.js?v=bn635-1';
 
+import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
 const PROJECT_ID = 'fayfLb6AT_aDKp17Q3cfkg';
 // Redone (v2) files: head/shank metal layers (checked from the GLBs by geometry).
@@ -21,6 +22,8 @@ let tryonResuming = false, ringPose;
 let modelResources, selectedQuality, initialCamera;
 try { selectedQuality = Number(localStorage.getItem('bn635-render-quality')) || undefined; } catch {}
 let desired = { shape: 'oval', carat: 3, orientation: 'ns', headGold: 'white', ringGold: 'yellow', pose: 'upright' };
+let portalStart = null;
+const PAGE_DEFAULTS = { ...desired };
 let applied = null;
 let loadedRing = null;
 const groups = {};
@@ -196,6 +199,7 @@ async function drain() {
       }
       if (enteringRest || applied && target.pose !== applied.pose) centerView(viewer, {resting:enteringRest});
       shadowsChanged ||= target.pose !== applied?.pose;
+      if (!applied && portalStart?.settings?.angle) applyStartAngle(viewer, portalStart.settings.angle);
       applied = target;
       render();
     }
@@ -258,6 +262,7 @@ async function setup() {
     }
     for (const key of ['headGold','ringGold']) for (const color of COLORS) if (!groups[key] || !materialFor(groups[key],color)) throw new Error(`Missing ${key} ${color}`);
     modelResources = manageModelResources(viewer, [ringComponent]);
+    desired = guardDesired(desired, PAGE_DEFAULTS, value => resolveSelection(catalog, value));
     ready = true; clearTimeout(startupTimeout); render(); await drain(); $('startup').hidden = true;
   } catch (error) {
     console.error('BN635 setup failed',error);
@@ -357,6 +362,7 @@ window.addEventListener('ijewel-file-data', ({ detail }) => {
 window.addEventListener('ijewel-scene-ready',()=> { sceneReady = true; setup(); },{once:true});
 window.addEventListener('ijewel-viewer-ready',({detail})=> {
   viewer = detail.viewer;
+  installPortalBridge(viewer, portalStart);
   ringPose = manageRingPose(viewer, window);
   tryonSession = manageTryonSession(viewer, {
     touchDevice: Boolean(profile.maxRenderScale), onChange: render
@@ -395,9 +401,12 @@ async function start() {
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=bn635-1');
     const project = applySavedScene(baseline, await savedResponse.json());
+    portalStart = await loadPortalStart();
+    applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });
     preselectRing(project);
     initialCamera = project.cameraConfig;
     savedTryonConfig = project.tryonConfig;
+    applyPortalScene(project, portalStart.scene);
     const miniViewer = new ijewelViewer.Viewer($('viewer'),project,{
       showConfigurator:false,showCard:false,transparentBg:false,showUiButtons:false,hideTryOn:true,hideCameraViews:true,
       useIjewelLogo:false, brandingSettings:{enable:false,showLoadingScreenLogo:false}

@@ -1,7 +1,7 @@
 import { SHAPES, COLORS, GROUPS, label, createCatalog, resolveSelection } from './catalog.js';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=15.1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
-import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js';
+import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
 import { manageTryonSession } from './tryon-session.js?v=11';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.3';
@@ -10,6 +10,7 @@ import { initDebugOverlay, noteSwitch } from './debug-overlay.js?v=1';
 import { manageModelResources } from './model-resources.js?v=15.1';
 import { captureView, centerView } from './view-controls.js?v=15.1';
 
+import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
 const PROJECT_ID = 'DqnBsNzCTB2Wd2geOWbcYw';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
@@ -19,6 +20,8 @@ let tryonResuming = false, ringPose, bandModel;
 let modelResources, selectedQuality;
 try { selectedQuality = Number(localStorage.getItem('arlet-test-render-quality')) || undefined; } catch {}
 let desired = { shape: 'oval', carat: 3, band: 'none', ringGold: 'yellow', bandGold: 'yellow', pose: 'upright' };
+let portalStart = null;
+const PAGE_DEFAULTS = { ...desired };
 let applied = null;
 let loadedRing = null, loadedBand = null;
 const groups = {};
@@ -191,6 +194,7 @@ async function drain() {
       restoreView();
       if (enteringRest || applied && target.pose !== applied.pose) centerView(viewer, {resting:enteringRest});
       shadowsChanged ||= target.pose !== applied?.pose;
+      if (!applied && portalStart?.settings?.angle) applyStartAngle(viewer, portalStart.settings.angle);
       applied = target; noteSwitch(target);
       render();
     }
@@ -254,6 +258,7 @@ async function setup() {
     }
     for (const key of ['ringGold','bandGold']) for (const color of COLORS) if (!materialFor(groups[key],color)) throw new Error(`Missing ${key} ${color}`);
     modelResources = manageModelResources(viewer, [ringComponent, bandComponent]);
+    desired = guardDesired(desired, PAGE_DEFAULTS, value => resolveSelection(catalog, value));
     ready = true; clearTimeout(startupTimeout); render(); await drain(); $('startup').hidden = true;
   } catch (error) {
     console.error('Arlet setup failed',error);
@@ -353,6 +358,7 @@ window.addEventListener('ijewel-file-data', ({ detail }) => {
 window.addEventListener('ijewel-scene-ready',()=> { sceneReady = true; setup(); },{once:true});
 window.addEventListener('ijewel-viewer-ready',({detail})=> {
   viewer = detail.viewer;
+  installPortalBridge(viewer, portalStart);
   initDebugOverlay(() => viewer);
   ringPose = manageRingPose(viewer, window);
   tryonSession = manageTryonSession(viewer, {
@@ -376,6 +382,8 @@ const startupTimeout = setTimeout(()=> {
 async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
+    portalStart = await loadPortalStart();
+    applyPortalDesired(desired, portalStart, { colors: COLORS });
     const miniViewer = await ijewelViewer.loadModelById(PROJECT_ID,'amikob',$('viewer'),{
       showConfigurator:false,showCard:false,transparentBg:false,showUiButtons:false,hideTryOn:true,hideCameraViews:true,
       useIjewelLogo:false, brandingSettings:{enable:false,showLoadingScreenLogo:false}
