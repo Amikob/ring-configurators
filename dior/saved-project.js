@@ -1,17 +1,17 @@
 export function applySavedScene(project, file) {
   const saved = typeof file.config === 'string' ? JSON.parse(file.config) : file.config;
-  if (!saved?.sceneConfig || !saved?.plugins?.RingConfigurator) {
-    throw new Error('The saved DIOR scene is incomplete.');
+  if (!saved?.plugins?.RingConfigurator) {
+    throw new Error('The saved Dior catalog is incomplete.');
   }
   // iJewel owns scene appearance and finger calibration; the site owns its color controls.
   return {
     ...project,
-    sceneConfig: saved.sceneConfig,
-    tryonConfig: saved.tryonConfig || {enabled:false},
+    sceneConfig: saved.sceneConfig || project.sceneConfig,
+    tryonConfig: saved.tryonConfig || project.tryonConfig || {enabled:false},
     plugins: {
       ...project.plugins,
       RingConfigurator: saved.plugins.RingConfigurator,
-      SimpleBackgroundEnvUiPlugin2: saved.plugins.SimpleBackgroundEnvUiPlugin2 || {}
+      SimpleBackgroundEnvUiPlugin2: saved.plugins.SimpleBackgroundEnvUiPlugin2 || project.plugins.SimpleBackgroundEnvUiPlugin2 || {}
     }
   };
 }

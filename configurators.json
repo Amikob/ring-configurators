@@ -137,11 +137,10 @@
       "name": "Dior",
       "sku": "ND423",
       "path": "dior/",
-      "ijewelProjectId": "KoYeWRAoRNyz8HNa9FuYZQ",
+      "ijewelProjectId": "WPiWG9jETP6okrGz7LMV-g",
       "shapes": [
         "Round",
         "Oval",
-        "Cushion",
         "Emerald",
         "Square Cushion",
         "Pear",
@@ -152,7 +151,7 @@
         1,
         5
       ],
-      "rings": 40,
+      "rings": 35,
       "bands": {
         "files": 4,
         "styles": [

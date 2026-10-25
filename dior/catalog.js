@@ -1,4 +1,4 @@
-export const SHAPES = ['round', 'oval', 'cushion', 'emerald', 'square_cushion', 'pear', 'marquise', 'asscher'];
+export const SHAPES = ['round', 'oval', 'emerald', 'square_cushion', 'pear', 'marquise', 'asscher'];
 export const COLORS = ['white', 'yellow', 'rose'];
 export const GROUPS = Object.fromEntries(SHAPES.map(shape=>[shape,'all']));
 export const label = value => value === 'square_cushion' ? 'Square cushion' : value.charAt(0).toUpperCase() + value.slice(1);
