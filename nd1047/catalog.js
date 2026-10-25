@@ -5,9 +5,9 @@ export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant'
 export const CARATS = [2, 3, 4, 5, 6];
 export const EAST_WEST = new Set();
 export const COLORS = ['white', 'yellow', 'rose'];
-export const RING_COUNT = 40;
-// Shape:carat combinations that were never made (none: 6Ct Old Cut Cushion added 2026-10-25).
-export const MISSING = new Set();
+export const RING_COUNT = 39;
+// Shape:carat combinations that were never made.
+export const MISSING = new Set(['old_cut_cushion:6']);
 export const available = (shape, carat) => !MISSING.has(`${shape}:${carat}`);
 export const label = value => value.replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
 export const MATERIAL_TARGETS = { headGold: 'Metal 01', ringGold: 'Metal 02' };

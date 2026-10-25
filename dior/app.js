@@ -11,7 +11,7 @@ import { captureView, centerView } from './view-controls.js?v=15.1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'WPiWG9jETP6okrGz7LMV-g';
+const PROJECT_ID = 'KoYeWRAoRNyz8HNa9FuYZQ';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, bandComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
@@ -401,7 +401,7 @@ async function start() {
     const baseline = await response.json();
     const savedResponse = await fetch(`https://amikob.ijewel3d.com/api/raw/v1/files/view/${PROJECT_ID}?select=id,name,file,config`, {cache:'no-store'});
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
-    const {applySavedScene} = await import('./saved-project.js?v=3');
+    const {applySavedScene} = await import('./saved-project.js?v=2');
     const project = applySavedScene(baseline, await savedResponse.json());
     portalStart = await loadPortalStart();
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });

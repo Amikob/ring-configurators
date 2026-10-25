@@ -2,6 +2,13 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-10-25 - Reset: pages back to earlier iJewel projects
+
+- Dior, ND344P and ND1061 point to their original (early) iJewel projects again; the ND1061 page no longer uses the ND1060 project id.
+- Every other page that had been moved to a redone (v2) project points to its previous (v1) project again (stop-gap until the rebuilt sets are verified). Portal settings, admin page and no-fade code are unchanged.
+- BN630, BN631, BN635 and BN Alex Lee had no earlier project: removed from `configurators.json` (portal index / "All rings" list) and their page folders, tests and build tools removed. They are restorable from git: tag `pre-reset-20261025` (e.g. `git checkout pre-reset-20261025 -- bn630 tests/bn630.check.mjs tools/build-bn630-project.mjs tools/snapshots/bn630-public.json`).
+- Erica and Arlette untouched.
+
 ## 2026-10-25 - Portal start settings (admin page) and no white fade between selections
 
 - New admin page `/admin/` (https://amikob.github.io/ring-configurators/admin/): choose rings by filter (tone: two-tone / one-tone, band: has / no band, name search such as "Erica") or by ticking collections, see "N rings in M collections selected", set what the pages should OPEN with, and apply to the whole selection in one action.

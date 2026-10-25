@@ -11,10 +11,7 @@ import { captureView, centerView } from './view-controls.js?v=nd334ph-1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'RisgUf-lSzq-NNR4Ww0Y4A';
-// Redone (v2) files: a few rings do not follow Metal 01 = head / Metal 02 = shank (checked from the GLBs).
-const LAYER_ROLES = { '3Ct Oval': { headGold: 'Metal 02', ringGold: 'Metal 01' }, '5Ct Round': { ringGold: 'Metal 03' } };
-const DEFAULT_LAYERS = { headGold: 'Metal 01', ringGold: 'Metal 02' };
+const PROJECT_ID = 'aJUvW-AfQVqnuYqDyOxfRQ';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
@@ -105,9 +102,8 @@ function materialFor(group, color) {
     return color === 'white' ? name.includes('whitegold') : color === 'rose' ? name.includes('rosegold') : name.includes('gold') && !name.includes('white') && !name.includes('rose');
   });
 }
-async function applyGold(key, color, ringName) {
-  const layer = LAYER_ROLES[ringName]?.[key] || DEFAULT_LAYERS[key];
-  const group = materials.variations.find(g => g.uuid === layer) || groups[key];
+async function applyGold(key, color) {
+  const group = groups[key];
   const material = materialFor(group,color);
   if (!material) throw new Error(`${label(color)} gold is missing from ${key === 'ringGold' ? 'Shank' : 'Head'} gold.`);
   await materials.applyVariation(group,material.uuid);
@@ -176,8 +172,8 @@ async function drain() {
         loadedRing = ring.variation;
       }
       // Presets initialize the diamonds; restore the independently chosen gold afterward.
-      if (ringChanged || !applied || applied.headGold !== target.headGold) await applyGold('headGold',target.headGold,ring.variation.name);
-      if (ringChanged || !applied || applied.ringGold !== target.ringGold) await applyGold('ringGold',target.ringGold,ring.variation.name);
+      if (ringChanged || !applied || applied.headGold !== target.headGold) await applyGold('headGold',target.headGold);
+      if (ringChanged || !applied || applied.ringGold !== target.ringGold) await applyGold('ringGold',target.ringGold);
       if (ringChanged) {
         refreshDiamondCuts(viewer, profile);
         capturesReleased = false;

@@ -17,10 +17,10 @@ export function parseRing(variation) {
   const names = [variation.name, variation.title, variation.fileName, variation.filename]
     .filter(Boolean).map(value => String(value).replace(/\.(3dm|glb)$/i, '').trim().toLowerCase());
   for (const name of names) {
-    const match = name.match(/^(\d+(?:\.\d+)?)ct\s+(.+?)(?:\s+(ns|ew|east-west|north-south))?$/);
+    const match = name.match(/^(\d+(?:\.\d+)?)ct\s+(.+?)(?:\s+(ns|ew|east-west))?$/);
     const shape = match?.[2].replaceAll(' ', '_');
     if (match && SHAPES.includes(shape) && CARATS.includes(Number(match[1]))) return {
-      shape, carat: Number(match[1]), orientation: ['east-west', 'ew'].includes(match[3]) ? 'ew' : 'ns', variation
+      shape, carat: Number(match[1]), orientation: match[3] === 'east-west' ? 'ew' : (match[3] || 'ns'), variation
     };
   }
   return null;

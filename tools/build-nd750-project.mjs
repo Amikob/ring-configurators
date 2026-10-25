@@ -2,7 +2,7 @@
 // plus the live ND750 iJewel configurator saved at tools/snapshots/nd750-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/SJITfMFWRiGxHQYV-4DYew?select=id,name,file,config' > tools/snapshots/nd750-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/XKp-NLXVSaqWVVyKdByOiw?select=id,name,file,config' > tools/snapshots/nd750-public.json
 // then run: node tools/build-nd750-project.mjs
 import fs from 'node:fs';
 
@@ -30,10 +30,10 @@ const metal = mapping.find(item => item.name === 'Metal 01')?.path;
 if (!diamond || !metal) throw new Error('Baseline material presets missing');
 
 // ND750 has only a center stone per ring: layer "Gem 01 ND750 <Shape>".
-const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Emerald', 'Marquise', 'Old Cut Cushion', 'Pear', 'Radiant'];
+const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Emerald', 'Marquise', 'Old Cut Cushion', 'Pear', 'Square Radiant'];
 baseline.materialConfig.mapping = ['Metal 01', 'Metal 02'].map(name => ({ name, path: metal }));
-for (const name of ["Gem 02 ND750 Elongated Cushion", "Gem 02 ND750 Emerald", "Gem 02 ND750 Marquise", "Gem 02 ND750 Old Cut Cushion", "Gem 02 ND750 Oval", "Gem 02 ND750 Pear", "Gem 02 ND750 Radiant", "Gem 02 ND750 Round"]) baseline.materialConfig.mapping.push({ name, path: diamond });
-if (SHAPES.some(s => !["Gem 02 ND750 Elongated Cushion", "Gem 02 ND750 Emerald", "Gem 02 ND750 Marquise", "Gem 02 ND750 Old Cut Cushion", "Gem 02 ND750 Oval", "Gem 02 ND750 Pear", "Gem 02 ND750 Radiant", "Gem 02 ND750 Round"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
+for (const name of ["Gem 01 ND750 Elongated Cushion", "Gem 01 ND750 Emerald", "Gem 01 ND750 Marquise", "Gem 01 ND750 Old Cut Cushion", "Gem 01 ND750 Oval", "Gem 01 ND750 Pear", "Gem 01 ND750 Round", "Gem 01 ND750 Square Radiant", "Gem 02 ND750 Oval"]) baseline.materialConfig.mapping.push({ name, path: diamond });
+if (SHAPES.some(s => !["Gem 01 ND750 Elongated Cushion", "Gem 01 ND750 Emerald", "Gem 01 ND750 Marquise", "Gem 01 ND750 Old Cut Cushion", "Gem 01 ND750 Oval", "Gem 01 ND750 Pear", "Gem 01 ND750 Round", "Gem 01 ND750 Square Radiant", "Gem 02 ND750 Oval"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;

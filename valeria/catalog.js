@@ -4,7 +4,7 @@ export const CARATS = [3, 4, 5, 6, 7];
 export const COLORS = ['white', 'yellow', 'rose'];
 export const GROUPS = Object.fromEntries(SHAPES.map(shape => [shape, 'all']));
 export const label = value => value.replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
-export const MATERIAL_TARGETS = { headGold: 'Metal 01', ringGold: 'Metal 01', bandGold: 'Metal 03' }; // one-piece ring metal
+export const MATERIAL_TARGETS = { headGold: 'Metal 01', ringGold: 'Metal 02', bandGold: 'Metal 03' };
 
 function names(variation) {
   return [variation.name, variation.title, variation.fileName, variation.filename]

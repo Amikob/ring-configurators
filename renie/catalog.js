@@ -1,16 +1,16 @@
 // Renie: 8 shapes x 3/4/5/6/8 ct = 40 complete rings. No east-west versions and no bands.
 // The orientation field is kept so East-West or band variants can be added later without
 // changing the app's state model.
-export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'square_cushion', 'square_radiant'];
+export const SHAPES = ['round', 'oval', 'emerald', 'marquise', 'square_cushion', 'square_radiant'];
 export const CARATS = [3, 4, 5, 6, 7];
 export const EAST_WEST = new Set();
 export const COLORS = ['white', 'yellow', 'rose'];
-export const RING_COUNT = 40;
+export const RING_COUNT = 30;
 // Shape:carat combinations that were never made.
 export const MISSING = new Set([]);
 export const available = (shape, carat) => !MISSING.has(`${shape}:${carat}`);
 export const label = value => value.replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
-export const MATERIAL_TARGETS = { ringGold: 'Metal 01' };
+export const MATERIAL_TARGETS = { ringGold: 'Metal 02' };
 
 // iJewel file names look like "1Ct Square Cushion" (optionally with .glb/.3dm and an NS/EW suffix).
 export function parseRing(variation) {

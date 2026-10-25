@@ -2,7 +2,7 @@
 // plus the live Alana iJewel configurator saved at tools/snapshots/alana-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/YAOF3-UjRc6Lhtj_PiT7iw?select=id,name,file,config' > tools/snapshots/alana-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/XFmlJeB9R_igniTk7ZsNyw?select=id,name,file,config' > tools/snapshots/alana-public.json
 // then run: node tools/build-alana-project.mjs
 import fs from 'node:fs';
 
@@ -21,10 +21,9 @@ if (ring.selectedIndex < 0) throw new Error('Missing 3Ct Oval default');
 baseline.name = "Alana";
 baseline.plugins.RingConfigurator = { ...source, components: [ring] };
 
-// One-piece metal: everything is on Metal 01, driven by a single Gold control.
+// Metal 01 = head, Metal 02 = shank (verified in the downloaded GLBs).
 const materials = baseline.plugins.materialConfiguratorPlugin;
 if (materials.variations.map(v => v.uuid).join() !== 'Metal 01,Metal 02') throw new Error('Unexpected baseline metal groups');
-materials.variations = [{ ...materials.variations[1], uuid: 'Metal 01', title: 'Gold' }];
 const mapping = baseline.materialConfig.mapping;
 const diamond = mapping.find(item => item.name.startsWith('Gem 01 '))?.path;
 const metal = mapping.find(item => item.name === 'Metal 01')?.path;
@@ -32,9 +31,9 @@ if (!diamond || !metal) throw new Error('Baseline material presets missing');
 
 // Alana has only a center stone per ring: layer "Gem 01 Alana <Shape>".
 const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Elongated Radiant', 'Emerald', 'Marquise', 'Pear', 'Asscher'];
-baseline.materialConfig.mapping = ['Metal 01'].map(name => ({ name, path: metal }));
-for (const name of ["Gem 01 ND343 Asscher", "Gem 01 ND343 Elongated Cushion", "Gem 01 ND343 Elongated Radiant", "Gem 01 ND343 Emerald", "Gem 01 ND343 Marquise", "Gem 01 ND343 Oval", "Gem 01 ND343 Pear", "Gem 01 ND343 Round", "Gem 02 ND343 Asscher", "Gem 02 ND343 Elongated Cushion", "Gem 02 ND343 Elongated Radiant", "Gem 02 ND343 Emerald", "Gem 02 ND343 Marquise", "Gem 02 ND343 Oval", "Gem 02 ND343 Pear", "Gem 02 ND343 Round"]) baseline.materialConfig.mapping.push({ name, path: diamond });
-if (SHAPES.some(s => !["Gem 01 ND343 Asscher", "Gem 01 ND343 Elongated Cushion", "Gem 01 ND343 Elongated Radiant", "Gem 01 ND343 Emerald", "Gem 01 ND343 Marquise", "Gem 01 ND343 Oval", "Gem 01 ND343 Pear", "Gem 01 ND343 Round", "Gem 02 ND343 Asscher", "Gem 02 ND343 Elongated Cushion", "Gem 02 ND343 Elongated Radiant", "Gem 02 ND343 Emerald", "Gem 02 ND343 Marquise", "Gem 02 ND343 Oval", "Gem 02 ND343 Pear", "Gem 02 ND343 Round"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
+baseline.materialConfig.mapping = ['Metal 01', 'Metal 02'].map(name => ({ name, path: metal }));
+for (const name of ["Gem 01 Alana Asscher", "Gem 01 Alana Elongated Cushion", "Gem 01 Alana Elongated Radiant", "Gem 01 Alana Emerald", "Gem 01 Alana Marquise", "Gem 01 Alana Oval", "Gem 01 Alana Pear", "Gem 01 Alana Round", "Gem 02 Alana Asscher", "Gem 02 Alana Elongated Cushion", "Gem 02 Alana Elongated Radiant", "Gem 02 Alana Emerald", "Gem 02 Alana Marquise", "Gem 02 Alana Oval", "Gem 02 Alana Pear", "Gem 02 Alana Round", "Gem 03 Alana Asscher", "Gem 03 Alana Marquise", "Gem 03 Alana Pear", "Gem 03 Alana Round"]) baseline.materialConfig.mapping.push({ name, path: diamond });
+if (SHAPES.some(s => !["Gem 01 Alana Asscher", "Gem 01 Alana Elongated Cushion", "Gem 01 Alana Elongated Radiant", "Gem 01 Alana Emerald", "Gem 01 Alana Marquise", "Gem 01 Alana Oval", "Gem 01 Alana Pear", "Gem 01 Alana Round", "Gem 02 Alana Asscher", "Gem 02 Alana Elongated Cushion", "Gem 02 Alana Elongated Radiant", "Gem 02 Alana Emerald", "Gem 02 Alana Marquise", "Gem 02 Alana Oval", "Gem 02 Alana Pear", "Gem 02 Alana Round", "Gem 03 Alana Asscher", "Gem 03 Alana Marquise", "Gem 03 Alana Pear", "Gem 03 Alana Round"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;

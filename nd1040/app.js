@@ -11,7 +11,7 @@ import { captureView, centerView } from './view-controls.js?v=nd1040-1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'AxqIDZagSNahG9jaKAa1WQ';
+const PROJECT_ID = 'LxWkS6uDTRyo4o6UnyUpJA';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;

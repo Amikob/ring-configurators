@@ -2,7 +2,7 @@
 // plus the live ND801 iJewel configurator saved at tools/snapshots/nd801-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/A8kM9cllRtKOa5Yd_PW1jg?select=id,name,file,config' > tools/snapshots/nd801-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/T1-MdGeHQCeJTHXf-TZwWw?select=id,name,file,config' > tools/snapshots/nd801-public.json
 // then run: node tools/build-nd801-project.mjs
 import fs from 'node:fs';
 

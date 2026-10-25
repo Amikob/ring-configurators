@@ -11,7 +11,7 @@ import { captureView, centerView } from './view-controls.js?v=15.1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'FO2uB8T7SpS24EJg1qvOkg';
+const PROJECT_ID = 'B2OfIEYqTHCetDoB4ExULg';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, bandComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
@@ -29,7 +29,7 @@ const qualityButtons = [...document.querySelectorAll('#quality button')];
 function makeChoice(parent, text, value, key, className) {
   const button = document.createElement('button');
   button.type = 'button'; button.className = className; button.textContent = text;
-  button.setAttribute('aria-label', `${key === 'headGold' ? 'Head ' : key === 'ringGold' ? 'Gold ' : key === 'bandGold' ? 'Band ' : ''}${text}`);
+  button.setAttribute('aria-label', `${key === 'headGold' ? 'Head ' : key === 'ringGold' ? 'Shank ' : key === 'bandGold' ? 'Band ' : ''}${text}`);
   button.addEventListener('click', () => choose({ [key]: value }));
   controls.push({ button, key, value }); $(parent).append(button); return button;
 }
@@ -110,7 +110,6 @@ async function applyGold(key, color) {
 }
 async function choose(patch) {
   if (!ready || tryonLoading || tryonSession?.phase === 'starting') return;
-  if (patch.ringGold) patch.headGold = patch.ringGold;
   desired = normalizePose({ ...desired, ...patch }); render(); await drain();
 }
 async function drain() {
@@ -178,6 +177,7 @@ async function drain() {
         loadedBand = band.variation; bandModel = model;
       }
       // Presets initialize the diamonds; restore the independently chosen gold afterward.
+      if (ringChanged || bandChanged || !applied || applied.headGold !== target.headGold) await applyGold('headGold',target.headGold);
       if (ringChanged || bandChanged || !applied || applied.ringGold !== target.ringGold) await applyGold('ringGold',target.ringGold);
       if (band && (ringChanged || bandChanged || !applied || applied.bandGold !== target.bandGold)) await applyGold('bandGold',target.bandGold);
       bandComponent.setVisible(Boolean(band));
@@ -255,7 +255,7 @@ async function setup() {
   try {
     catalog = createCatalog(ringComponent.variations,bandComponent.variations);
     // Keep background and ground rendering consistent with the saved iJewel scene.
-    groups.ringGold = groupFor('gold','metal01'); groups.headGold = groups.ringGold; /* one-piece metal */ groups.bandGold = groupFor('band gold','metal03');
+    groups.headGold = groupFor('head gold','metal01'); groups.ringGold = groupFor('shank gold','metal02'); groups.bandGold = groupFor('band gold','metal03');
     if (!groups.ringGold || !groups.bandGold) throw new Error('The saved ring and band gold controls are missing.');
     const presets = viewer.getPluginByType('MaterialPresetPlugin');
     if (presets?.mapping) {

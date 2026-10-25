@@ -2,7 +2,7 @@
 // plus the live ND1051 iJewel configurator saved at tools/snapshots/nd1051-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/Oz95rICsTd6f47KMxfBJ0A?select=id,name,file,config' > tools/snapshots/nd1051-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/QboCIydQQ7O1g26-teg1Lg?select=id,name,file,config' > tools/snapshots/nd1051-public.json
 // then run: node tools/build-nd1051-project.mjs
 import fs from 'node:fs';
 
@@ -21,10 +21,9 @@ if (ring.selectedIndex < 0) throw new Error('Missing 3Ct Oval default');
 baseline.name = "ND1051";
 baseline.plugins.RingConfigurator = { ...source, components: [ring] };
 
-// One-piece metal: everything is on Metal 01, driven by a single Gold control.
+// Metal 01 = head, Metal 02 = shank (verified in the downloaded GLBs).
 const materials = baseline.plugins.materialConfiguratorPlugin;
 if (materials.variations.map(v => v.uuid).join() !== 'Metal 01,Metal 02') throw new Error('Unexpected baseline metal groups');
-materials.variations = [{ ...materials.variations[1], uuid: 'Metal 01', title: 'Gold' }];
 const mapping = baseline.materialConfig.mapping;
 const diamond = mapping.find(item => item.name.startsWith('Gem 01 '))?.path;
 const metal = mapping.find(item => item.name === 'Metal 01')?.path;
@@ -32,9 +31,9 @@ if (!diamond || !metal) throw new Error('Baseline material presets missing');
 
 // ND1051 has only a center stone per ring: layer "Gem 01 ND1051 <Shape>".
 const SHAPES = ['Round', 'Oval', 'Asscher', 'Elongated Cushion', 'Elongated Radiant', 'Emerald', 'Marquise', 'Square Radiant'];
-baseline.materialConfig.mapping = ['Metal 01'].map(name => ({ name, path: metal }));
-for (const name of ["Cutting", "Setting", "Finger", "Gem 01 ND1051 Asscher", "Gem 01 ND1051 Elongated Cushion", "Gem 01 ND1051 Elongated Radiant", "Gem 01 ND1051 Emerald", "Gem 01 ND1051 Marquise", "Gem 01 ND1051 Oval", "Gem 01 ND1051 Round", "Gem 01 ND1051 Square Radiant", "Gem 02 ND1051 Asscher", "Gem 02 ND1051 Elongated Cushion", "Gem 02 ND1051 Elongated Radiant", "Gem 02 ND1051 Emerald", "Gem 02 ND1051 Marquise", "Gem 02 ND1051 Oval", "Gem 02 ND1051 Round", "Gem 02 ND1051 Square Radiant", "Gem 03 ND1051 Asscher", "Gem 03 ND1051 Elongated Cushion", "Gem 03 ND1051 Elongated Radiant", "Gem 03 ND1051 Emerald", "Gem 03 ND1051 Marquise", "Gem 03 ND1051 Oval", "Gem 03 ND1051 Round", "Gem 03 ND1051 Square Radiant", "Gem 04 ND1051 Asscher", "Gem 04 ND1051 Elongated Cushion", "Gem 04 ND1051 Elongated Radiant", "Gem 04 ND1051 Emerald", "Gem 04 ND1051 Marquise", "Gem 04 ND1051 Oval", "Gem 04 ND1051 Round", "Gem 04 ND1051 Square Radiant"]) baseline.materialConfig.mapping.push({ name, path: diamond });
-if (SHAPES.some(s => !["Gem 01 ND1051 Asscher", "Gem 01 ND1051 Elongated Cushion", "Gem 01 ND1051 Elongated Radiant", "Gem 01 ND1051 Emerald", "Gem 01 ND1051 Marquise", "Gem 01 ND1051 Oval", "Gem 01 ND1051 Round", "Gem 01 ND1051 Square Radiant", "Gem 02 ND1051 Asscher", "Gem 02 ND1051 Elongated Cushion", "Gem 02 ND1051 Elongated Radiant", "Gem 02 ND1051 Emerald", "Gem 02 ND1051 Marquise", "Gem 02 ND1051 Oval", "Gem 02 ND1051 Round", "Gem 02 ND1051 Square Radiant", "Gem 03 ND1051 Asscher", "Gem 03 ND1051 Elongated Cushion", "Gem 03 ND1051 Elongated Radiant", "Gem 03 ND1051 Emerald", "Gem 03 ND1051 Marquise", "Gem 03 ND1051 Oval", "Gem 03 ND1051 Round", "Gem 03 ND1051 Square Radiant", "Gem 04 ND1051 Asscher", "Gem 04 ND1051 Elongated Cushion", "Gem 04 ND1051 Elongated Radiant", "Gem 04 ND1051 Emerald", "Gem 04 ND1051 Marquise", "Gem 04 ND1051 Oval", "Gem 04 ND1051 Round", "Gem 04 ND1051 Square Radiant"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
+baseline.materialConfig.mapping = ['Metal 01', 'Metal 02'].map(name => ({ name, path: metal }));
+for (const name of ["Cutting", "Setting", "Finger", "Gem 01 ND1051 Asscher", "Gem 01 ND1051 Elongated Cushion", "Gem 01 ND1051 Elongated Radiant", "Gem 01 ND1051 Emerald", "Gem 01 ND1051 Marquise", "Gem 01 ND1051 Oval", "Gem 01 ND1051 Round", "Gem 01 ND1051 Square Radiant", "Gem 02 ND1051 Asscher", "Gem 02 ND1051 Elongated Cushion", "Gem 02 ND1051 Elongated Radiant", "Gem 02 ND1051 Emerald", "Gem 02 ND1051 Marquise", "Gem 02 ND1051 Oval", "Gem 02 ND1051 Round", "Gem 02 ND1051 Square Radiant", "Gem 03 ND1051 Asscher", "Gem 03 ND1051 Elongated Cushion", "Gem 03 ND1051 Elongated Radiant", "Gem 03 ND1051 Emerald", "Gem 03 ND1051 Marquise", "Gem 03 ND1051 Oval", "Gem 03 ND1051 Round", "Gem 03 ND1051 Square Radiant"]) baseline.materialConfig.mapping.push({ name, path: diamond });
+if (SHAPES.some(s => !["Gem 01 ND1051 Asscher", "Gem 01 ND1051 Elongated Cushion", "Gem 01 ND1051 Elongated Radiant", "Gem 01 ND1051 Emerald", "Gem 01 ND1051 Marquise", "Gem 01 ND1051 Oval", "Gem 01 ND1051 Round", "Gem 01 ND1051 Square Radiant", "Gem 02 ND1051 Asscher", "Gem 02 ND1051 Elongated Cushion", "Gem 02 ND1051 Elongated Radiant", "Gem 02 ND1051 Emerald", "Gem 02 ND1051 Marquise", "Gem 02 ND1051 Oval", "Gem 02 ND1051 Round", "Gem 02 ND1051 Square Radiant", "Gem 03 ND1051 Asscher", "Gem 03 ND1051 Elongated Cushion", "Gem 03 ND1051 Elongated Radiant", "Gem 03 ND1051 Emerald", "Gem 03 ND1051 Marquise", "Gem 03 ND1051 Oval", "Gem 03 ND1051 Round", "Gem 03 ND1051 Square Radiant"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;

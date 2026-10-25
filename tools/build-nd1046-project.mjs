@@ -2,7 +2,7 @@
 // plus the live ND1046 iJewel configurator saved at tools/snapshots/nd1046-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/d9UhshMdT1WHxQTctxEyGg?select=id,name,file,config' > tools/snapshots/nd1046-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/D8dC3VBDQkCNfUjhbHg9GQ?select=id,name,file,config' > tools/snapshots/nd1046-public.json
 // then run: node tools/build-nd1046-project.mjs
 import fs from 'node:fs';
 

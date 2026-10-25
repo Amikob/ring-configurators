@@ -11,7 +11,7 @@ import { captureView, centerView } from './view-controls.js?v=renie-1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'MJxvJksQTleZeLuv7cevcQ';
+const PROJECT_ID = 'RdmFXIuLQ2SlW7U5cdzCHQ';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
@@ -248,7 +248,7 @@ async function setup() {
   try {
     catalog = createCatalog(ringComponent.variations);
     // Keep background and ground rendering consistent with the saved iJewel scene.
-    groups.ringGold = groupFor('gold','metal01'); groups.headGold = groups.ringGold; // one-piece metal
+    groups.ringGold = groupFor('gold','metal02'); groups.headGold = groups.ringGold; // one-piece metal
     if (!groups.headGold || !groups.ringGold) throw new Error('The saved head and shank gold controls are missing.');
     const presets = viewer.getPluginByType('MaterialPresetPlugin');
     if (presets?.mapping) {

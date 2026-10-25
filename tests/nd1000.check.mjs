@@ -23,7 +23,7 @@ assert.equal(EAST_WEST.size, 0);
 assert.throws(() => resolveSelection(catalog, {shape: 'oval', carat: 1, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
 assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ["Metal 01", "Metal 02"]);
 const gems = project.materialConfig.mapping.filter(item => / ND1000 /.test(item.name));
-assert.equal(gems.length, 24);
+assert.equal(gems.length, 16);
 assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
 const saved = {plugins: {RingConfigurator: project.plugins.RingConfigurator}, sceneConfig: {type: 'PresetLibraryPlugin'}};
 const merged = applySavedScene(project, {config: JSON.stringify(saved)});
@@ -32,4 +32,4 @@ const html = fs.readFileSync(new URL('../nd1000/index.html', import.meta.url), '
 assert(html.includes("Harley (ND1000)"));
 assert(!/336|1061|1046/.test(html + fs.readFileSync(new URL('../nd1000/app.js', import.meta.url), 'utf8')));
 for (const shape of SHAPES) assert(fs.existsSync(new URL(`../nd1000/assets/shapes/${shape}.png`, import.meta.url)));
-console.log('ND1000: 40 models, 360 valid shape/carat/gold selections, 24 diamond layers mapped.');
+console.log('ND1000: 40 models, 360 valid shape/carat/gold selections, 16 diamond layers mapped.');

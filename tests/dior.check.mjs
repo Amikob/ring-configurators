@@ -5,7 +5,7 @@ import {SHAPES,COLORS,createCatalog,resolveSelection} from '../dior/catalog.js';
 const project=JSON.parse(fs.readFileSync(new URL('../dior/project.json',import.meta.url)));
 const components=project.plugins.RingConfigurator.components;
 const catalog=createCatalog(components.find(c=>c.name==='Ring').variations,components.find(c=>c.name==='Band').variations);
-assert.equal(catalog.rings.size,35);assert.equal(catalog.bands.size,4);
+assert.equal(catalog.rings.size,40);assert.equal(catalog.bands.size,4);
 for(const shape of SHAPES)for(let carat=1;carat<=5;carat++)for(const band of ['none','plain','pave'])for(const headGold of COLORS)for(const ringGold of COLORS)for(const bandGold of COLORS){
   const result=resolveSelection(catalog,{shape,carat,band,headGold,ringGold,bandGold});
   assert.equal(result.ring.shape,shape);
@@ -21,4 +21,4 @@ assert.deepEqual(merged.sceneConfig,saved.sceneConfig);
 assert.deepEqual(merged.tryonConfig,saved.tryonConfig);
 assert.deepEqual(merged.plugins.materialConfiguratorPlugin,project.plugins.materialConfiguratorPlugin);
 assert.throws(()=>applySavedScene(project,{config:'{}'}));
-console.log('2835 selections, four band variants, independent materials and Try-On configuration verified.');
+console.log('3240 selections, four band variants, independent materials and Try-On configuration verified.');

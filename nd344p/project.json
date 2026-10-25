@@ -7,331 +7,331 @@
         {
           "name": "Ring",
           "title": "",
-          "selectedIndex": 19,
+          "selectedIndex": 30,
           "visible": true,
           "variations": [
             {
               "name": "1Ct Elongated Cushion",
               "title": "1Ct Elongated Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_elongated_cushion_c7e27de2aa.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1_ct_elongated_cushion_b6ef058a40.png?h=ijewel3d.com",
-              "fileId": "dx9eXLOtRVajy7AmnZN-SQ",
-              "tags": []
-            },
-            {
-              "name": "1Ct Elongated Radiant",
-              "title": "1Ct Elongated Radiant",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_elongated_radiant_28ebf55eec.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1_ct_elongated_radiant_2a4350b1b8.png?h=ijewel3d.com",
-              "fileId": "ajTxGCCJQtObSSrp_eavAw",
-              "tags": []
-            },
-            {
-              "name": "1Ct Emerald",
-              "title": "1Ct Emerald",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_emerald_3d0d80871a.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1_ct_emerald_d6ea672e3e.png?h=ijewel3d.com",
-              "fileId": "QxoBY_VlRiOdXoqzg4SNZA",
-              "tags": []
-            },
-            {
-              "name": "1Ct Marquise",
-              "title": "1Ct Marquise",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_marquise_9292551927.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1_ct_marquise_32791184a5.png?h=ijewel3d.com",
-              "fileId": "JE4SfC-WQyaEeZUaQQ8JGA",
-              "tags": []
-            },
-            {
-              "name": "1Ct Oval",
-              "title": "1Ct Oval",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_oval_fff4d637a8.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1_ct_oval_299e453cea.png?h=ijewel3d.com",
-              "fileId": "HC6chrcQTWikQ12Q8ZmIdA",
-              "tags": []
-            },
-            {
-              "name": "1Ct Pear",
-              "title": "1Ct Pear",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_pear_a00a53a42e.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1_ct_pear_a7f7bb38f2.png?h=ijewel3d.com",
-              "fileId": "Z2n7ZHCmT8ev5NAg3bxkIA",
-              "tags": []
-            },
-            {
-              "name": "1Ct Round",
-              "title": "1Ct Round",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_round_4062905830.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1_ct_round_0af1cf263c.png?h=ijewel3d.com",
-              "fileId": "CAsh1fyDQ7CinLJ_mCSZoQ",
-              "tags": []
-            },
-            {
-              "name": "1Ct Square Cushion",
-              "title": "1Ct Square Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_square_cushion_d37eba85b3.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1_ct_square_cushion_d8d0f107df.png?h=ijewel3d.com",
-              "fileId": "dgfekvp3SFSd88rdmuekKQ",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_elongated_cushion_61a8188557.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_elongated_cushion_f929e490fa.png?h=ijewel3d.com",
+              "fileId": "NqRXsQ50R3ma8bkX9aIoKQ",
               "tags": []
             },
             {
               "name": "2Ct Elongated Cushion",
               "title": "2Ct Elongated Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_elongated_cushion_3105e1437c.glb",
-              "icon": "https://amikob.ijewel3d.com/files/2_ct_elongated_cushion_7a586d242c.png?h=ijewel3d.com",
-              "fileId": "dK7DfTb_TYOkzskagS8QYw",
-              "tags": []
-            },
-            {
-              "name": "2Ct Elongated Radiant",
-              "title": "2Ct Elongated Radiant",
-              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_elongated_radiant_a3f4bdc542.glb",
-              "icon": "https://amikob.ijewel3d.com/files/2_ct_elongated_radiant_57b7c55840.png?h=ijewel3d.com",
-              "fileId": "UuLNgNZrQ4yFSO31jrZiug",
-              "tags": []
-            },
-            {
-              "name": "2Ct Emerald",
-              "title": "2Ct Emerald",
-              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_emerald_a62b2578b4.glb",
-              "icon": "https://amikob.ijewel3d.com/files/2_ct_emerald_bc419ac25b.png?h=ijewel3d.com",
-              "fileId": "LFXzkKFlR3KSQBS46-AAAQ",
-              "tags": []
-            },
-            {
-              "name": "2Ct Marquise",
-              "title": "2Ct Marquise",
-              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_marquise_439b4fb6e8.glb",
-              "icon": "https://amikob.ijewel3d.com/files/2_ct_marquise_bc5f5106d1.png?h=ijewel3d.com",
-              "fileId": "YE3Gmw_2R0qmRLJYL-0n0g",
-              "tags": []
-            },
-            {
-              "name": "2Ct Oval",
-              "title": "2Ct Oval",
-              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_oval_f072918d9e.glb",
-              "icon": "https://amikob.ijewel3d.com/files/2_ct_oval_a8371c9733.png?h=ijewel3d.com",
-              "fileId": "LjP7CpRWRYGcZLSpaXDEhQ",
-              "tags": []
-            },
-            {
-              "name": "2Ct Pear",
-              "title": "2Ct Pear",
-              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_pear_2b9f3dea49.glb",
-              "icon": "https://amikob.ijewel3d.com/files/2_ct_pear_db4660cbdc.png?h=ijewel3d.com",
-              "fileId": "XNClH7xYSpyfEbwTRhbZ7Q",
-              "tags": []
-            },
-            {
-              "name": "2Ct Round",
-              "title": "2Ct Round",
-              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_round_25a601fc69.glb",
-              "icon": "https://amikob.ijewel3d.com/files/2_ct_round_67e90d3bd2.png?h=ijewel3d.com",
-              "fileId": "ezFA3fXBQcyiF1h4vjQoSA",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_elongated_cushion_0db37a2a47.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_elongated_cushion_6ae7bffe62.png?h=ijewel3d.com",
+              "fileId": "UngzCfLxQ5KVitBVWbqOgQ",
               "tags": []
             },
             {
               "name": "3Ct Elongated Cushion",
               "title": "3Ct Elongated Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_elongated_cushion_12952dcbbc.glb",
-              "icon": "https://amikob.ijewel3d.com/files/3_ct_elongated_cushion_7cdfc977cc.png?h=ijewel3d.com",
-              "fileId": "HndljPLCRzmoP5_R0KNmxQ",
-              "tags": []
-            },
-            {
-              "name": "3Ct Elongated Radiant",
-              "title": "3Ct Elongated Radiant",
-              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_elongated_radiant_76eb6352b6.glb",
-              "icon": "https://amikob.ijewel3d.com/files/3_ct_elongated_radiant_01fce2984f.png?h=ijewel3d.com",
-              "fileId": "XYyVCInUSqaCYljHIbgaBA",
-              "tags": []
-            },
-            {
-              "name": "3Ct Emerald",
-              "title": "3Ct Emerald",
-              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_emerald_67b91d1a63.glb",
-              "icon": "https://amikob.ijewel3d.com/files/3_ct_emerald_b3d380984d.png?h=ijewel3d.com",
-              "fileId": "MV50eCb4RBeJHL5h_sXvlg",
-              "tags": []
-            },
-            {
-              "name": "3Ct Marquise",
-              "title": "3Ct Marquise",
-              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_marquise_3a9117957c.glb",
-              "icon": "https://amikob.ijewel3d.com/files/3_ct_marquise_3b93d3a6b1.png?h=ijewel3d.com",
-              "fileId": "QnYBw6ZrQjC_B8EkB-zqKQ",
-              "tags": []
-            },
-            {
-              "name": "3Ct Oval",
-              "title": "3Ct Oval",
-              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_oval_1d8f599bbf.glb",
-              "icon": "https://amikob.ijewel3d.com/files/3_ct_oval_782f73449c.png?h=ijewel3d.com",
-              "fileId": "P6E6w1o3Qe-6lOnE5eLKTg",
-              "tags": []
-            },
-            {
-              "name": "3Ct Pear",
-              "title": "3Ct Pear",
-              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_pear_aaf5a23319.glb",
-              "icon": "https://amikob.ijewel3d.com/files/3_ct_pear_9b2e3fe7b7.png?h=ijewel3d.com",
-              "fileId": "cUFVuSfrRam2F9td1Ea7ZQ",
-              "tags": []
-            },
-            {
-              "name": "3Ct Round",
-              "title": "3Ct Round",
-              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_round_6c98819cd0.glb",
-              "icon": "https://amikob.ijewel3d.com/files/3_ct_round_1ec3acdd86.png?h=ijewel3d.com",
-              "fileId": "Jgsd1CoRQwGr4CPU--dGnA",
-              "tags": []
-            },
-            {
-              "name": "3Ct Square Cushion",
-              "title": "3Ct Square Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_square_cushion_133ff8350f.glb",
-              "icon": "https://amikob.ijewel3d.com/files/3_ct_square_cushion_e3362150e4.png?h=ijewel3d.com",
-              "fileId": "YlNYXIU_SPmOB5dAZlvFNQ",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_elongated_cushion_1c48d22157.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_elongated_cushion_593d7514ee.png?h=ijewel3d.com",
+              "fileId": "RNPbGn92TxmgaxiYjLWH3w",
               "tags": []
             },
             {
               "name": "4Ct Elongated Cushion",
               "title": "4Ct Elongated Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_elongated_cushion_68fd0dd0a0.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4_ct_elongated_cushion_b8b3bfe159.png?h=ijewel3d.com",
-              "fileId": "J1AHf5EXSve7llP4t6wG2w",
-              "tags": []
-            },
-            {
-              "name": "4Ct Elongated Radiant",
-              "title": "4Ct Elongated Radiant",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_elongated_radiant_ee978c6f3a.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4_ct_elongated_radiant_c606ad2d96.png?h=ijewel3d.com",
-              "fileId": "OwEnFGuuQJeXH9wkp5rEOg",
-              "tags": []
-            },
-            {
-              "name": "4Ct Emerald",
-              "title": "4Ct Emerald",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_emerald_4e79811264.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4_ct_emerald_477a9499bb.png?h=ijewel3d.com",
-              "fileId": "fxBZTyxPSaSVQIaOU6cDWQ",
-              "tags": []
-            },
-            {
-              "name": "4Ct Marquise",
-              "title": "4Ct Marquise",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_marquise_6e8a15395a.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4_ct_marquise_c4d92733c2.png?h=ijewel3d.com",
-              "fileId": "Y5n1JuthQJWYxBrqw7iC-A",
-              "tags": []
-            },
-            {
-              "name": "4Ct Oval",
-              "title": "4Ct Oval",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_oval_d8f35e945f.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4_ct_oval_54d3be72ac.png?h=ijewel3d.com",
-              "fileId": "KmBNELMqTFS8I_9oIraysw",
-              "tags": []
-            },
-            {
-              "name": "4Ct Pear",
-              "title": "4Ct Pear",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_pear_163dba5920.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4_ct_pear_223423dc42.png?h=ijewel3d.com",
-              "fileId": "cYfHI1VnQUeW1xQrjKbbWA",
-              "tags": []
-            },
-            {
-              "name": "4Ct Round",
-              "title": "4Ct Round",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_round_7c9c48c04c.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4_ct_round_5f9876dc49.png?h=ijewel3d.com",
-              "fileId": "XrMA1eAGRua8ogpZiyX1Fg",
-              "tags": []
-            },
-            {
-              "name": "4Ct Square Cushion",
-              "title": "4Ct Square Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_square_cushion_ca7a72281a.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4_ct_square_cushion_f63d7c2233.png?h=ijewel3d.com",
-              "fileId": "QWLNjkmjT0-9vVAFDH9Q7g",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_elongated_cushion_04720a0ca7.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_elongated_cushion_8b87477a08.png?h=ijewel3d.com",
+              "fileId": "CuLN_654QRa-6GM-03HFfA",
               "tags": []
             },
             {
               "name": "5Ct Elongated Cushion",
               "title": "5Ct Elongated Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_elongated_cushion_6cd8c4e9c6.glb",
-              "icon": "https://amikob.ijewel3d.com/files/5_ct_elongated_cushion_6173a21dd5.png?h=ijewel3d.com",
-              "fileId": "IBawyARpS7apd7F_zP3Vkg",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_elongated_cushion_bc3f1aea09.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_elongated_cushion_1038a76916.png?h=ijewel3d.com",
+              "fileId": "Obi0kzn3QMiz_6iyCtZrNQ",
+              "tags": []
+            },
+            {
+              "name": "1Ct Elongated Radiant",
+              "title": "1Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_elongated_radiant_f78dd26e74.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_elongated_radiant_3665c96e8a.png?h=ijewel3d.com",
+              "fileId": "FwyPNaNQQNKeagj69mVvPQ",
+              "tags": []
+            },
+            {
+              "name": "2Ct Elongated Radiant",
+              "title": "2Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_elongated_radiant_684f797e38.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_elongated_radiant_b6d9f83060.png?h=ijewel3d.com",
+              "fileId": "aJnkzbB2RfmiHtTZslWe9g",
+              "tags": []
+            },
+            {
+              "name": "3Ct Elongated Radiant",
+              "title": "3Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_elongated_radiant_31ced24f4e.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_elongated_radiant_fc25e45dca.png?h=ijewel3d.com",
+              "fileId": "O0VJmTEWTjeoUUSrRlGHRw",
+              "tags": []
+            },
+            {
+              "name": "4Ct Elongated Radiant",
+              "title": "4Ct Elongated Radiant",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_elongated_radiant_8c52f3fa3c.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_elongated_radiant_e1fa081f91.png?h=ijewel3d.com",
+              "fileId": "AdEeqpBcTUaKJZw1h48z4w",
               "tags": []
             },
             {
               "name": "5Ct Elongated Radiant",
               "title": "5Ct Elongated Radiant",
-              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_elongated_radiant_cafbd98fe8.glb",
-              "icon": "https://amikob.ijewel3d.com/files/5_ct_elongated_radiant_ca84b1eabe.png?h=ijewel3d.com",
-              "fileId": "W8_I6VGqST6Xo1jtFmezWw",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_elongated_radiant_35d0580ba5.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_elongated_radiant_4acb668e1e.png?h=ijewel3d.com",
+              "fileId": "TNHBgG_MQ_GYu9OqpXzxlA",
+              "tags": []
+            },
+            {
+              "name": "1Ct Emerald",
+              "title": "1Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_emerald_a4c78947dc.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_emerald_a5330c00ef.png?h=ijewel3d.com",
+              "fileId": "RUk6TXE9TxOv3f4KFs6rdQ",
+              "tags": []
+            },
+            {
+              "name": "2Ct Emerald",
+              "title": "2Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_emerald_4383c97740.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_emerald_2f8348ce88.png?h=ijewel3d.com",
+              "fileId": "c3aHT2eVRfOYS_v11F9OWg",
+              "tags": []
+            },
+            {
+              "name": "3Ct Emerald",
+              "title": "3Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_emerald_e493cb9ae1.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_emerald_1a477bad2e.png?h=ijewel3d.com",
+              "fileId": "FflxR_0tRIaYMhNJ6fQOwg",
+              "tags": []
+            },
+            {
+              "name": "4Ct Emerald",
+              "title": "4Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_emerald_218c199263.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_emerald_2838c5ccef.png?h=ijewel3d.com",
+              "fileId": "fVFDFgN_TAW9SisWS_VX5Q",
               "tags": []
             },
             {
               "name": "5Ct Emerald",
               "title": "5Ct Emerald",
-              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_emerald_d48e979ba7.glb",
-              "icon": "https://amikob.ijewel3d.com/files/5_ct_emerald_df29e5b278.png?h=ijewel3d.com",
-              "fileId": "F-3FNOH6TjyiSvRdmHI6Ew",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_emerald_ee4fd94226.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_emerald_2028b1e626.png?h=ijewel3d.com",
+              "fileId": "WEJzdUOhT5OXPy6ofmEOPg",
+              "tags": []
+            },
+            {
+              "name": "1Ct Marquise",
+              "title": "1Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_marquise_aeb70a8d2b.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_marquise_422958dc31.png?h=ijewel3d.com",
+              "fileId": "Kg_msgDaRreUnKLNnSchJQ",
+              "tags": []
+            },
+            {
+              "name": "2Ct Marquise",
+              "title": "2Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_marquise_f859d1b223.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_marquise_fb0bf0a3bb.png?h=ijewel3d.com",
+              "fileId": "GBQf946pR56Fzh59jrTQvA",
+              "tags": []
+            },
+            {
+              "name": "3Ct Marquise",
+              "title": "3Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_marquise_0181146db2.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_marquise_8c2698ef41.png?h=ijewel3d.com",
+              "fileId": "cwsU_7RsQ7yYdG-RQNHBwg",
+              "tags": []
+            },
+            {
+              "name": "4Ct Marquise",
+              "title": "4Ct Marquise",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_marquise_30a1659d39.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_marquise_cb43063ba1.png?h=ijewel3d.com",
+              "fileId": "HGMXaVDgSzud-J0H9vl31g",
               "tags": []
             },
             {
               "name": "5Ct Marquise",
               "title": "5Ct Marquise",
-              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_marquise_a483eaf041.glb",
-              "icon": "https://amikob.ijewel3d.com/files/5_ct_marquise_2a7930a15e.png?h=ijewel3d.com",
-              "fileId": "KpZgRBqMRD-urql5rCto8g",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_marquise_6cada5c9df.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_marquise_522471e810.png?h=ijewel3d.com",
+              "fileId": "IdMrdPM3T0W2KND9D50gog",
+              "tags": []
+            },
+            {
+              "name": "1Ct Oval",
+              "title": "1Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_oval_5da4edcc5b.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_oval_dec59dda55.png?h=ijewel3d.com",
+              "fileId": "fpPXV1VAStWAcbamvGCXag",
+              "tags": []
+            },
+            {
+              "name": "2Ct Oval",
+              "title": "2Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_oval_a40433fb51.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_oval_cddcd2e9fc.png?h=ijewel3d.com",
+              "fileId": "TKbwxtD2T-6Uj824YhQZpg",
+              "tags": []
+            },
+            {
+              "name": "3Ct Oval",
+              "title": "3Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_oval_fd10d17311.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_oval_94b63fd254.png?h=ijewel3d.com",
+              "fileId": "FKxkhU4-TNebN611VYmZPA",
+              "tags": []
+            },
+            {
+              "name": "4Ct Oval",
+              "title": "4Ct Oval",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_oval_6afeb48d80.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_oval_8e30379f91.png?h=ijewel3d.com",
+              "fileId": "Nv1eNDihTNmLvPpXnlUp3g",
               "tags": []
             },
             {
               "name": "5Ct Oval",
               "title": "5Ct Oval",
-              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_oval_195f84b24e.glb",
-              "icon": "https://amikob.ijewel3d.com/files/5_ct_oval_3ecd957041.png?h=ijewel3d.com",
-              "fileId": "QIIsw4zjQ0uCId5A3nA0VA",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_oval_861e3f846a.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_oval_441322a169.png?h=ijewel3d.com",
+              "fileId": "CfW2wydrR8WTbcPZ74Odqg",
+              "tags": []
+            },
+            {
+              "name": "1Ct Pear",
+              "title": "1Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_pear_926e2c0169.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_pear_15fcf5c212.png?h=ijewel3d.com",
+              "fileId": "eLokuMjOQ8aVFCr7-G6T0w",
+              "tags": []
+            },
+            {
+              "name": "2Ct Pear",
+              "title": "2Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_pear_0bc3a4985e.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_pear_ab92ea5c13.png?h=ijewel3d.com",
+              "fileId": "E48x-pntQvq44NvADwIXvA",
+              "tags": []
+            },
+            {
+              "name": "3Ct Pear",
+              "title": "3Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_pear_986f1a06ea.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_pear_00912c51ba.png?h=ijewel3d.com",
+              "fileId": "PLEiDgaZReeI7zZUbvGXyw",
+              "tags": []
+            },
+            {
+              "name": "4Ct Pear",
+              "title": "4Ct Pear",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_pear_5f429e92fe.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_pear_4023be78c6.png?h=ijewel3d.com",
+              "fileId": "aJ-nMMRiRxKobvskg49Ghg",
               "tags": []
             },
             {
               "name": "5Ct Pear",
               "title": "5Ct Pear",
-              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_pear_ff6f87a4cf.glb",
-              "icon": "https://amikob.ijewel3d.com/files/5_ct_pear_1ffc78c00d.png?h=ijewel3d.com",
-              "fileId": "LsB1V1eeR72ARbimI-WU_g",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_pear_2dadf857fa.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_pear_55e281f897.png?h=ijewel3d.com",
+              "fileId": "F2ugwNCqQ-O_jWjTzEppCg",
+              "tags": []
+            },
+            {
+              "name": "1Ct Round",
+              "title": "1Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_round_189cff35ba.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_round_d9be99018c.png?h=ijewel3d.com",
+              "fileId": "S3zYA0G1RNuRgFpCYnS91Q",
+              "tags": []
+            },
+            {
+              "name": "2Ct Round",
+              "title": "2Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_round_13ddafbc4a.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_round_51d8dae1eb.png?h=ijewel3d.com",
+              "fileId": "NoK8VvBXTXmMRgp0OF-kAw",
+              "tags": []
+            },
+            {
+              "name": "3Ct Round",
+              "title": "3Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_round_2a4975fc26.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_round_abfb2e0757.png?h=ijewel3d.com",
+              "fileId": "OZj6M_TSS3qj0EvwVUR99w",
+              "tags": []
+            },
+            {
+              "name": "4Ct Round",
+              "title": "4Ct Round",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_round_41bf80b75f.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_round_4179c235a4.png?h=ijewel3d.com",
+              "fileId": "MscWVWZEStGA7TqPQM7oZA",
               "tags": []
             },
             {
               "name": "5Ct Round",
               "title": "5Ct Round",
-              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_round_e0831a0ef3.glb",
-              "icon": "https://amikob.ijewel3d.com/files/5_ct_round_6fd1517ea3.png?h=ijewel3d.com",
-              "fileId": "LiZ-QMJoRa2J6h8rC10mxA",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_round_1efb68ac1d.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_round_b4fb429ab7.png?h=ijewel3d.com",
+              "fileId": "AiiqjjmjSHKmcv7UYfXLsw",
               "tags": []
             },
             {
-              "name": "5Ct Square Cushion",
-              "title": "5Ct Square Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_square_cushion_a018b3de16.glb",
-              "icon": "https://amikob.ijewel3d.com/files/5_ct_square_cushion_314a1e9bd6.png?h=ijewel3d.com",
-              "fileId": "d-Io1PWSSmWOylU-DL2bLA",
+              "name": "1Ct Square Cushion",
+              "title": "1Ct Square Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1_ct_square_cushion_f0d2aaefdd.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1_ct_square_cushion_2709894315.png?h=ijewel3d.com",
+              "fileId": "PUwRinadS-W-Sotd8ZJSkQ",
               "tags": []
             },
             {
               "name": "2Ct Square Cushion",
               "title": "2Ct Square Cushion",
-              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_square_cushion_6a0bb0a196.glb",
-              "icon": "https://amikob.ijewel3d.com/files/2_ct_square_cushion_ccb99e56b3.png?h=ijewel3d.com",
-              "fileId": "ROnUh7o_TYuVO1HOrsbm4A",
+              "modelUrl": "https://amikob.ijewel3d.com/files/2_ct_square_cushion_72fe3953e6.glb",
+              "icon": "https://amikob.ijewel3d.com/files/2_ct_square_cushion_9f2c4a3fd6.png?h=ijewel3d.com",
+              "fileId": "NGGVa9CISwOclWRRY42anw",
+              "tags": []
+            },
+            {
+              "name": "3Ct Square Cushion",
+              "title": "3Ct Square Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_square_cushion_1d0e6a5081.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_square_cushion_2090d56230.png?h=ijewel3d.com",
+              "fileId": "WRDXgulsSo-2MzvBvruG7Q",
+              "tags": []
+            },
+            {
+              "name": "4Ct Square Cushion",
+              "title": "4Ct Square Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_square_cushion_2938669250.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_square_cushion_cc5d03d718.png?h=ijewel3d.com",
+              "fileId": "BWzERGdcRgmVq9Utbu58qQ",
+              "tags": []
+            },
+            {
+              "name": "5Ct Square Cushion",
+              "title": "5Ct Square Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_square_cushion_2dd897e656.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_square_cushion_d588440f4c.png?h=ijewel3d.com",
+              "fileId": "OvIbRxr8SOKkjMFvsjIm-g",
               "tags": []
             }
           ],
-          "fileId": "ZJl2lCo3SGWiiIFdIg9mLQ"
+          "fileId": "B6DZ8woxTUWsrDDKI5bj-w"
         },
         {
           "name": "Band",
@@ -340,39 +340,39 @@
           "visible": false,
           "variations": [
             {
-              "name": "4ct-5ct Plain",
-              "title": "4ct-5ct Plain",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4ct_5ct_plain_a9686e3cbb_fc83dc06c6.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4ct_5ct_plain_9fb50a695d_6c0ad00bfc.png?h=ijewel3d.com",
-              "fileId": "fxGCx3N7S_eqT8a1i-basg",
-              "tags": []
-            },
-            {
-              "name": "4ct-5ct Pave",
-              "title": "4ct-5ct Pave",
-              "modelUrl": "https://amikob.ijewel3d.com/files/4ct_5ct_pave_a8739b95d5_ccaf073a3a.glb",
-              "icon": "https://amikob.ijewel3d.com/files/4ct_5ct_pave_e3a4d398a5_7999316af5.png?h=ijewel3d.com",
-              "fileId": "flpCeoEuQMeAb8I1wyNcow",
-              "tags": []
-            },
-            {
               "name": "1ct-3ct Plain",
               "title": "1ct-3ct Plain",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1ct_3ct_plain_57a4eaa9d9_4641f8596b.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1ct_3ct_plain_951dcf8de8_1b0843b649.png?h=ijewel3d.com",
-              "fileId": "Vz2NYm0GQ8CxSduurM80mw",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1ct_3ct_plain_57a4eaa9d9.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1ct_3ct_plain_951dcf8de8.png?h=ijewel3d.com",
+              "fileId": "KKOZ8GdBTbSHCu3iuNcIrQ",
               "tags": []
             },
             {
               "name": "1ct-3ct Pave",
               "title": "1ct-3ct Pave",
-              "modelUrl": "https://amikob.ijewel3d.com/files/1ct_3ct_pave_e20dfe1436_eab879ac71.glb",
-              "icon": "https://amikob.ijewel3d.com/files/1ct_3ct_pave_620f925b16_a28389a375.png?h=ijewel3d.com",
-              "fileId": "UihLtSdsQN-q8OwXq4SnxA",
+              "modelUrl": "https://amikob.ijewel3d.com/files/1ct_3ct_pave_e20dfe1436.glb",
+              "icon": "https://amikob.ijewel3d.com/files/1ct_3ct_pave_620f925b16.png?h=ijewel3d.com",
+              "fileId": "fyn0uDMfSY6Wla-P76NAeA",
+              "tags": []
+            },
+            {
+              "name": "4ct-5ct Plain",
+              "title": "4ct-5ct Plain",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4ct_5ct_plain_a9686e3cbb.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4ct_5ct_plain_9fb50a695d.png?h=ijewel3d.com",
+              "fileId": "Zc0G0SdETzeRtmvMLvJpmQ",
+              "tags": []
+            },
+            {
+              "name": "4ct-5ct Pave",
+              "title": "4ct-5ct Pave",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4ct_5ct_pave_a8739b95d5.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4ct_5ct_pave_e3a4d398a5.png?h=ijewel3d.com",
+              "fileId": "ZGu0ppzGQm2dO_XekrDShQ",
               "tags": []
             }
           ],
-          "fileId": "WJ9wPjyERkK_TaCb8SVCVg"
+          "fileId": "KDIFKwUySiy2QgTEUef9pQ"
         }
       ]
     },
@@ -1796,19 +1796,11 @@
         "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
       },
       {
-        "name": "Gem 01 ND344P Elongated Cushion",
+        "name": "Gem 01 ND344P Round",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 01 ND344P Elongated Radiant",
-        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
-      },
-      {
-        "name": "Gem 01 ND344P Emerald",
-        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
-      },
-      {
-        "name": "Gem 01 ND344P Marquise",
+        "name": "Gem 03 ND344P Round",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1816,15 +1808,11 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 01 ND344P Pear",
+        "name": "Gem 03 ND344P Oval",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 01 ND344P Round",
-        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
-      },
-      {
-        "name": "Gem 01 ND344P Square Cushion",
+        "name": "Gem 01 ND344P Elongated Cushion",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1832,7 +1820,7 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 03 ND344P Elongated Radiant",
+        "name": "Gem 01 ND344P Emerald",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1840,11 +1828,15 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 03 ND344P Marquise",
+        "name": "Gem 01 ND344P Elongated Radiant",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 03 ND344P Oval",
+        "name": "Gem 03 ND344P Elongated Radiant",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 ND344P Pear",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1852,7 +1844,15 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 03 ND344P Round",
+        "name": "Gem 01 ND344P Marquise",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 03 ND344P Marquise",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 ND344P Square Cushion",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
