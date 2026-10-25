@@ -1,13 +1,13 @@
 // ND1055: 8 shapes x 3/4/5/6/8 ct = 40 complete rings. No east-west versions and no bands.
 // The orientation field is kept so East-West or band variants can be added later without
 // changing the app's state model.
-export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'square_cushion', 'square_radiant'];
+export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'cushion', 'radiant'];
 export const CARATS = [3, 4, 5, 6, 7, 8, 9, 10];
 export const EAST_WEST = new Set();
 export const COLORS = ['white', 'yellow', 'rose'];
-export const RING_COUNT = 62;
+export const RING_COUNT = 64;
 // Shape:carat combinations that were never made.
-export const MISSING = new Set(['elongated_cushion:3', 'elongated_cushion:4']);
+export const MISSING = new Set([]);
 export const available = (shape, carat) => !MISSING.has(`${shape}:${carat}`);
 export const label = value => value.replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
 export const MATERIAL_TARGETS = { headGold: 'Metal 01', ringGold: 'Metal 02' };
