@@ -1,7 +1,7 @@
 // ND1041: 8 shapes x 3/4/5/6/8 ct = 40 complete rings. No east-west versions and no bands.
 // The orientation field is kept so East-West or band variants can be added later without
 // changing the app's state model.
-export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'square_radiant', 'asscher'];
+export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'radiant', 'asscher'];
 export const CARATS = [4, 5, 6, 8, 10];
 export const EAST_WEST = new Set();
 export const COLORS = ['white', 'yellow', 'rose'];
