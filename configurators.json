@@ -986,7 +986,7 @@
       "id": "valeria",
       "name": "Valeria",
       "path": "valeria/",
-      "ijewelProjectId": "B2OfIEYqTHCetDoB4ExULg",
+      "ijewelProjectId": "FO2uB8T7SpS24EJg1qvOkg",
       "shapes": [
         "Round",
         "Oval",
@@ -1010,8 +1010,7 @@
       },
       "eastWest": false,
       "metalZones": [
-        "Head",
-        "Shank",
+        "Gold",
         "Band"
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_edf7a46449.png?h=ijewel3d.com",
