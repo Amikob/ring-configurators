@@ -27,6 +27,12 @@ if (materials.variations.map(v => v.uuid).join() !== 'Metal 01,Metal 02') throw 
 // Source files: Metal 01 = SHANK (constant mesh, thin), Metal 02 = HEAD (variable) on every ring -> swap UI titles.
 materials.variations.find(v => v.uuid === 'Metal 01').title = 'Shank gold';
 materials.variations.find(v => v.uuid === 'Metal 02').title = 'Head gold';
+// LAYER ROLES (redone files): head=Metal 02, shank=('Metal 01', 'Metal 03') by default; per-ring overrides in app.js LAYER_ROLES. One UI group per metal layer actually used.
+{ const tpl = materials.variations.find(v => v.uuid === 'Metal 01');
+  const USED = ["Metal 01", "Metal 02", "Metal 03"]; const HEAD = 'Metal 02', SHANK = ["Metal 01", "Metal 03"];  // SHANK may be one layer or a list (shank split over several metal layers)
+  const SHANK1 = [].concat(SHANK)[0];
+  materials.variations = USED.map(u => ({ ...structuredClone(tpl), uuid: u, title: u === HEAD ? 'Head gold' : u === SHANK1 ? 'Shank gold' : `Extra gold (${u})` })); }
+const USED_METALS = ["Metal 01", "Metal 02", "Metal 03"];
 const mapping = baseline.materialConfig.mapping;
 const diamond = mapping.find(item => item.name.startsWith('Gem 01 '))?.path;
 const metal = mapping.find(item => item.name === 'Metal 01')?.path;
@@ -34,9 +40,9 @@ if (!diamond || !metal) throw new Error('Baseline material presets missing');
 
 // BN635 has only a center stone per ring: layer "Gem 01 BN635 <Shape>".
 const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Elongated Radiant', 'Emerald', 'Marquise', 'Pear'];
-baseline.materialConfig.mapping = ['Metal 01', 'Metal 02'].map(name => ({ name, path: metal }));
-for (const name of ["Gem 01 ND81 Elongated Cushion", "Gem 01 ND81 Elongated Radiant", "Gem 01 ND81 Emerald", "Gem 01 ND81 Marquise", "Gem 01 ND81 Oval", "Gem 01 ND81 Pear", "Gem 01 ND81 Round"]) baseline.materialConfig.mapping.push({ name, path: diamond });
-if (SHAPES.some(s => !["Gem 01 ND81 Elongated Cushion", "Gem 01 ND81 Elongated Radiant", "Gem 01 ND81 Emerald", "Gem 01 ND81 Marquise", "Gem 01 ND81 Oval", "Gem 01 ND81 Pear", "Gem 01 ND81 Round"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
+baseline.materialConfig.mapping = USED_METALS.map(name => ({ name, path: metal }));
+for (const name of ["Gem 01 BN635 Elongated Cushion", "Gem 01 BN635 Elongated Radiant", "Gem 01 BN635 Emerald", "Gem 01 BN635 Marquise", "Gem 01 BN635 Oval", "Gem 01 BN635 Pear", "Gem 01 BN635 Round", "Gem 02 BN635 Elongated Cushion", "Gem 02 BN635 Elongated Radiant", "Gem 02 BN635 Emerald", "Gem 02 BN635 Marquise", "Gem 02 BN635 Oval", "Gem 02 BN635 Pear", "Gem 02 BN635 Round", "Gem 04 BN635 Elongated Cushion", "Gem 04 BN635 Elongated Radiant", "Gem 04 BN635 Emerald", "Gem 04 BN635 Marquise", "Gem 04 BN635 Oval", "Gem 04 BN635 Pear", "Gem 04 BN635 Round", "Gem Hidden_old"]) baseline.materialConfig.mapping.push({ name, path: diamond });
+if (SHAPES.some(s => !["Gem 01 BN635 Elongated Cushion", "Gem 01 BN635 Elongated Radiant", "Gem 01 BN635 Emerald", "Gem 01 BN635 Marquise", "Gem 01 BN635 Oval", "Gem 01 BN635 Pear", "Gem 01 BN635 Round", "Gem 02 BN635 Elongated Cushion", "Gem 02 BN635 Elongated Radiant", "Gem 02 BN635 Emerald", "Gem 02 BN635 Marquise", "Gem 02 BN635 Oval", "Gem 02 BN635 Pear", "Gem 02 BN635 Round", "Gem 04 BN635 Elongated Cushion", "Gem 04 BN635 Elongated Radiant", "Gem 04 BN635 Emerald", "Gem 04 BN635 Marquise", "Gem 04 BN635 Oval", "Gem 04 BN635 Pear", "Gem 04 BN635 Round", "Gem Hidden_old"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;
