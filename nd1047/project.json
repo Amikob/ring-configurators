@@ -321,6 +321,14 @@
               "icon": "https://amikob.ijewel3d.com/files/6_ct_round_92bdb8c614.png?h=ijewel3d.com",
               "fileId": "Fnsi3c4xQ_WdufEGgoJtkA",
               "tags": []
+            },
+            {
+              "name": "6Ct Old Cut Cushion",
+              "title": "6Ct Old Cut Cushion",
+              "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_old_cut_cushion_c31efa9fc2.glb",
+              "icon": "https://amikob.ijewel3d.com/files/6_ct_old_cut_cushion_411d9ce32d.png?h=ijewel3d.com",
+              "fileId": "eszVKwh_STe9iWCxv3FMYA",
+              "tags": []
             }
           ],
           "fileId": "WYJkDSe_Q9eJIKPhoLeUTA"
@@ -1722,14 +1730,6 @@
         "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
       },
       {
-        "name": "Gem 01 ND1047 Round",
-        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
-      },
-      {
-        "name": "Gem 01 ND1047 Oval",
-        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
-      },
-      {
         "name": "Gem 01 ND1047 Elongated Cushion",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
@@ -1750,7 +1750,15 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
+        "name": "Gem 01 ND1047 Oval",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
         "name": "Gem 01 ND1047 Pear",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 ND1047 Round",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       }
     ],
