@@ -1,4 +1,4 @@
-import { SHAPES, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=nd1061-1';
+import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=nd1061-1';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=nd1061-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd1061-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nd1061-1';
@@ -10,7 +10,10 @@ import { manageModelResources } from './model-resources.js?v=nd1061-1';
 import { captureView, centerView } from './view-controls.js?v=nd1061-1';
 
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'X_aH9Y3WTeCE95EBGa_PGQ';
+const PROJECT_ID = 'QWpKXqXhSpS-dh8F2rqWhA';
+// Redone (v2) files: head/shank metal layers (checked from the GLBs by geometry).
+const LAYER_ROLES = {"1Ct Oval East-West": {"ringGold": "Metal 03"}, "4Ct Oval East-West": {"ringGold": "Metal 03"}};
+const DEFAULT_LAYERS = {"headGold": "Metal 01", "ringGold": "Metal 02"};
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
@@ -36,7 +39,7 @@ for (const shape of SHAPES) {
   const icon = document.createElement('img'); icon.src = `./assets/shapes/${shape}.png`; icon.alt = ''; icon.width = 38; icon.height = 38;
   const text = document.createElement('span'); text.textContent = label(shape); button.append(icon, text); button.setAttribute('aria-label', label(shape));
 }
-for (let ct = 1; ct <= 5; ct++) makeChoice('carats', `${ct} ct`, ct, 'carat', '');
+for (const ct of CARATS) makeChoice('carats', `${ct} ct`, ct, 'carat', '');
 for (const [value, text] of [['ns', 'North-South'], ['ew', 'East-West']]) makeChoice('orientations', text, value, 'orientation', '');
 $('pose-toggle').addEventListener('click', () => choose({pose:desired.pose === 'flat' ? 'upright' : 'flat'}));
 $('center-view').addEventListener('click', () => {
@@ -49,13 +52,13 @@ for (const key of ['headGold','ringGold']) for (const color of COLORS) {
 function render() {
   for (const {button,key,value} of controls) {
     button.setAttribute('aria-pressed', String(desired[key] === value));
-    button.disabled = !ready || tryonLoading || tryonSession?.phase === 'starting' || (key === 'orientation' && value === 'ew' && !EAST_WEST.has(desired.shape));
+    button.disabled = !ready || tryonLoading || tryonSession?.phase === 'starting' || (key === 'orientation' && value === 'ew' && !EAST_WEST.has(desired.shape)) || (key === 'carat' && !available(desired.shape, value));
   }
   $('orientation-field').hidden = !EAST_WEST.has(desired.shape);
   $('carat-label').textContent = `${desired.carat} ct`;
   $('shape-label').textContent = label(desired.shape);
   $('update-status').textContent = busy ? 'Updating...' : '';
-  if (applied) $('selection-summary').textContent = `${label(applied.shape)} / ${applied.carat} ct / ${applied.orientation.toUpperCase()}`;
+  if (applied) $('selection-summary').textContent = `${label(applied.shape)} / ${applied.carat} ct${EAST_WEST.has(applied.shape) ? ` / ${applied.orientation.toUpperCase()}` : ''}`;
   document.body.dataset.ready = String(ready);
   document.body.dataset.busy = String(busy);
   $('viewer').setAttribute('aria-busy', String(busy));
@@ -99,15 +102,20 @@ function materialFor(group, color) {
     return color === 'white' ? name.includes('whitegold') : color === 'rose' ? name.includes('rosegold') : name.includes('gold') && !name.includes('white') && !name.includes('rose');
   });
 }
-async function applyGold(key, color) {
-  const group = groups[key];
-  const material = materialFor(group,color);
-  if (!material) throw new Error(`${label(color)} gold is missing from ${key === 'ringGold' ? 'Shank' : 'Head'} gold.`);
-  await materials.applyVariation(group,material.uuid);
+async function applyGold(key, color, ringName) {
+  // one control may drive several metal layers (shank split over Metal 01 + Metal 03 ...)
+  for (const layer of [].concat(LAYER_ROLES[ringName]?.[key] || DEFAULT_LAYERS[key])) {
+    const group = materials.variations.find(g => g.uuid === layer) || groups[key];
+    const material = materialFor(group,color);
+    if (!material) throw new Error(`${label(color)} gold is missing from ${key === 'ringGold' ? 'Shank' : 'Head'} gold.`);
+    await materials.applyVariation(group,material.uuid);
+  }
 }
 async function choose(patch) {
   if (!ready || tryonLoading || tryonSession?.phase === 'starting') return;
   if (patch.shape && !EAST_WEST.has(patch.shape)) patch.orientation = 'ns';
+  { const shape = patch.shape || desired.shape, carat = patch.carat ?? desired.carat;
+    if (!available(shape, carat)) patch.carat = CARATS.filter(ct => available(shape, ct)).sort((x, y) => Math.abs(x - carat) - Math.abs(y - carat) || y - x)[0]; }
   desired = normalizePose({ ...desired, ...patch }); render(); await drain();
 }
 async function drain() {
@@ -167,8 +175,8 @@ async function drain() {
         loadedRing = ring.variation;
       }
       // Presets initialize the diamonds; restore the independently chosen gold afterward.
-      if (ringChanged || !applied || applied.headGold !== target.headGold) await applyGold('headGold',target.headGold);
-      if (ringChanged || !applied || applied.ringGold !== target.ringGold) await applyGold('ringGold',target.ringGold);
+      if (ringChanged || !applied || applied.headGold !== target.headGold) await applyGold('headGold',target.headGold,ring.variation.name);
+      if (ringChanged || !applied || applied.ringGold !== target.ringGold) await applyGold('ringGold',target.ringGold,ring.variation.name);
       if (ringChanged) {
         refreshDiamondCuts(viewer, profile);
         capturesReleased = false;
@@ -409,7 +417,7 @@ if (document.modelContext?.registerTool) {
   const definitions = [
     { name:'get_nd1061_diagnostics',title:'Read viewer diagnostics',description:'Read resource counts and view transforms for diagnosing repeated model changes. Does not alter the viewer.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>viewerDiagnostics(viewer,window.Cache) },
     { name:'get_nd1061_configuration',title:'Read ND1061 selection',description:'Read the current ND1061 ring selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
-    { name:'configure_nd1061',title:'Configure ND1061',description:'Choose a ring shape, orientation, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'integer',minimum:1,maximum:5},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
+    { name:'configure_nd1061',title:'Configure ND1061',description:'Choose a ring shape, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'number',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
       if (!ready) throw new Error('ND1061 is not ready.');
       if (busy) throw new Error('A selection is still loading. Please wait.');
       if (tryonLoading || tryonSession?.phase === 'starting') throw new Error('Try-On is still starting. Please wait.');

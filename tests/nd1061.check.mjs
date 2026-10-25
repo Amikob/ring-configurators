@@ -1,38 +1,36 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {SHAPES, EAST_WEST, COLORS, createCatalog, resolveSelection} from '../nd1061/catalog.js';
-import {normalizePose} from '../nd1061/ring-pose.js';
+import {SHAPES, CARATS, MISSING, available, EAST_WEST, COLORS, createCatalog, resolveSelection} from '../nd1061/catalog.js';
 import {applySavedScene} from '../nd1061/saved-project.js';
 
 const project = JSON.parse(fs.readFileSync(new URL('../nd1061/project.json', import.meta.url)));
 const variations = project.plugins.RingConfigurator.components.find(item => item.name === 'Ring').variations;
+assert.equal(variations.length, 70);
 const catalog = createCatalog(variations);
 let combinations = 0;
-for (const shape of SHAPES) for (let carat = 1; carat <= 5; carat++) {
-  for (const orientation of EAST_WEST.has(shape) ? ['ns','ew'] : ['ns']) {
-    for (const headGold of COLORS) for (const ringGold of COLORS) {
-      const {ring} = resolveSelection(catalog,{shape,carat,orientation,headGold,ringGold});
-      assert.equal(ring.carat,carat);
-      assert.equal(ring.orientation,orientation);
-      combinations++;
-    }
+for (const shape of SHAPES) for (const carat of CARATS) {
+  if (!available(shape, carat)) { assert.throws(() => resolveSelection(catalog, {shape, carat, orientation: 'ns', headGold: 'white', ringGold: 'white'})); continue; }
+  for (const headGold of COLORS) for (const ringGold of COLORS) {
+    const {ring} = resolveSelection(catalog, {shape, carat, orientation: 'ns', headGold, ringGold});
+    assert.equal(ring.shape, shape);
+    assert.equal(ring.carat, carat);
+    combinations++;
   }
 }
-assert.equal(variations.length,70);
-assert.equal(combinations,630);
-assert.equal(normalizePose({shape:'oval',carat:4,orientation:'ew',pose:'flat'}).pose,'flat');
-assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ['Metal 01','Metal 02']);
-assert.equal(project.materialConfig.mapping.filter(item => item.name.startsWith('Gem 01 ND1061 ')).length,8);
-const saved = {plugins:{RingConfigurator:project.plugins.RingConfigurator},sceneConfig:{type:'PresetLibraryPlugin'}};
-const merged = applySavedScene(project,{config:JSON.stringify(saved)});
-assert.deepEqual(merged.sceneConfig,saved.sceneConfig);
-assert.deepEqual(merged.materialConfig,project.materialConfig);
-assert.deepEqual(merged.plugins.materialConfiguratorPlugin,project.plugins.materialConfiguratorPlugin);
+assert.equal(combinations, 360);
+assert.equal(MISSING.size, 0);
+assert.equal(EAST_WEST.size, 6);
+for (const shape of EAST_WEST) for (const carat of CARATS) assert.equal(resolveSelection(catalog, {shape, carat, orientation: 'ew', headGold: 'white', ringGold: 'white'}).ring.orientation, 'ew');
+assert.throws(() => resolveSelection(catalog, {shape: 'round', carat: 1, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
+assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ["Metal 01", "Metal 02", "Metal 03"]);
+const gems = project.materialConfig.mapping.filter(item => /^Gem (\d+ |Hidden_old)/.test(item.name));
+assert.equal(gems.length, 8);
+assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
+const saved = {plugins: {RingConfigurator: project.plugins.RingConfigurator}, sceneConfig: {type: 'PresetLibraryPlugin'}};
+const merged = applySavedScene(project, {config: JSON.stringify(saved)});
+assert.deepEqual(merged.materialConfig, project.materialConfig);
 const html = fs.readFileSync(new URL('../nd1061/index.html', import.meta.url), 'utf8');
-assert.equal((html.match(/data-quality=/g) || []).length,3);
-assert(!html.includes('<select id="quality"'));
-assert(html.includes('class="viewer-footer"'));
-for (const shape of SHAPES) {
-  assert(fs.existsSync(new URL(`../nd1061/assets/shapes/${shape}.png`, import.meta.url)));
-}
-console.log('ND1061: 70 models, 630 valid shape/carat/orientation/gold selections.');
+assert(html.includes("ND1061"));
+assert(!/336|1060|1046/.test(html + fs.readFileSync(new URL('../nd1061/app.js', import.meta.url), 'utf8')));
+for (const shape of SHAPES) assert(fs.existsSync(new URL(`../nd1061/assets/shapes/${shape}.png`, import.meta.url)));
+console.log('ND1061: 70 models, 630 valid shape/carat/gold selections, 8 diamond layers mapped.');

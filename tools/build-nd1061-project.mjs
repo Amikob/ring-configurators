@@ -2,7 +2,7 @@
 // plus the live ND1061 iJewel configurator saved at tools/snapshots/nd1061-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/B9Apa6RnT0K2jyA0U_Q6pw?select=id,name,file,config' > tools/snapshots/nd1061-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/QWpKXqXhSpS-dh8F2rqWhA?select=id,name,file,config' > tools/snapshots/nd1061-public.json
 // then run: node tools/build-nd1061-project.mjs
 import fs from 'node:fs';
 
@@ -16,7 +16,7 @@ const ring = source?.components?.find(component => component.name === 'Ring');
 if (!ring || ring.variations.length !== 70) throw new Error(`Expected 70 ND1061 ring variations, found ${ring?.variations.length}`);
 
 ring.visible = true;
-ring.selectedIndex = ring.variations.findIndex(item => item.name === '3Ct Oval');
+ring.selectedIndex = ring.variations.findIndex(item => item.name === '3Ct Oval North-South');
 if (ring.selectedIndex < 0) throw new Error('Missing 3Ct Oval default');
 baseline.name = "ND1061";
 baseline.plugins.RingConfigurator = { ...source, components: [ring] };
@@ -24,6 +24,12 @@ baseline.plugins.RingConfigurator = { ...source, components: [ring] };
 // Metal 01 = head, Metal 02 = shank (verified in the downloaded GLBs).
 const materials = baseline.plugins.materialConfiguratorPlugin;
 if (materials.variations.map(v => v.uuid).join() !== 'Metal 01,Metal 02') throw new Error('Unexpected baseline metal groups');
+// LAYER ROLES (redone files): head=Metal 01, shank=Metal 02 by default; per-ring overrides in app.js LAYER_ROLES. One UI group per metal layer actually used.
+{ const tpl = materials.variations.find(v => v.uuid === 'Metal 01');
+  const USED = ["Metal 01", "Metal 02", "Metal 03"]; const HEAD = 'Metal 01', SHANK = "Metal 02";  // SHANK may be one layer or a list (shank split over several metal layers)
+  const SHANK1 = [].concat(SHANK)[0];
+  materials.variations = USED.map(u => ({ ...structuredClone(tpl), uuid: u, title: u === HEAD ? 'Head gold' : u === SHANK1 ? 'Shank gold' : `Extra gold (${u})` })); }
+const USED_METALS = ["Metal 01", "Metal 02", "Metal 03"];
 const mapping = baseline.materialConfig.mapping;
 const diamond = mapping.find(item => item.name.startsWith('Gem 01 '))?.path;
 const metal = mapping.find(item => item.name === 'Metal 01')?.path;
@@ -31,7 +37,7 @@ if (!diamond || !metal) throw new Error('Baseline material presets missing');
 
 // ND1061 has only a center stone per ring: layer "Gem 01 ND1061 <Shape>".
 const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Emerald', 'Marquise', 'Old Cut Cushion', 'Pear', 'Asscher'];
-baseline.materialConfig.mapping = ['Metal 01', 'Metal 02'].map(name => ({ name, path: metal }));
+baseline.materialConfig.mapping = USED_METALS.map(name => ({ name, path: metal }));
 for (const name of ["Gem 01 ND1061 Asscher", "Gem 01 ND1061 Elongated Cushion", "Gem 01 ND1061 Emerald", "Gem 01 ND1061 Marquise", "Gem 01 ND1061 Old Cut Cushion", "Gem 01 ND1061 Oval", "Gem 01 ND1061 Pear", "Gem 01 ND1061 Round"]) baseline.materialConfig.mapping.push({ name, path: diamond });
 if (SHAPES.some(s => !["Gem 01 ND1061 Asscher", "Gem 01 ND1061 Elongated Cushion", "Gem 01 ND1061 Emerald", "Gem 01 ND1061 Marquise", "Gem 01 ND1061 Old Cut Cushion", "Gem 01 ND1061 Oval", "Gem 01 ND1061 Pear", "Gem 01 ND1061 Round"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
