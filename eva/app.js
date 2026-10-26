@@ -2,7 +2,7 @@ import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, res
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=eva-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=eva-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
-import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-5';
+import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-6';
 import { manageTryonSession } from './tryon-session.js?v=eva-1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=eva-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=eva-1';

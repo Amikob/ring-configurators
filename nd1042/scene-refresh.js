@@ -79,7 +79,7 @@ export function sceneReadiness(viewer) {
   const frames = viewer.renderer?.frameCount;
   return { pendingGems, pendingTextures, metals, frames, wanted, converged: !Number.isFinite(frames) || frames >= wanted };
 }
-export function whenGemsShaded(viewer, timeoutMs = 8000, convergeMs = 6000) {
+export function whenGemsShaded(viewer, timeoutMs = 8000, convergeMs = 3000) {
   return new Promise(resolve => {
     if (!viewer?.scene?.modelRoot) { resolve(); return; }
     let stable = 0, convergeTimer = 0;
