@@ -7,7 +7,7 @@ import { manageTryonSession } from './tryon-session.js?v=nd1046-1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd1046-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=nd1046-1';
 import { manageModelResources } from './model-resources.js?v=nd1046-1';
-import { captureView, centerView } from './view-controls.js?v=nd1046-1';
+import { captureView, centerView, settleCameraAnimations } from './view-controls.js?v=nd1046-3';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
@@ -184,6 +184,7 @@ async function drain() {
         modelResources?.cleanup();
       }
       applyRenderProfile(viewer, profile, selectedQuality);
+      await settleCameraAnimations(viewer);
       restoreView();
       if (!applied && initialCamera) {
         const c = viewer.scene.activeCamera;
