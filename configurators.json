@@ -331,16 +331,16 @@
       "id": "nd1049",
       "name": "ND1049",
       "path": "nd1049/",
-      "ijewelProjectId": "AO5SX214REyP6y4SWb5vQA",
+      "ijewelProjectId": "M_jcfiHERf6GbLab_hpXmw",
       "shapes": [
         "Round",
         "Oval",
-        "Asscher",
         "Elongated Cushion",
         "Emerald",
         "Marquise",
         "Old Cut Cushion",
-        "Square Cushion"
+        "Square Cushion",
+        "Asscher"
       ],
       "carats": [
         2,
@@ -353,7 +353,7 @@
         "Head",
         "Shank"
       ],
-      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_e8aed8d322.png?h=ijewel3d.com",
+      "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_e5c81e6f75.png?h=ijewel3d.com",
       "status": "new"
     },
     {
