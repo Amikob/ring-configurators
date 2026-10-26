@@ -2,12 +2,12 @@ import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, res
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=nd366p-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd366p-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
-import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=nd366p-1';
+import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-4';
 import { manageTryonSession } from './tryon-session.js?v=nd366p-1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd366p-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=nd366p-1';
 import { manageModelResources } from './model-resources.js?v=nd366p-1';
-import { captureView, centerView } from './view-controls.js?v=nd366p-1';
+import { captureView, centerView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
@@ -18,7 +18,7 @@ let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vt
 let tryonResuming = false, ringPose;
 let modelResources, selectedQuality, initialCamera;
 try { selectedQuality = Number(localStorage.getItem('nd366p-render-quality')) || undefined; } catch {}
-let desired = { shape: 'oval', carat: 3, orientation: 'ns', headGold: 'white', ringGold: 'yellow', pose: 'upright' };
+let desired = { shape: 'oval', carat: 3, orientation: 'ns', headGold: 'white', ringGold: 'yellow', pose: 'flat' };
 let portalStart = null;
 const PAGE_DEFAULTS = { ...desired };
 let applied = null;
@@ -123,7 +123,7 @@ async function drain() {
   tryonResuming = Boolean(resumeView);
   busy = true; clearError(); render();
   let fading = false, shadowsChanged = false, capturesReleased = false;
-  const finishSceneUpdate = beginSceneUpdate(viewer);
+  const finishSceneUpdate = beginSceneUpdate(viewer, { hold: !resumeView });
   // Never replace meshes or release their textures while Try-On owns the scene.
   try {
     if (resumeView) {
@@ -151,7 +151,7 @@ async function drain() {
       }
       const target = { ...desired };
       const restoreView = applied && !resumeView ? captureView(viewer) : () => {};
-      const enteringRest = target.pose === 'flat' && applied?.pose !== 'flat';
+      const keepRatio = applied && !resumeView ? zoomRatio(viewer) : null;
       const {ring} = resolveSelection(catalog,target);
       const ringChanged = loadedRing !== ring.variation;
       // Material-only changes must retain the resting transform and view.
@@ -184,6 +184,7 @@ async function drain() {
         modelResources?.cleanup();
       }
       applyRenderProfile(viewer, profile, selectedQuality);
+      await settleCameraAnimations(viewer);
       restoreView();
       if (!applied && initialCamera) {
         const c = viewer.scene.activeCamera;
@@ -191,7 +192,9 @@ async function drain() {
         c.setCameraOptions({position:[initialCamera.position.x,initialCamera.position.y,initialCamera.position.z],target:[initialCamera.target.x,initialCamera.target.y,initialCamera.target.z],fov:initialCamera.camOptions.fov});
         centerView(viewer);
       }
-      if (enteringRest || applied && target.pose !== applied.pose) centerView(viewer, {resting:enteringRest});
+      // The fixed head-side front view is for the very first load only; later pose toggles keep the user's camera direction and zoom.
+      if (!applied) centerView(viewer, {resting:target.pose === 'flat'});
+      else if (target.pose !== applied.pose) centerView(viewer, {keepRatio});
       shadowsChanged ||= target.pose !== applied?.pose;
       if (!applied && portalStart?.settings?.angle) applyStartAngle(viewer, portalStart.settings.angle);
       applied = target;
@@ -257,7 +260,7 @@ async function setup() {
     for (const key of ['headGold','ringGold']) for (const color of COLORS) if (!groups[key] || !materialFor(groups[key],color)) throw new Error(`Missing ${key} ${color}`);
     modelResources = manageModelResources(viewer, [ringComponent]);
     desired = guardDesired(desired, PAGE_DEFAULTS, value => resolveSelection(catalog, value));
-    ready = true; clearTimeout(startupTimeout); render(); await drain(); $('startup').hidden = true;
+    ready = true; clearTimeout(startupTimeout); render(); await drain(); await whenGemsShaded(viewer); $('startup').hidden = true;
   } catch (error) {
     console.error('ND366P setup failed',error);
     $('startup-text').textContent = 'ND366P is not available yet.';
