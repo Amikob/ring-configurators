@@ -11,14 +11,14 @@ import { captureView, centerView } from './view-controls.js?v=orianna-1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'Ek8JGA2aQ0SC1KfjmZ250w';
+const PROJECT_ID = 'Yxmb0zf0TFSoDElCJuPoKg';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
 let tryonResuming = false, ringPose;
 let modelResources, selectedQuality, initialCamera;
 try { selectedQuality = Number(localStorage.getItem('orianna-render-quality')) || undefined; } catch {}
-let desired = { shape: 'oval', carat: 3, orientation: 'ns', headGold: 'white', ringGold: 'yellow', pose: 'upright' };
+let desired = { shape: 'oval', carat: 3, orientation: 'ns', headGold: 'white', ringGold: 'yellow', pose: 'flat' };
 let portalStart = null;
 const PAGE_DEFAULTS = { ...desired };
 let applied = null;
@@ -29,7 +29,7 @@ const qualityButtons = [...document.querySelectorAll('#quality button')];
 function makeChoice(parent, text, value, key, className) {
   const button = document.createElement('button');
   button.type = 'button'; button.className = className; button.textContent = text;
-  button.setAttribute('aria-label', `${key === 'headGold' ? 'Head ' : key === 'ringGold' ? 'Shank ' : ''}${text}`);
+  button.setAttribute('aria-label', `${key === 'headGold' ? 'Head ' : key === 'ringGold' ? 'Gold ' : ''}${text}`);
   button.addEventListener('click', () => choose({ [key]: value }));
   controls.push({ button, key, value }); $(parent).append(button); return button;
 }
@@ -110,6 +110,7 @@ async function applyGold(key, color) {
 }
 async function choose(patch) {
   if (!ready || tryonLoading || tryonSession?.phase === 'starting') return;
+  if (patch.ringGold) patch.headGold = patch.ringGold;
   if (patch.shape && !EAST_WEST.has(patch.shape)) patch.orientation = 'ns';
   { const shape = patch.shape || desired.shape, carat = patch.carat ?? desired.carat;
     if (!available(shape, carat)) patch.carat = CARATS.filter(ct => available(shape, ct)).sort((x, y) => Math.abs(x - carat) - Math.abs(y - carat) || y - x)[0]; }
@@ -172,7 +173,7 @@ async function drain() {
         loadedRing = ring.variation;
       }
       // Presets initialize the diamonds; restore the independently chosen gold afterward.
-      if (ringChanged || !applied || applied.headGold !== target.headGold) await applyGold('headGold',target.headGold);
+      
       if (ringChanged || !applied || applied.ringGold !== target.ringGold) await applyGold('ringGold',target.ringGold);
       if (ringChanged) {
         refreshDiamondCuts(viewer, profile);
@@ -247,7 +248,7 @@ async function setup() {
   try {
     catalog = createCatalog(ringComponent.variations);
     // Keep background and ground rendering consistent with the saved iJewel scene.
-    groups.headGold = groupFor('head gold','metal01'); groups.ringGold = groupFor('shank gold','metal02');
+    groups.ringGold = groupFor('gold','metal01'); groups.headGold = groups.ringGold; // one-piece metal
     if (!groups.headGold || !groups.ringGold) throw new Error('The saved head and shank gold controls are missing.');
     const presets = viewer.getPluginByType('MaterialPresetPlugin');
     if (presets?.mapping) {
@@ -420,7 +421,7 @@ if (document.modelContext?.registerTool) {
   const definitions = [
     { name:'get_orianna_diagnostics',title:'Read viewer diagnostics',description:'Read resource counts and view transforms for diagnosing repeated model changes. Does not alter the viewer.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>viewerDiagnostics(viewer,window.Cache) },
     { name:'get_orianna_configuration',title:'Read Orianna selection',description:'Read the current Orianna ring selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
-    { name:'configure_orianna',title:'Configure Orianna',description:'Choose a ring shape, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'integer',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
+    { name:'configure_orianna',title:'Configure Orianna',description:'Choose a ring shape, carat, gold color, and upright or resting pose. Head and shank are one piece, so headGold always follows ringGold.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'number',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
       if (!ready) throw new Error('Orianna is not ready.');
       if (busy) throw new Error('A selection is still loading. Please wait.');
       if (tryonLoading || tryonSession?.phase === 'starting') throw new Error('Try-On is still starting. Please wait.');

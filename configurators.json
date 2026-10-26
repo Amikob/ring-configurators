@@ -389,16 +389,16 @@
       "id": "orianna",
       "name": "Orianna",
       "path": "orianna/",
-      "ijewelProjectId": "Ek8JGA2aQ0SC1KfjmZ250w",
+      "ijewelProjectId": "Yxmb0zf0TFSoDElCJuPoKg",
       "shapes": [
         "Round",
         "Oval",
-        "Asscher",
         "Elongated Cushion",
         "Elongated Radiant",
         "Emerald",
         "Old Cut Cushion",
-        "Square Radiant"
+        "Square Radiant",
+        "Asscher"
       ],
       "carats": [
         1,
@@ -408,10 +408,9 @@
       "bands": null,
       "eastWest": false,
       "metalZones": [
-        "Head",
-        "Shank"
+        "Ring"
       ],
-      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_6f6feefb53.png?h=ijewel3d.com",
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_0c291ca4b3.png?h=ijewel3d.com",
       "status": "new"
     },
     {
