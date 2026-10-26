@@ -2,7 +2,7 @@
 // plus the live ND1048 iJewel configurator saved at tools/snapshots/nd1048-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/aq1Mle6ZRFKbKB7WMKoHPA?select=id,name,file,config' > tools/snapshots/nd1048-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/CJnfexgdRzOcUrRujTh8bg?select=id,name,file,config' > tools/snapshots/nd1048-public.json
 // then run: node tools/build-nd1048-project.mjs
 import fs from 'node:fs';
 
@@ -32,8 +32,8 @@ if (!diamond || !metal) throw new Error('Baseline material presets missing');
 // ND1048 has only a center stone per ring: layer "Gem 01 ND1048 <Shape>".
 const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Emerald', 'Marquise', 'Old Cut Cushion', 'Square Cushion', 'Square Radiant'];
 baseline.materialConfig.mapping = ['Metal 01', 'Metal 02'].map(name => ({ name, path: metal }));
-for (const name of ["Gem 01 ND1048 Elongated Cushion", "Gem 01 ND1048 Emerald", "Gem 01 ND1048 Marquise", "Gem 01 ND1048 Old Cut Cushion", "Gem 01 ND1048 Oval", "Gem 01 ND1048 Round", "Gem 01 ND1048 Square Cushion", "Gem 01 ND1048 Square Radiant", "Gem 02 ND1048 Elongated Cushion", "Gem 02 ND1048 Emerald", "Gem 02 ND1048 Marquise", "Gem 02 ND1048 Old Cut Cushion", "Gem 02 ND1048 Oval", "Gem 02 ND1048 Round", "Gem 02 ND1048 Square Cushion", "Gem 02 ND1048 Square Radiant"]) baseline.materialConfig.mapping.push({ name, path: diamond });
-if (SHAPES.some(s => !["Gem 01 ND1048 Elongated Cushion", "Gem 01 ND1048 Emerald", "Gem 01 ND1048 Marquise", "Gem 01 ND1048 Old Cut Cushion", "Gem 01 ND1048 Oval", "Gem 01 ND1048 Round", "Gem 01 ND1048 Square Cushion", "Gem 01 ND1048 Square Radiant", "Gem 02 ND1048 Elongated Cushion", "Gem 02 ND1048 Emerald", "Gem 02 ND1048 Marquise", "Gem 02 ND1048 Old Cut Cushion", "Gem 02 ND1048 Oval", "Gem 02 ND1048 Round", "Gem 02 ND1048 Square Cushion", "Gem 02 ND1048 Square Radiant"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
+for (const name of ["Gem 01 ND1048 Elongated Cushion", "Gem 01 ND1048 Emerald", "Gem 01 ND1048 Marquise", "Gem 01 ND1048 Old Cut Cushion", "Gem 01 ND1048 Oval", "Gem 01 ND1048 Round", "Gem 01 ND1048 Square Cushion", "Gem 01 ND1048 Square Radiant", "Gem 02 ND1048 Elongated Cushion", "Gem 02 ND1048 Emerald", "Gem 02 ND1048 Marquise", "Gem 02 ND1048 Old Cut Cushion", "Gem 02 ND1048 Oval", "Gem 02 ND1048 Round", "Gem 02 ND1048 Square Cushion", "Gem 02 ND1048 Square Radiant", "Gem 03 ND1048 Oval", "Gem 04 ND1048 Elongated Cushion", "Gem 04 ND1048 Emerald", "Gem 04 ND1048 Marquise", "Gem 04 ND1048 Old Cut Cushion", "Gem 04 ND1048 Oval", "Gem 04 ND1048 Round", "Gem 04 ND1048 Square Cushion", "Gem 04 ND1048 Square Radiant"]) baseline.materialConfig.mapping.push({ name, path: diamond });
+if (SHAPES.some(s => !["Gem 01 ND1048 Elongated Cushion", "Gem 01 ND1048 Emerald", "Gem 01 ND1048 Marquise", "Gem 01 ND1048 Old Cut Cushion", "Gem 01 ND1048 Oval", "Gem 01 ND1048 Round", "Gem 01 ND1048 Square Cushion", "Gem 01 ND1048 Square Radiant", "Gem 02 ND1048 Elongated Cushion", "Gem 02 ND1048 Emerald", "Gem 02 ND1048 Marquise", "Gem 02 ND1048 Old Cut Cushion", "Gem 02 ND1048 Oval", "Gem 02 ND1048 Round", "Gem 02 ND1048 Square Cushion", "Gem 02 ND1048 Square Radiant", "Gem 03 ND1048 Oval", "Gem 04 ND1048 Elongated Cushion", "Gem 04 ND1048 Emerald", "Gem 04 ND1048 Marquise", "Gem 04 ND1048 Old Cut Cushion", "Gem 04 ND1048 Oval", "Gem 04 ND1048 Round", "Gem 04 ND1048 Square Cushion", "Gem 04 ND1048 Square Radiant"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;
