@@ -6,7 +6,7 @@
 Fixes (every <slug>/ that has app.js + scene-refresh.js, except PRESERVED):
  1. Swap hold + first-load gem shading + lying default
       app.js          beginSceneUpdate(viewer, { hold: !resumeView }); await whenGemsShaded(viewer) before hiding #startup;
-                      default pose 'flat'; scene-refresh.js import (?v=hold-4)
+                      default pose 'flat'; scene-refresh.js import (?v=hold-5)
       scene-refresh.js = shared/scene-refresh.template.js
  2. Lying first view from the head side + SDK fit-to-view animation cancelled
       view-controls.js = shared/view-controls.template.js (headAzimuth, settleCameraAnimations, fitDistance, zoomRatio, keepRatio)
@@ -22,11 +22,12 @@ Pages made by /workspace/ijewel/redo/newpage.py inherit the fixes from the patch
 """
 import re, sys, hashlib, pathlib
 
-FIX_VERSION = '20261026keepcam1'
+FIX_VERSION = '20261026zhold5'
 PRESERVED = {'erica', 'arlet', 'arlet-test', 'ada', 'dior', 'nd1061', 'nd336', 'nd344p'}  # live before this work; never touched
 # sha256 of the pre-fix files that are known-safe to replace with the templates
 VC_BASELINES = {'63638fe8fdb2eeaa0f369debcb1946b72059a601be7891f84a853d83a4a51c18'}  # view-controls.js at 764f696 (all pages)
-SR_BASELINES = {'878c1c932a87fe3d6fa067d0220b63136aed5e178c885a7b73c3b0346a5dd16a'}  # scene-refresh.js at 764f696 (all pages)
+SR_BASELINES = {'878c1c932a87fe3d6fa067d0220b63136aed5e178c885a7b73c3b0346a5dd16a',  # scene-refresh.js at 764f696 (all pages)
+                '73cc099987b363c15a956af91f86071193f6f3d89474020f2194770a6f7bb8e8'}  # shared template at 2f09f65 (hold-4: whenGemsShaded without the metal/texture/progressive-frame readiness)
 
 class Skip(Exception): pass
 
@@ -39,7 +40,7 @@ def sub(text, what, done, pattern, repl, flags=0):
     if len(found) != 1: raise Skip(f'anchor {"missing" if not found else "ambiguous"}: {what}')
     return re.sub(pattern, lambda m: m.expand(repl), text, count=1, flags=flags)
 
-IMPORT_SR = "import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-4';"
+IMPORT_SR = "import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-5';"
 IMPORT_VC = "import { captureView, centerView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-1';"
 
 def patch_app(t):

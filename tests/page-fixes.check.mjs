@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 // Roll out with: python3 tools/apply-page-fixes.py [--only <slug>]   (see SWAPHOLD notes). No per-slug list: new pages must carry them too.
 const PRESERVED = ['erica', 'arlet', 'arlet-test', 'ada', 'dior', 'nd1061', 'nd336', 'nd344p']; // live before this work: must stay byte-identical
 const BASELINE = '764f696'; // origin/main before the page-fix work
-const FIX_VERSION = '20261026keepcam1';
+const FIX_VERSION = '20261026zhold5';
 const fail = msg => { console.error(`page-fixes: ${msg}`); process.exit(1); };
 const read = f => readFileSync(f, 'utf8');
 const sceneTemplate = read('shared/scene-refresh.template.js'), viewTemplate = read('shared/view-controls.template.js');
@@ -21,7 +21,7 @@ for (const slug of pages) {
   if (read(`${slug}/scene-refresh.js`) !== sceneTemplate) f('scene-refresh.js differs from shared/scene-refresh.template.js');
   if (read(`${slug}/view-controls.js`) !== viewTemplate) f('view-controls.js differs from shared/view-controls.template.js');
   if (!app.includes('beginSceneUpdate(viewer, { hold: !resumeView })')) f('selection update (incl. the first load) does not hold the previous frame');
-  if (!app.includes('whenGemsShaded } from \'./scene-refresh.js?v=hold-4\'')) f('scene-refresh.js import not versioned for the hold');
+  if (!app.includes('whenGemsShaded } from \'./scene-refresh.js?v=hold-5\'')) f('scene-refresh.js import not versioned for the hold');
   if (!app.includes('await drain(); await whenGemsShaded(viewer); $(\'startup\').hidden = true;')) f('loading screen is not kept until the stones are shaded');
   if (!/let desired = \{[^\n]*pose: 'flat' \}/.test(app)) f("default pose is not lying ('flat')");
   if (!/import \{ captureView, centerView, settleCameraAnimations, zoomRatio \} from '\.\/view-controls\.js\?v=keepcam-1';/.test(app)) f('view-controls import missing/unversioned');

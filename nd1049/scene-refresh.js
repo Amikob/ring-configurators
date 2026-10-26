@@ -46,26 +46,53 @@ export function beginSceneUpdate(viewer, { hold = false } = {}) {
   };
 }
 
-// The SDK captures a diamond's normal map during the first frame drawn after the stones are
-// prepared, so on the very first load that frame shows the stones unshaded (metallic). Keep the
-// page's own loading screen up until a frame with every visible stone shaded has been drawn.
-// Resolves immediately when nothing needs shading; gives up after timeoutMs so the page never hangs.
-export function whenGemsShaded(viewer, timeoutMs = 8000) {
-  const shaded = () => {
-    let pending = 0;
-    viewer.scene.modelRoot.traverseVisible(object => {
-      if (!object.isMesh) return;
-      for (const material of [object.material].flat()) {
-        if (material?.isDiamondMaterial && !material.uniforms?.tCubeMapNormals?.value) pending++;
-      }
-    });
-    return pending === 0;
-  };
+// The loading screen may only go away when the first visible frame is final-looking:
+//  1. every visible stone has its normal map (the SDK captures it during the first frame drawn after the stones are prepared,
+//     so that frame shows the stones unshaded = metallic),
+//  2. no texture of any visible material is still loading (metal/diamond maps),
+//  3. the progressive renderer has accumulated enough frames. Its first frames after a scene change blend the new image into an
+//     empty (white) history, so the ring looks pale/grey without gold for the first ~10 frames and only then reaches its metals,
+//  4. all of the above held on two consecutive frames.
+// Gives up after timeoutMs so the page never hangs; resolves immediately when there is no model.
+const MIN_PROGRESSIVE_FRAMES = 16;
+const textureLoaded = texture => {
+  if (!texture || texture.isRenderTargetTexture) return true;
+  if (texture.isCompressedTexture || texture.isDataTexture || texture.isCubeTexture) return Boolean(texture.image || texture.mipmaps?.length || texture.source?.data);
+  const image = texture.image ?? texture.source?.data;
+  if (!image) return false;
+  if (image.complete === false) return false;
+  return !(image.width === 0 && image.height === 0);
+};
+export function sceneReadiness(viewer) {
+  let pendingGems = 0, pendingTextures = 0, metals = 0;
+  viewer.scene.modelRoot.traverseVisible(object => {
+    if (!object.isMesh) return;
+    for (const material of [object.material].flat()) {
+      if (!material) continue;
+      if (material.isDiamondMaterial) { if (!material.uniforms?.tCubeMapNormals?.value) pendingGems++; }
+      else metals++;
+      for (const value of Object.values(material)) if (value?.isTexture && !textureLoaded(value)) pendingTextures++;
+    }
+  });
+  const progressive = viewer.getPluginByType?.('Progressive');
+  const wanted = Math.min(MIN_PROGRESSIVE_FRAMES, Number(progressive?.maxFrameCount) || MIN_PROGRESSIVE_FRAMES);
+  const frames = viewer.renderer?.frameCount;
+  return { pendingGems, pendingTextures, metals, frames, wanted, converged: !Number.isFinite(frames) || frames >= wanted };
+}
+export function whenGemsShaded(viewer, timeoutMs = 8000, convergeMs = 6000) {
   return new Promise(resolve => {
-    if (!viewer?.scene?.modelRoot || shaded()) { resolve(); return; }
-    const done = () => { clearTimeout(timer); viewer.removeEventListener('postFrame', check); resolve(); };
-    const check = () => { if (shaded()) done(); };
-    const timer = setTimeout(done, timeoutMs);
+    if (!viewer?.scene?.modelRoot) { resolve(); return; }
+    let stable = 0, convergeTimer = 0;
+    const done = () => { clearTimeout(timer); clearTimeout(convergeTimer); viewer.removeEventListener('postFrame', check); resolve(); };
+    const check = () => {
+      const state = sceneReadiness(viewer);
+      const loaded = state.pendingGems === 0 && state.pendingTextures === 0;
+      // Slow devices draw few frames per second: once stones and textures are in, the progressive frames get their own short budget.
+      if (loaded && !convergeTimer) convergeTimer = setTimeout(done, convergeMs);
+      stable = loaded && state.converged ? stable + 1 : 0;
+      if (stable >= 2) done();
+    };
+    const timer = setTimeout(() => { if (!convergeTimer) done(); }, timeoutMs); // stones/textures never arrived: give up
     viewer.addEventListener('postFrame', check);
     viewer.setDirty();
   });

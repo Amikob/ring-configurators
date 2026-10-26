@@ -2,7 +2,7 @@ import { SHAPES, CARATS, COLORS, GROUPS, label, createCatalog, resolveSelection,
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=15.1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
-import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-4';
+import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-5';
 import { manageTryonSession } from './tryon-session.js?v=11';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.3';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
