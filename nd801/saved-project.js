@@ -1,7 +1,7 @@
 export function applySavedScene(project, file) {
   const saved = typeof file.config === 'string' ? JSON.parse(file.config) : file.config;
   if (!saved?.plugins?.RingConfigurator) {
-    throw new Error('The saved Claudia (ND801) catalog is incomplete.');
+    throw new Error('The saved ND801 catalog is incomplete.');
   }
   // iJewel owns scene appearance and finger calibration; the site owns its color controls.
   return {
