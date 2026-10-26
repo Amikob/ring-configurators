@@ -1,4 +1,4 @@
-import { SHAPES, CARATS, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=nd1046-1';
+import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=nd1046-1';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=nd1046-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd1046-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -11,14 +11,14 @@ import { captureView, centerView } from './view-controls.js?v=nd1046-1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'D8dC3VBDQkCNfUjhbHg9GQ';
+const PROJECT_ID = 'GRD9NYbQSz65ryD7LRS7kQ';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
 let tryonResuming = false, ringPose;
 let modelResources, selectedQuality, initialCamera;
 try { selectedQuality = Number(localStorage.getItem('nd1046-render-quality')) || undefined; } catch {}
-let desired = { shape: 'oval', carat: 3, orientation: 'ns', headGold: 'white', ringGold: 'yellow', pose: 'upright' };
+let desired = { shape: 'oval', carat: 3, orientation: 'ns', headGold: 'white', ringGold: 'yellow', pose: 'flat' };
 let portalStart = null;
 const PAGE_DEFAULTS = { ...desired };
 let applied = null;
@@ -52,7 +52,7 @@ for (const key of ['headGold','ringGold']) for (const color of COLORS) {
 function render() {
   for (const {button,key,value} of controls) {
     button.setAttribute('aria-pressed', String(desired[key] === value));
-    button.disabled = !ready || tryonLoading || tryonSession?.phase === 'starting' || (key === 'orientation' && value === 'ew' && !EAST_WEST.has(desired.shape));
+    button.disabled = !ready || tryonLoading || tryonSession?.phase === 'starting' || (key === 'orientation' && value === 'ew' && !EAST_WEST.has(desired.shape)) || (key === 'carat' && !available(desired.shape, value));
   }
   $('orientation-field').hidden = !EAST_WEST.has(desired.shape);
   $('carat-label').textContent = `${desired.carat} ct`;
@@ -111,6 +111,8 @@ async function applyGold(key, color) {
 async function choose(patch) {
   if (!ready || tryonLoading || tryonSession?.phase === 'starting') return;
   if (patch.shape && !EAST_WEST.has(patch.shape)) patch.orientation = 'ns';
+  { const shape = patch.shape || desired.shape, carat = patch.carat ?? desired.carat;
+    if (!available(shape, carat)) patch.carat = CARATS.filter(ct => available(shape, ct)).sort((x, y) => Math.abs(x - carat) - Math.abs(y - carat) || y - x)[0]; }
   desired = normalizePose({ ...desired, ...patch }); render(); await drain();
 }
 async function drain() {
@@ -418,7 +420,7 @@ if (document.modelContext?.registerTool) {
   const definitions = [
     { name:'get_nd1046_diagnostics',title:'Read viewer diagnostics',description:'Read resource counts and view transforms for diagnosing repeated model changes. Does not alter the viewer.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>viewerDiagnostics(viewer,window.Cache) },
     { name:'get_nd1046_configuration',title:'Read ND1046 selection',description:'Read the current ND1046 ring selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
-    { name:'configure_nd1046',title:'Configure ND1046',description:'Choose a ring shape, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'integer',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
+    { name:'configure_nd1046',title:'Configure ND1046',description:'Choose a ring shape, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'number',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
       if (!ready) throw new Error('ND1046 is not ready.');
       if (busy) throw new Error('A selection is still loading. Please wait.');
       if (tryonLoading || tryonSession?.phase === 'starting') throw new Error('Try-On is still starting. Please wait.');
