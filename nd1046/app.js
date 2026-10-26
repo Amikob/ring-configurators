@@ -7,7 +7,7 @@ import { manageTryonSession } from './tryon-session.js?v=nd1046-1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd1046-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=nd1046-1';
 import { manageModelResources } from './model-resources.js?v=nd1046-1';
-import { captureView, centerView, settleCameraAnimations } from './view-controls.js?v=nd1046-3';
+import { captureView, centerView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
@@ -151,7 +151,7 @@ async function drain() {
       }
       const target = { ...desired };
       const restoreView = applied && !resumeView ? captureView(viewer) : () => {};
-      const enteringRest = target.pose === 'flat' && applied?.pose !== 'flat';
+      const keepRatio = applied && !resumeView ? zoomRatio(viewer) : null;
       const {ring} = resolveSelection(catalog,target);
       const ringChanged = loadedRing !== ring.variation;
       // Material-only changes must retain the resting transform and view.
@@ -192,7 +192,9 @@ async function drain() {
         c.setCameraOptions({position:[initialCamera.position.x,initialCamera.position.y,initialCamera.position.z],target:[initialCamera.target.x,initialCamera.target.y,initialCamera.target.z],fov:initialCamera.camOptions.fov});
         centerView(viewer);
       }
-      if (enteringRest || applied && target.pose !== applied.pose) centerView(viewer, {resting:enteringRest});
+      // The fixed head-side front view is for the very first load only; later pose toggles keep the user's camera direction and zoom.
+      if (!applied) centerView(viewer, {resting:target.pose === 'flat'});
+      else if (target.pose !== applied.pose) centerView(viewer, {keepRatio});
       shadowsChanged ||= target.pose !== applied?.pose;
       if (!applied && portalStart?.settings?.angle) applyStartAngle(viewer, portalStart.settings.angle);
       applied = target;

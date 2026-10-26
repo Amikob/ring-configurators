@@ -41,7 +41,27 @@ export function headAzimuth(viewer) {
   return Math.hypot(head.x, head.z) > 1e-4 ? Math.atan2(head.x, head.z) : null;
 }
 
-export function centerView(viewer, { resting = false } = {}) {
+function fitDistance(viewer, camera, size) {
+  const object = camera.cameraObject;
+  const halfFov = Math.atan(Math.tan((object.fov || 45) * Math.PI / 360) / (object.zoom || 1));
+  const limitingFov = Math.min(halfFov, Math.atan(Math.tan(halfFov) * object.aspect));
+  return size.length() * 0.5 / Math.sin(limitingFov) * 1.12;
+}
+
+// How far the camera currently is from the ring, relative to the distance that frames it exactly (1 = framed).
+// Read before a pose change so the same relative zoom (including a manual zoom) can be kept afterwards.
+export function zoomRatio(viewer) {
+  const camera = viewer.scene.activeCamera, bounds = viewer.scene.getModelBounds(true, true, true);
+  if (bounds.isEmpty()) return null;
+  const size = bounds.getSize(camera.target.clone());
+  const fit = fitDistance(viewer, camera, size), distance = camera.cameraObject.position.distanceTo(camera.target);
+  return fit > 0 && distance > 0 ? distance / fit : null;
+}
+
+// resting: the one-time product-shot angle (head side, 20 deg above the floor), only for the very first load.
+// keepRatio: after a pose change keep the camera direction (azimuth + elevation) and the user's relative zoom;
+// only the target and distance follow the ring's new bounds so it stays framed.
+export function centerView(viewer, { resting = false, keepRatio = null } = {}) {
   const camera = viewer.scene.activeCamera;
   camera.getControls()?.stopDamping();
   const bounds = viewer.scene.getModelBounds(true, true, true);
@@ -50,15 +70,12 @@ export function centerView(viewer, { resting = false } = {}) {
   const size = bounds.getSize(camera.target.clone());
   const direction = camera.cameraObject.position.clone().sub(camera.target).normalize();
   if (resting) {
-    // Product-shot angle: look at the ring from its head side (stone facing the camera), a little above
-    // the floor. If the head side cannot be measured keep the current azimuth.
+    // If the head side cannot be measured keep the current azimuth.
     const azimuth = headAzimuth(viewer) ?? Math.atan2(direction.x, direction.z), elevation = Math.PI / 9;
     direction.set(Math.sin(azimuth) * Math.cos(elevation), Math.sin(elevation), Math.cos(azimuth) * Math.cos(elevation));
   }
   const object = camera.cameraObject;
-  const halfFov = Math.atan(Math.tan((object.fov || 45) * Math.PI / 360) / (object.zoom || 1));
-  const limitingFov = Math.min(halfFov, Math.atan(Math.tan(halfFov) * object.aspect));
-  const distance = size.length() * 0.5 / Math.sin(limitingFov) * 1.12;
+  const distance = fitDistance(viewer, camera, size) * (keepRatio > 0 ? keepRatio : 1);
   camera.setCameraOptions({position:center.clone().add(direction.multiplyScalar(distance)).toArray(), target:center.toArray(), fov:object.fov, zoom:object.zoom});
   viewer.setDirty();
 }
