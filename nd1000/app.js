@@ -11,7 +11,7 @@ import { captureView, centerView, settleCameraAnimations, zoomRatio } from './vi
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'N0XWwWgHQjiFpoh3BFyD7A';
+const PROJECT_ID = 'SMlBPnRsQ8u7m970A-pGNw';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
@@ -134,7 +134,7 @@ async function drain() {
     await tryonSession?.stop();
   }
   catch (error) {
-    console.error('Harley (ND1000) Try-On stop failed', error);
+    console.error('ND1000 Try-On stop failed', error);
     if (applied) desired = { ...applied };
     showError('Exit AR before changing this selection, then try again.');
     if (fading) await fadeViewer($('viewer'), false);
@@ -201,12 +201,12 @@ async function drain() {
       render();
     }
   } catch (error) {
-    console.error('Harley (ND1000) selection failed',error);
+    console.error('ND1000 selection failed',error);
     modelResources?.endLoad();
     modelResources?.cleanup();
     if (capturesReleased) {
       try { refreshDiamondCuts(viewer, profile); }
-      catch (captureError) { console.warn('Harley (ND1000) diamond recovery failed', captureError); }
+      catch (captureError) { console.warn('ND1000 diamond recovery failed', captureError); }
     }
     ringPose.restore();
     desired.pose = 'upright';
@@ -220,7 +220,7 @@ async function drain() {
         refreshSceneShadows(viewer);
       }
     } catch (error) {
-      console.warn('Harley (ND1000) shadow refresh failed', error);
+      console.warn('ND1000 shadow refresh failed', error);
     }
     try {
       if (resumeView && applied && resumeGeneration === tryonGeneration && !document.hidden) {
@@ -262,10 +262,10 @@ async function setup() {
     desired = guardDesired(desired, PAGE_DEFAULTS, value => resolveSelection(catalog, value));
     ready = true; clearTimeout(startupTimeout); render(); await drain(); await whenGemsShaded(viewer); $('startup').hidden = true;
   } catch (error) {
-    console.error('Harley (ND1000) setup failed',error);
-    $('startup-text').textContent = 'Harley (ND1000) is not available yet.';
+    console.error('ND1000 setup failed',error);
+    $('startup-text').textContent = 'ND1000 is not available yet.';
     $('startup').querySelector('.spinner').hidden = true;
-    showError(`Could not prepare Harley (ND1000). ${error.message}`);
+    showError(`Could not prepare ND1000. ${error.message}`);
   } finally { initializing = false; }
 }
 $('retry').addEventListener('click',()=> ready ? drain() : location.reload());
@@ -318,9 +318,9 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
     }
   } catch (error) {
     try { await tryonSession?.stop(); }
-    catch (stopError) { console.warn('Harley (ND1000) Try-On recovery failed', stopError); }
+    catch (stopError) { console.warn('ND1000 Try-On recovery failed', stopError); }
     prepared?.restore();
-    console.error('Harley (ND1000) Try-On failed', error);
+    console.error('ND1000 Try-On failed', error);
     showTryonError('Try-On could not start. Check camera access and try again.');
   } finally { tryonLoading = false; render(); }
 }
@@ -354,7 +354,7 @@ window.addEventListener('ijewel-file-data', ({ detail }) => {
     const config = parse(file?.config);
     savedTryonConfig = (Object.keys(config).length ? config : parse(file?.defaultConfig)).tryonConfig;
     render();
-  } catch (error) { console.warn('Harley (ND1000) Try-On configuration could not be read', error); }
+  } catch (error) { console.warn('ND1000 Try-On configuration could not be read', error); }
 }, { once: true });
 window.addEventListener('ijewel-scene-ready',()=> { sceneReady = true; setup(); },{once:true});
 window.addEventListener('ijewel-viewer-ready',({detail})=> {
@@ -370,14 +370,14 @@ window.addEventListener('ijewel-viewer-ready',({detail})=> {
 },{once:true});
 function stopBackgroundTryon() {
   tryonGeneration++;
-  tryonSession?.stop().catch(error => console.warn('Harley (ND1000) background Try-On stop failed', error));
+  tryonSession?.stop().catch(error => console.warn('ND1000 background Try-On stop failed', error));
 }
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) stopBackgroundTryon();
 });
 window.addEventListener('pagehide', stopBackgroundTryon);
 const startupTimeout = setTimeout(()=> {
-  if (!ready) { $('startup-text').textContent = 'Harley (ND1000) is taking longer than expected.'; showError('The 3D project could not finish loading. Check your connection and try again.'); }
+  if (!ready) { $('startup-text').textContent = 'ND1000 is taking longer than expected.'; showError('The 3D project could not finish loading. Check your connection and try again.'); }
 },90000);
 // Start on the default ring directly, so the first visit downloads one model instead of two.
 function preselectRing(project) {
@@ -392,7 +392,7 @@ async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
     const response = await fetch('./project.json?v=2', {cache:'no-store'});
-    if (!response.ok) throw new Error('Harley (ND1000) scene could not be loaded.');
+    if (!response.ok) throw new Error('ND1000 scene could not be loaded.');
     const baseline = await response.json();
     const savedResponse = await fetch(`https://amikob.ijewel3d.com/api/raw/v1/files/view/${PROJECT_ID}?select=id,name,file,config`, {cache:'no-store'});
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
@@ -409,7 +409,7 @@ async function start() {
       useIjewelLogo:false, brandingSettings:{enable:false,showLoadingScreenLogo:false}
     });
     if (!miniViewer) throw new Error('The iJewel project must be Public before it can open here.');
-  } catch(error) { clearTimeout(startupTimeout); $('startup-text').textContent = 'Unable to open Harley (ND1000)'; $('startup').querySelector('.spinner').hidden = true; showError(error.message); }
+  } catch(error) { clearTimeout(startupTimeout); $('startup-text').textContent = 'Unable to open ND1000'; $('startup').querySelector('.spinner').hidden = true; showError(error.message); }
 }
 start();
 
@@ -422,9 +422,9 @@ if (document.modelContext?.registerTool) {
   const lifecycle = new AbortController();
   const definitions = [
     { name:'get_nd1000_diagnostics',title:'Read viewer diagnostics',description:'Read resource counts and view transforms for diagnosing repeated model changes. Does not alter the viewer.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>viewerDiagnostics(viewer,window.Cache) },
-    { name:'get_nd1000_configuration',title:'Read Harley (ND1000) selection',description:'Read the current Harley (ND1000) ring selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
-    { name:'configure_nd1000',title:'Configure Harley (ND1000)',description:'Choose a ring shape, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'number',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
-      if (!ready) throw new Error('Harley (ND1000) is not ready.');
+    { name:'get_nd1000_configuration',title:'Read ND1000 selection',description:'Read the current ND1000 ring selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
+    { name:'configure_nd1000',title:'Configure ND1000',description:'Choose a ring shape, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'number',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
+      if (!ready) throw new Error('ND1000 is not ready.');
       if (busy) throw new Error('A selection is still loading. Please wait.');
       if (tryonLoading || tryonSession?.phase === 'starting') throw new Error('Try-On is still starting. Please wait.');
       if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some(key=>!Object.hasOwn(desired,key))) throw new Error('Invalid selection fields.');

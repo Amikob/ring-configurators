@@ -415,18 +415,18 @@
     },
     {
       "id": "nd1000",
-      "name": "Harley (ND1000)",
+      "name": "ND1000",
       "path": "nd1000/",
-      "ijewelProjectId": "N0XWwWgHQjiFpoh3BFyD7A",
+      "ijewelProjectId": "SMlBPnRsQ8u7m970A-pGNw",
       "shapes": [
         "Round",
         "Oval",
-        "Asscher",
         "Elongated Cushion",
         "Elongated Radiant",
         "Emerald",
         "Square Cushion",
-        "Square Radiant"
+        "Square Radiant",
+        "Asscher"
       ],
       "carats": [
         1.5,
@@ -439,7 +439,7 @@
         "Head",
         "Shank"
       ],
-      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_9ca7cc22ee.png?h=ijewel3d.com",
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_cc6c04a27f.png?h=ijewel3d.com",
       "status": "new"
     },
     {

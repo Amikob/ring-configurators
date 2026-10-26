@@ -1,7 +1,7 @@
-// Harley (ND1000): 8 shapes x 3/4/5/6/8 ct = 40 complete rings. No east-west versions and no bands.
+// ND1000: 8 shapes, 40 complete rings (carats [1.5, 2.5, 3, 4, 5]). No east-west versions and no bands.
 // The orientation field is kept so East-West or band variants can be added later without
 // changing the app's state model.
-export const SHAPES = ['round', 'oval', 'asscher', 'elongated_cushion', 'elongated_radiant', 'emerald', 'square_cushion', 'square_radiant'];
+export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'square_cushion', 'square_radiant', 'asscher'];
 export const CARATS = [1.5, 2.5, 3, 4, 5];
 export const EAST_WEST = new Set();
 export const COLORS = ['white', 'yellow', 'rose'];
@@ -30,7 +30,7 @@ export function createCatalog(rings) {
   const ringMap = new Map();
   for (const variation of rings) {
     const item = parseRing(variation);
-    if (!item) throw new Error(`Unknown Harley (ND1000) ring: ${variation.name}`);
+    if (!item) throw new Error(`Unknown ND1000 ring: ${variation.name}`);
     const key = `${item.shape}:${item.carat}:${item.orientation}`;
     if (ringMap.has(key)) throw new Error(`Duplicate ring: ${key}`);
     ringMap.set(key, item);
@@ -50,7 +50,7 @@ export function resolveSelection(catalog, selection) {
   if (!SHAPES.includes(shape) || !CARATS.includes(carat) ||
       !['ns', 'ew'].includes(orientation) || (orientation === 'ew' && !EAST_WEST.has(shape)) ||
       ![headGold, ringGold].every(color => COLORS.includes(color))) {
-    throw new Error('Invalid Harley (ND1000) selection');
+    throw new Error('Invalid ND1000 selection');
   }
   const ring = catalog.get(`${shape}:${carat}:${orientation}`);
   if (!ring) throw new Error('Unavailable ring');
