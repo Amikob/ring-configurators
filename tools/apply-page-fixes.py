@@ -18,7 +18,7 @@ Fixes (every <slug>/ that has app.js + scene-refresh.js, except PRESERVED):
 
 Every anchor must match exactly once; if one is missing (or view-controls.js / scene-refresh.js is a variant that is neither the known
 baseline nor the template) the page is left UNTOUCHED and reported (exit 2). --check changes nothing (exit 1 when pages need the fix).
-Pages made by /workspace/ijewel/redo/newpage.py inherit the fixes from the patched eva page.
+Pages made by /workspace/ijewel/redo/newpage.py inherit the fixes from the patched eva template (/workspace/ijewel/redo/templates/eva-template, outside the repo since the 2026-10-26 live clean).
 """
 import re, sys, hashlib, pathlib
 

@@ -13,8 +13,9 @@ for (const [re, what] of [[/export function holdFrame\(/, 'holdFrame'], [/export
 for (const [re, what] of [[/export function headAzimuth\(/, 'headAzimuth'], [/export async function settleCameraAnimations\(/, 'settleCameraAnimations'], [/export function zoomRatio\(/, 'zoomRatio'], [/keepRatio/, 'keepRatio'],
   [/headAzimuth\(viewer\) \?\? Math\.atan2/, 'resting view on the head side'], [/elevation = Math\.PI \/ 9/, '20 degree resting elevation']]) if (!re.test(viewTemplate)) fail(`shared/view-controls.template.js: ${what} missing`);
 const pages = readdirSync('.', { withFileTypes: true }).filter(d => d.isDirectory() && existsSync(`${d.name}/app.js`) && existsSync(`${d.name}/scene-refresh.js`) && !PRESERVED.includes(d.name)).map(d => d.name);
-if (pages.length < 30) fail(`only ${pages.length} pages found, expected the full set`);
-if (!pages.includes('eva')) fail('eva (the template newpage.py clones for new pages) must be a patched page');
+// 2026-10-26 live clean: only rebuilt (v2) pages that passed verification plus the preserved originals are live; more pages return as they are rebuilt.
+// The page template newpage.py clones now lives outside the repo (/workspace/ijewel/redo/templates/eva-template), so no template page is required here.
+if (pages.length < 8) fail(`only ${pages.length} non-preserved pages found, expected at least the 8 rebuilt pages that are live`);
 for (const slug of pages) {
   const f = m => fail(`${slug}: ${m} (run: python3 tools/apply-page-fixes.py --only ${slug})`);
   const app = read(`${slug}/app.js`), html = read(`${slug}/index.html`);
