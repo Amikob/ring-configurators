@@ -1,4 +1,4 @@
-// ND1047: 8 shapes x 3/4/5/6/8 ct = 40 complete rings. No east-west versions and no bands.
+// ND1047: 8 shapes, 39 complete rings (carats [2, 3, 4, 5, 6]). No east-west versions and no bands.
 // The orientation field is kept so East-West or band variants can be added later without
 // changing the app's state model.
 export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'old_cut_cushion', 'pear'];
@@ -17,7 +17,7 @@ export function parseRing(variation) {
   const names = [variation.name, variation.title, variation.fileName, variation.filename]
     .filter(Boolean).map(value => String(value).replace(/\.(3dm|glb)$/i, '').trim().toLowerCase());
   for (const name of names) {
-    const match = name.match(/^(\d+)ct\s+(.+?)(?:\s+(ns|ew))?$/);
+    const match = name.match(/^(\d+(?:\.\d+)?)ct\s+(.+?)(?:\s+(ns|ew))?$/);
     const shape = match?.[2].replaceAll(' ', '_');
     if (match && SHAPES.includes(shape) && CARATS.includes(Number(match[1]))) return {
       shape, carat: Number(match[1]), orientation: match[3] || 'ns', variation

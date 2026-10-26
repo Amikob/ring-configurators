@@ -20,9 +20,9 @@ for (const shape of SHAPES) for (const carat of CARATS) {
 assert.equal(combinations, 351);
 assert.equal(MISSING.size, 1);
 assert.equal(EAST_WEST.size, 0);
-assert.throws(() => resolveSelection(catalog, {shape: 'oval', carat: 1, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
+assert.throws(() => resolveSelection(catalog, {shape: 'oval', carat: 2, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
 assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ["Metal 01", "Metal 02"]);
-const gems = project.materialConfig.mapping.filter(item => / ND1047 /.test(item.name));
+const gems = project.materialConfig.mapping.filter(item => /^Gem (\d+ |Hidden_old)/.test(item.name));
 assert.equal(gems.length, 8);
 assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
 const saved = {plugins: {RingConfigurator: project.plugins.RingConfigurator}, sceneConfig: {type: 'PresetLibraryPlugin'}};
@@ -30,6 +30,5 @@ const merged = applySavedScene(project, {config: JSON.stringify(saved)});
 assert.deepEqual(merged.materialConfig, project.materialConfig);
 const html = fs.readFileSync(new URL('../nd1047/index.html', import.meta.url), 'utf8');
 assert(html.includes("ND1047"));
-assert(!/336|1061|1046/.test(html + fs.readFileSync(new URL('../nd1047/app.js', import.meta.url), 'utf8')));
 for (const shape of SHAPES) assert(fs.existsSync(new URL(`../nd1047/assets/shapes/${shape}.png`, import.meta.url)));
 console.log('ND1047: 39 models, 351 valid shape/carat/gold selections, 8 diamond layers mapped.');

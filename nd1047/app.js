@@ -11,7 +11,7 @@ import { captureView, centerView, settleCameraAnimations, zoomRatio } from './vi
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'PsLA_p4tS5ehJ0WpbwZa_w';
+const PROJECT_ID = 'ay_dLarRQa6PHatoLAMW_Q';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
@@ -423,7 +423,7 @@ if (document.modelContext?.registerTool) {
   const definitions = [
     { name:'get_nd1047_diagnostics',title:'Read viewer diagnostics',description:'Read resource counts and view transforms for diagnosing repeated model changes. Does not alter the viewer.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>viewerDiagnostics(viewer,window.Cache) },
     { name:'get_nd1047_configuration',title:'Read ND1047 selection',description:'Read the current ND1047 ring selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
-    { name:'configure_nd1047',title:'Configure ND1047',description:'Choose a ring shape, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'integer',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
+    { name:'configure_nd1047',title:'Configure ND1047',description:'Choose a ring shape, carat, head gold, shank gold, and upright or resting pose.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'number',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
       if (!ready) throw new Error('ND1047 is not ready.');
       if (busy) throw new Error('A selection is still loading. Please wait.');
       if (tryonLoading || tryonSession?.phase === 'starting') throw new Error('Try-On is still starting. Please wait.');

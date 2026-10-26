@@ -2,7 +2,7 @@
 // plus the live ND1047 iJewel configurator saved at tools/snapshots/nd1047-public.json.
 //
 // Refresh the snapshot:
-//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/PsLA_p4tS5ehJ0WpbwZa_w?select=id,name,file,config' > tools/snapshots/nd1047-public.json
+//   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/ay_dLarRQa6PHatoLAMW_Q?select=id,name,file,config' > tools/snapshots/nd1047-public.json
 // then run: node tools/build-nd1047-project.mjs
 import fs from 'node:fs';
 
@@ -32,8 +32,8 @@ if (!diamond || !metal) throw new Error('Baseline material presets missing');
 // ND1047 has only a center stone per ring: layer "Gem 01 ND1047 <Shape>".
 const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Elongated Radiant', 'Emerald', 'Marquise', 'Old Cut Cushion', 'Pear'];
 baseline.materialConfig.mapping = ['Metal 01', 'Metal 02'].map(name => ({ name, path: metal }));
-for (const name of ["Gem 01 ND1047 Round", "Gem 01 ND1047 Oval", "Gem 01 ND1047 Elongated Cushion", "Gem 01 ND1047 Elongated Radiant", "Gem 01 ND1047 Emerald", "Gem 01 ND1047 Marquise", "Gem 01 ND1047 Old Cut Cushion", "Gem 01 ND1047 Pear"]) baseline.materialConfig.mapping.push({ name, path: diamond });
-if (SHAPES.some(s => !["Gem 01 ND1047 Round", "Gem 01 ND1047 Oval", "Gem 01 ND1047 Elongated Cushion", "Gem 01 ND1047 Elongated Radiant", "Gem 01 ND1047 Emerald", "Gem 01 ND1047 Marquise", "Gem 01 ND1047 Old Cut Cushion", "Gem 01 ND1047 Pear"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
+for (const name of ["Gem 01 ND1047 Elongated Cushion", "Gem 01 ND1047 Elongated Radiant", "Gem 01 ND1047 Emerald", "Gem 01 ND1047 Marquise", "Gem 01 ND1047 Old Cut Cushion", "Gem 01 ND1047 Oval", "Gem 01 ND1047 Pear", "Gem 01 ND1047 Round"]) baseline.materialConfig.mapping.push({ name, path: diamond });
+if (SHAPES.some(s => !["Gem 01 ND1047 Elongated Cushion", "Gem 01 ND1047 Elongated Radiant", "Gem 01 ND1047 Emerald", "Gem 01 ND1047 Marquise", "Gem 01 ND1047 Old Cut Cushion", "Gem 01 ND1047 Oval", "Gem 01 ND1047 Pear", "Gem 01 ND1047 Round"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;
