@@ -23,7 +23,7 @@ Pages made by /workspace/ijewel/redo/newpage.py inherit the fixes from the patch
 import re, sys, hashlib, pathlib
 
 FIX_VERSION = '20261026zhold6'
-PRESERVED = {'erica', 'arlet', 'arlet-test', 'ada', 'dior', 'nd1061', 'nd336', 'nd344p'}  # live before this work; never touched
+PRESERVED = {'erica', 'arlet', 'arlet-test', 'dior', 'nd1061', 'nd336', 'nd344p'}  # live before this work; never touched
 # sha256 of the pre-fix files that are known-safe to replace with the templates
 VC_BASELINES = {'63638fe8fdb2eeaa0f369debcb1946b72059a601be7891f84a853d83a4a51c18'}  # view-controls.js at 764f696 (all pages)
 SR_BASELINES = {'878c1c932a87fe3d6fa067d0220b63136aed5e178c885a7b73c3b0346a5dd16a',  # scene-refresh.js at 764f696 (all pages)
