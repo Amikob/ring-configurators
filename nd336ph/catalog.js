@@ -1,4 +1,4 @@
-// ND336PH: 8 shapes x 3/4/5/6/8 ct = 40 complete rings. No east-west versions and no bands.
+// ND336PH: 8 shapes, 40 complete rings (carats [1, 2, 3, 4, 5]). No east-west versions and no bands.
 // The orientation field is kept so East-West or band variants can be added later without
 // changing the app's state model.
 export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'pear', 'square_cushion'];
