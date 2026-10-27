@@ -5,12 +5,13 @@ import { execFileSync } from 'node:child_process';
 // Roll out with: python3 tools/apply-page-fixes.py [--only <slug>]   (see SWAPHOLD notes). No per-slug list: new pages must carry them too.
 const PRESERVED = ['erica', 'arlet', 'arlet-test', 'dior', 'nd1061', 'nd336', 'nd344p']; // live before this work: must stay byte-identical
 const BASELINE = '764f696'; // origin/main before the page-fix work
-const FIX_VERSION = '20261026zhold6';
+const FIX_VERSION = '20261026zzfront7';
 const fail = msg => { console.error(`page-fixes: ${msg}`); process.exit(1); };
 const read = f => readFileSync(f, 'utf8');
 const sceneTemplate = read('shared/scene-refresh.template.js'), viewTemplate = read('shared/view-controls.template.js');
 for (const [re, what] of [[/export function holdFrame\(/, 'holdFrame'], [/export function whenGemsShaded\(/, 'whenGemsShaded']]) if (!re.test(sceneTemplate)) fail(`shared/scene-refresh.template.js: ${what}() missing`);
 for (const [re, what] of [[/export function headAzimuth\(/, 'headAzimuth'], [/export async function settleCameraAnimations\(/, 'settleCameraAnimations'], [/export function zoomRatio\(/, 'zoomRatio'], [/keepRatio/, 'keepRatio'],
+  [/export function holdFrontView\(/, 'holdFrontView (first-load front-view guard)'], [/export function endFrontHold\(/, 'endFrontHold'],
   [/headAzimuth\(viewer\) \?\? Math\.atan2/, 'resting view on the head side'], [/elevation = Math\.PI \/ 9/, '20 degree resting elevation']]) if (!re.test(viewTemplate)) fail(`shared/view-controls.template.js: ${what} missing`);
 const pages = readdirSync('.', { withFileTypes: true }).filter(d => d.isDirectory() && existsSync(`${d.name}/app.js`) && existsSync(`${d.name}/scene-refresh.js`) && !PRESERVED.includes(d.name)).map(d => d.name);
 // 2026-10-26 live clean: only rebuilt (v2) pages that passed verification plus the preserved originals are live; more pages return as they are rebuilt.
@@ -25,7 +26,9 @@ for (const slug of pages) {
   if (!app.includes('whenGemsShaded } from \'./scene-refresh.js?v=hold-6\'')) f('scene-refresh.js import not versioned for the hold');
   if (!app.includes('await drain(); await whenGemsShaded(viewer); $(\'startup\').hidden = true;')) f('loading screen is not kept until the stones are shaded');
   if (!/let desired = \{[^\n]*pose: 'flat' \}/.test(app)) f("default pose is not lying ('flat')");
-  if (!/import \{ captureView, centerView, settleCameraAnimations, zoomRatio \} from '\.\/view-controls\.js\?v=keepcam-1';/.test(app)) f('view-controls import missing/unversioned');
+  if (!/import \{ captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio \} from '\.\/view-controls\.js\?v=keepcam-2';/.test(app)) f('view-controls import missing/unversioned');
+  if (!/if \(!applied && target\.pose === 'flat'\) holdFrontView\(viewer, \{remeasure:!portalStart\?\.settings\?\.angle\}\);/.test(app)) f('first-load front-view guard (holdFrontView) missing');
+  if (!/if \(applied\) endFrontHold\(\);/.test(app)) f('front-view guard is not released on later selection updates');
   if (!/await settleCameraAnimations\(viewer\);\n\s*restoreView\(\);/.test(app)) f('SDK camera animation is not stopped before framing/restoring the view');
   if (!/const keepRatio = applied && !resumeView \? zoomRatio\(viewer\) : null;/.test(app)) f('keepRatio missing');
   if (!/if \(!applied\) centerView\(viewer, \{resting:target\.pose === 'flat'\}\);\n\s*else if \(target\.pose !== applied\.pose\) centerView\(viewer, \{keepRatio\}\);/.test(app)) f('front view must apply only on the first load; pose toggles must keep the camera');

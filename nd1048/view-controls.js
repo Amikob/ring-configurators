@@ -79,3 +79,55 @@ export function centerView(viewer, { resting = false, keepRatio = null } = {}) {
   camera.setCameraOptions({position:center.clone().add(direction.multiplyScalar(distance)).toArray(), target:center.toArray(), fov:object.fov, zoom:object.zoom});
   viewer.setDirty();
 }
+
+// ---- First-load front-view guard -------------------------------------------------------------------------
+// On some devices (iOS Safari, slow GPUs) something can still move the camera after the page framed the ring:
+// the SDK's fit-to-view animation, or a head measurement taken before the stones were ready (which falls back
+// to the default camera azimuth = the ring seen from behind). Until the person first touches the canvas, or the
+// ring/pose changes, or 20 s pass, keep the camera on the intended first view and re-measure the head side.
+let frontHold = null;
+
+export function endFrontHold() {
+  if (!frontHold) return;
+  frontHold.stop(); frontHold = null;
+}
+
+// Call right after the very first framing (and any portal start angle). `remeasure` false = a fixed portal angle is in force.
+export function holdFrontView(viewer, { remeasure = true, maxMs = 20000 } = {}) {
+  endFrontHold();
+  const camera = viewer.scene.activeCamera;
+  let want = { position: camera.cameraObject.position.clone(), target: camera.target.clone() };
+  const wantAzimuth = () => { const d = want.position.clone().sub(want.target); return Math.atan2(d.x, d.z); };
+  const started = performance.now();
+  let lastCheck = 0, busy = false;
+  const wrap = a => Math.atan2(Math.sin(a), Math.cos(a));
+  const apply = () => {
+    const cam = viewer.scene.activeCamera, object = cam.cameraObject;
+    try { viewer.getPluginByType('CameraViews')?.stopAllAnimations?.(); } catch (error) { /* best effort */ }
+    cam.getControls()?.stopDamping();
+    cam.setCameraOptions({ position: want.position.toArray(), target: want.target.toArray(), fov: object.fov, zoom: object.zoom });
+    viewer.setDirty();
+  };
+  const onFrame = () => {
+    if (busy) return;
+    const now = performance.now();
+    if (now - started > maxMs) { endFrontHold(); return; }
+    if (now - lastCheck < 150) return;
+    lastCheck = now;
+    const cam = viewer.scene.activeCamera, object = cam.cameraObject;
+    if (remeasure) {
+      const head = headAzimuth(viewer);
+      if (head != null && Math.abs(wrap(head - wantAzimuth())) > 0.09) {  // head side was unknown or wrong (> ~5 deg)
+        busy = true; try { centerView(viewer, { resting: true }); want = { position: object.position.clone(), target: cam.target.clone() }; } finally { busy = false; }
+        return;
+      }
+    }
+    const moved = object.position.distanceTo(want.position), scale = Math.max(want.position.distanceTo(want.target), 1e-6);
+    if (moved > scale * 0.01 || cam.target.distanceTo(want.target) > scale * 0.01) { busy = true; try { apply(); } finally { busy = false; } }
+  };
+  const users = ['pointerdown', 'touchstart', 'wheel', 'keydown'];
+  const onUser = event => { if (event.type === 'keydown' || event.target?.closest?.('canvas, #viewer')) endFrontHold(); };
+  users.forEach(type => document.addEventListener(type, onUser, { capture: true, passive: true }));
+  viewer.addEventListener('postFrame', onFrame);
+  frontHold = { stop() { viewer.removeEventListener('postFrame', onFrame); users.forEach(type => document.removeEventListener(type, onUser, { capture: true })); } };
+}

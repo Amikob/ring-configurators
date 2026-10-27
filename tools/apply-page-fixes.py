@@ -22,10 +22,11 @@ Pages made by /workspace/ijewel/redo/newpage.py inherit the fixes from the patch
 """
 import re, sys, hashlib, pathlib
 
-FIX_VERSION = '20261026zhold6'
+FIX_VERSION = '20261026zzfront7'
 PRESERVED = {'erica', 'arlet', 'arlet-test', 'dior', 'nd1061', 'nd336', 'nd344p'}  # live before this work; never touched
 # sha256 of the pre-fix files that are known-safe to replace with the templates
-VC_BASELINES = {'63638fe8fdb2eeaa0f369debcb1946b72059a601be7891f84a853d83a4a51c18'}  # view-controls.js at 764f696 (all pages)
+VC_BASELINES = {'63638fe8fdb2eeaa0f369debcb1946b72059a601be7891f84a853d83a4a51c18',  # view-controls.js at 764f696 (all pages)
+                '1a0a0fcc7937b1b50fc92ebfe8f513df873be94a5724f966cbf36e433955bc28'}  # shared template at b4e65f4 (keepcam-1, before the first-load front-view guard)
 SR_BASELINES = {'878c1c932a87fe3d6fa067d0220b63136aed5e178c885a7b73c3b0346a5dd16a',  # scene-refresh.js at 764f696 (all pages)
                 '73cc099987b363c15a956af91f86071193f6f3d89474020f2194770a6f7bb8e8',  # shared template at 2f09f65 (hold-4: whenGemsShaded without the metal/texture/progressive-frame readiness)
                 'bd1edfa8e6c2bfdfda887fffbfbe5bfc6d872aa1bcaf8ba0e735874bb8057a4b'}  # shared template at 20ef0d8 (hold-5: convergence budget 6 s)
@@ -42,13 +43,13 @@ def sub(text, what, done, pattern, repl, flags=0):
     return re.sub(pattern, lambda m: m.expand(repl), text, count=1, flags=flags)
 
 IMPORT_SR = "import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-6';"
-IMPORT_VC = "import { captureView, centerView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-1';"
+IMPORT_VC = "import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-2';"
 
 def patch_app(t):
     t = sub(t, 'scene-refresh import', re.escape(IMPORT_SR),
             r"import \{ beginSceneUpdate, refreshSceneShadows(?:, whenGemsShaded)? \} from './scene-refresh\.js\?v=[^']*';", IMPORT_SR.replace('\\', '\\\\'))
     t = sub(t, 'view-controls import', re.escape(IMPORT_VC),
-            r"import \{ captureView, centerView(?:, settleCameraAnimations, zoomRatio)? \} from './view-controls\.js\?v=[^']*';", IMPORT_VC)
+            r"import \{ captureView, centerView(?:, endFrontHold, holdFrontView)?(?:, settleCameraAnimations, zoomRatio)? \} from './view-controls\.js\?v=[^']*';", IMPORT_VC)
     # (1) swap hold, also on the first load
     t = sub(t, 'beginSceneUpdate call', re.escape('beginSceneUpdate(viewer, { hold: !resumeView })'),
             r"beginSceneUpdate\(viewer(?:, \{ hold: Boolean\(applied\) && !resumeView \})?\);", 'beginSceneUpdate(viewer, { hold: !resumeView });')
@@ -70,6 +71,12 @@ def patch_app(t):
             "\n      // The fixed head-side front view is for the very first load only; later pose toggles keep the user's camera direction and zoom."
             "\n      if (!applied) centerView(viewer, {resting:target.pose === 'flat'});"
             "\n      else if (target.pose !== applied.pose) centerView(viewer, {keepRatio});")
+    # (5) first-load front-view guard: keep the intended first view until the person touches the canvas (iOS Safari race)
+    t = sub(t, 'holdFrontView after start angle', re.escape("holdFrontView(viewer, {remeasure:!portalStart?.settings?.angle});"),
+            r"(\n      if \(!applied && portalStart\?\.settings\?\.angle\) applyStartAngle\(viewer, portalStart\.settings\.angle\);)",
+            r"\1\n      if (!applied && target.pose === 'flat') holdFrontView(viewer, {remeasure:!portalStart?.settings?.angle});")
+    t = sub(t, 'endFrontHold on later updates', re.escape("if (applied) endFrontHold();"),
+            r"(\n  const resumeView = tryonSession\?\.captureView\(\);)", r"\n  if (applied) endFrontHold();\1")
     if 'enteringRest' in t: raise Skip('enteringRest still referenced after patch')
     return t
 

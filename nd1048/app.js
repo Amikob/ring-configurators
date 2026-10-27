@@ -7,7 +7,7 @@ import { manageTryonSession } from './tryon-session.js?v=nd1048-1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd1048-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=nd1048-1';
 import { manageModelResources } from './model-resources.js?v=nd1048-1';
-import { captureView, centerView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-1';
+import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-2';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
@@ -118,6 +118,7 @@ async function choose(patch) {
 async function drain() {
   if (busy || !ready) return;
   if (applied && JSON.stringify(applied) === JSON.stringify(desired)) return;
+  if (applied) endFrontHold();
   const resumeView = tryonSession?.captureView();
   const resumeGeneration = tryonGeneration;
   tryonResuming = Boolean(resumeView);
@@ -197,6 +198,7 @@ async function drain() {
       else if (target.pose !== applied.pose) centerView(viewer, {keepRatio});
       shadowsChanged ||= target.pose !== applied?.pose;
       if (!applied && portalStart?.settings?.angle) applyStartAngle(viewer, portalStart.settings.angle);
+      if (!applied && target.pose === 'flat') holdFrontView(viewer, {remeasure:!portalStart?.settings?.angle});
       applied = target;
       render();
     }
