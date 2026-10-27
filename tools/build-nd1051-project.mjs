@@ -34,10 +34,15 @@ if (!diamond || !metal) throw new Error('Baseline material presets missing');
 const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Elongated Radiant', 'Emerald', 'Marquise', 'Square Radiant', 'Asscher'];
 baseline.materialConfig.mapping = ['Metal 01'].map(name => ({ name, path: metal }));
 for (const name of ["Gem 01 ND1051 Asscher", "Gem 01 ND1051 Elongated Cushion", "Gem 01 ND1051 Elongated Radiant", "Gem 01 ND1051 Emerald", "Gem 01 ND1051 Marquise", "Gem 01 ND1051 Oval", "Gem 01 ND1051 Round", "Gem 01 ND1051 Square Radiant", "Gem 02 ND1051 Asscher", "Gem 02 ND1051 Elongated Cushion", "Gem 02 ND1051 Elongated Radiant", "Gem 02 ND1051 Emerald", "Gem 02 ND1051 Marquise", "Gem 02 ND1051 Oval", "Gem 02 ND1051 Round", "Gem 02 ND1051 Square Radiant", "Gem 03 ND1051 Asscher", "Gem 03 ND1051 Elongated Cushion", "Gem 03 ND1051 Elongated Radiant", "Gem 03 ND1051 Emerald", "Gem 03 ND1051 Marquise", "Gem 03 ND1051 Oval", "Gem 03 ND1051 Round", "Gem 03 ND1051 Square Radiant", "Gem 04 ND1051 Asscher", "Gem 04 ND1051 Elongated Cushion", "Gem 04 ND1051 Elongated Radiant", "Gem 04 ND1051 Emerald", "Gem 04 ND1051 Marquise", "Gem 04 ND1051 Oval", "Gem 04 ND1051 Round", "Gem 04 ND1051 Square Radiant"]) baseline.materialConfig.mapping.push({ name, path: diamond });
+// The mirrored copies of the three side stones (Gem 04/02/03) were saved in the source files with
+// the Rhino materials "Cutting", "Setting" and "Finger" instead of a gem layer name. Without a mapping they
+// keep their flat GLB colour (pink / pale / purple, no refraction). Map them to the diamond preset too.
+const MIRRORED_SIDE_STONES = ['Cutting', 'Setting', 'Finger'];
+for (const name of MIRRORED_SIDE_STONES) baseline.materialConfig.mapping.push({ name, path: diamond });
 if (SHAPES.some(s => !["Gem 01 ND1051 Asscher", "Gem 01 ND1051 Elongated Cushion", "Gem 01 ND1051 Elongated Radiant", "Gem 01 ND1051 Emerald", "Gem 01 ND1051 Marquise", "Gem 01 ND1051 Oval", "Gem 01 ND1051 Round", "Gem 01 ND1051 Square Radiant", "Gem 02 ND1051 Asscher", "Gem 02 ND1051 Elongated Cushion", "Gem 02 ND1051 Elongated Radiant", "Gem 02 ND1051 Emerald", "Gem 02 ND1051 Marquise", "Gem 02 ND1051 Oval", "Gem 02 ND1051 Round", "Gem 02 ND1051 Square Radiant", "Gem 03 ND1051 Asscher", "Gem 03 ND1051 Elongated Cushion", "Gem 03 ND1051 Elongated Radiant", "Gem 03 ND1051 Emerald", "Gem 03 ND1051 Marquise", "Gem 03 ND1051 Oval", "Gem 03 ND1051 Round", "Gem 03 ND1051 Square Radiant", "Gem 04 ND1051 Asscher", "Gem 04 ND1051 Elongated Cushion", "Gem 04 ND1051 Elongated Radiant", "Gem 04 ND1051 Emerald", "Gem 04 ND1051 Marquise", "Gem 04 ND1051 Oval", "Gem 04 ND1051 Round", "Gem 04 ND1051 Square Radiant"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;
 baseline.tryonConfig.modelPosition = { x: 0, y: 0, z: 0, isVector3: true };
 fs.writeFileSync(new URL('nd1051/project.json', root), JSON.stringify(baseline, null, 2));
-console.log(`Built ND1051: ${ring.variations.length} rings, head/shank gold, ${baseline.materialConfig.mapping.length - 2} diamond layers.`);
+console.log(`Built ND1051: ${ring.variations.length} rings, head/shank gold, ${baseline.materialConfig.mapping.length - 1} diamond layers.`);

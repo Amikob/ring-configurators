@@ -24,6 +24,8 @@ assert.throws(() => resolveSelection(catalog, {shape: 'oval', carat: 2, orientat
 assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ['Metal 01']);
 const gems = project.materialConfig.mapping.filter(item => /^Gem (\d+ |Hidden_old)/.test(item.name));
 assert.equal(gems.length, 32);
+const diamondPath = gems[0].path;
+for (const name of ['Cutting', 'Setting', 'Finger']) assert.equal(project.materialConfig.mapping.find(item => item.name === name)?.path, diamondPath, `${name} (mirrored side stone) must use the diamond preset`);
 assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
 const saved = {plugins: {RingConfigurator: project.plugins.RingConfigurator}, sceneConfig: {type: 'PresetLibraryPlugin'}};
 const merged = applySavedScene(project, {config: JSON.stringify(saved)});
@@ -31,4 +33,4 @@ assert.deepEqual(merged.materialConfig, project.materialConfig);
 const html = fs.readFileSync(new URL('../nd1051/index.html', import.meta.url), 'utf8');
 assert(html.includes("ND1051"));
 for (const shape of SHAPES) assert(fs.existsSync(new URL(`../nd1051/assets/shapes/${shape}.png`, import.meta.url)));
-console.log('ND1051: 40 models, 360 valid shape/carat/gold selections, 32 diamond layers mapped.');
+console.log('ND1051: 40 models, 360 valid shape/carat/gold selections, 32 diamond layers + 3 mirrored side-stone materials mapped.');
