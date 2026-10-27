@@ -705,6 +705,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/5_ct_oval_82d30ad825.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "nd750",
+      "name": "ND750",
+      "path": "nd750/",
+      "ijewelProjectId": "S-naa2VhTkC-438-TXigXA",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Emerald",
+        "Marquise",
+        "Old Cut Cushion",
+        "Pear",
+        "Radiant"
+      ],
+      "carats": [
+        2,
+        6
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_02383a429c.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
