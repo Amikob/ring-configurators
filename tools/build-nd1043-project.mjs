@@ -13,7 +13,7 @@ const native = read('tools/snapshots/nd1043-public.json');
 const config = typeof native.config === 'string' ? JSON.parse(native.config) : native.config;
 const source = config?.plugins?.RingConfigurator;
 const ring = source?.components?.find(component => component.name === 'Ring');
-if (!ring || ring.variations.length !== 30) throw new Error(`Expected 30 ND1043 ring variations, found ${ring?.variations.length}`);
+if (!ring || ring.variations.length !== 40) throw new Error(`Expected 40 ND1043 ring variations, found ${ring?.variations.length}`);
 
 ring.visible = true;
 ring.selectedIndex = ring.variations.findIndex(item => item.name === '4Ct Oval');
@@ -36,10 +36,11 @@ const metal = mapping.find(item => item.name === 'Metal 01')?.path;
 if (!diamond || !metal) throw new Error('Baseline material presets missing');
 
 // ND1043 has only a center stone per ring: layer "Gem 01 ND1043 <Shape>".
-const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Elongated Radiant', 'Marquise', 'Pear'];
+const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Elongated Radiant', 'Emerald', 'Marquise', 'Pear', 'Heart'];
+const GEM_NAMES = [1, 2, 3].flatMap(n => SHAPES.map(sh => `Gem 0${n} ND1043 ${sh}`));
 baseline.materialConfig.mapping = USED_METALS.map(name => ({ name, path: metal }));
-for (const name of ["Gem 01 ND1043 Elongated Cushion", "Gem 01 ND1043 Elongated Radiant", "Gem 01 ND1043 Marquise", "Gem 01 ND1043 Oval", "Gem 01 ND1043 Pear", "Gem 01 ND1043 Round", "Gem 02 ND1043 Elongated Cushion", "Gem 02 ND1043 Elongated Radiant", "Gem 02 ND1043 Marquise", "Gem 02 ND1043 Oval", "Gem 02 ND1043 Pear", "Gem 02 ND1043 Round", "Gem 03 ND1043 Elongated Cushion", "Gem 03 ND1043 Elongated Radiant", "Gem 03 ND1043 Marquise", "Gem 03 ND1043 Oval", "Gem 03 ND1043 Pear", "Gem 03 ND1043 Round"]) baseline.materialConfig.mapping.push({ name, path: diamond });
-if (SHAPES.some(s => !["Gem 01 ND1043 Elongated Cushion", "Gem 01 ND1043 Elongated Radiant", "Gem 01 ND1043 Marquise", "Gem 01 ND1043 Oval", "Gem 01 ND1043 Pear", "Gem 01 ND1043 Round", "Gem 02 ND1043 Elongated Cushion", "Gem 02 ND1043 Elongated Radiant", "Gem 02 ND1043 Marquise", "Gem 02 ND1043 Oval", "Gem 02 ND1043 Pear", "Gem 02 ND1043 Round", "Gem 03 ND1043 Elongated Cushion", "Gem 03 ND1043 Elongated Radiant", "Gem 03 ND1043 Marquise", "Gem 03 ND1043 Oval", "Gem 03 ND1043 Pear", "Gem 03 ND1043 Round"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
+for (const name of GEM_NAMES) baseline.materialConfig.mapping.push({ name, path: diamond });
+if (SHAPES.some(s => !GEM_NAMES.includes(`Gem 01 ND1043 ${s}`))) throw new Error('Gem layer mapping incomplete');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;
