@@ -776,13 +776,14 @@
         "Emerald",
         "Marquise",
         "Square Radiant",
-        "Asscher"
+        "Asscher",
+        "Princess"
       ],
       "carats": [
         4,
         10
       ],
-      "rings": 35,
+      "rings": 40,
       "bands": null,
       "eastWest": false,
       "metalZones": [

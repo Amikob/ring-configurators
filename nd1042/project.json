@@ -72,6 +72,14 @@
               "tags": []
             },
             {
+              "name": "4Ct Princess",
+              "title": "4Ct Princess",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_princess_fb5e9f37bf.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_princess_09cd350fa2.png?h=ijewel3d.com",
+              "fileId": "KYmwpACSSB2CpHGNa4wRDA",
+              "tags": []
+            },
+            {
               "name": "4Ct Square Radiant",
               "title": "4Ct Square Radiant",
               "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_square_radiant_0c6989b9f4.glb",
@@ -125,6 +133,14 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_oval_af3b49716c.glb",
               "icon": "https://amikob.ijewel3d.com/files/5_ct_oval_24f55030d9.png?h=ijewel3d.com",
               "fileId": "Q75MafkuSkGN8m_EJu_97A",
+              "tags": []
+            },
+            {
+              "name": "5Ct Princess",
+              "title": "5Ct Princess",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_princess_4d2558de37.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_princess_36ec021d28.png?h=ijewel3d.com",
+              "fileId": "UtZ9tYoNTpGXyC4475rX-A",
               "tags": []
             },
             {
@@ -184,6 +200,14 @@
               "tags": []
             },
             {
+              "name": "6Ct Princess",
+              "title": "6Ct Princess",
+              "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_princess_db762cedda.glb",
+              "icon": "https://amikob.ijewel3d.com/files/6_ct_princess_cf08e0052b.png?h=ijewel3d.com",
+              "fileId": "IW9-eAgdSy2DjruSknBjpg",
+              "tags": []
+            },
+            {
               "name": "6Ct Square Radiant",
               "title": "6Ct Square Radiant",
               "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_square_radiant_845ce8f8a8.glb",
@@ -240,6 +264,14 @@
               "tags": []
             },
             {
+              "name": "8Ct Princess",
+              "title": "8Ct Princess",
+              "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_princess_9c7f5a8cce.glb",
+              "icon": "https://amikob.ijewel3d.com/files/8_ct_princess_f152c842b8.png?h=ijewel3d.com",
+              "fileId": "B6psDV4MQJy7s1eMI1QXQg",
+              "tags": []
+            },
+            {
               "name": "8Ct Square Radiant",
               "title": "8Ct Square Radiant",
               "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_square_radiant_e9600eb03c.glb",
@@ -293,6 +325,14 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/10_ct_oval_fc201e0aef.glb",
               "icon": "https://amikob.ijewel3d.com/files/10_ct_oval_388c712282.png?h=ijewel3d.com",
               "fileId": "VKUBRPCjTt2j3hLb-3DqPw",
+              "tags": []
+            },
+            {
+              "name": "10Ct Princess",
+              "title": "10Ct Princess",
+              "modelUrl": "https://amikob.ijewel3d.com/files/10_ct_princess_e69a861c77.glb",
+              "icon": "https://amikob.ijewel3d.com/files/10_ct_princess_5247f05946.png?h=ijewel3d.com",
+              "fileId": "eVrTQgsTSRaX8sB4oH-ucA",
               "tags": []
             },
             {
@@ -1703,6 +1743,18 @@
       {
         "name": "Metal 04",
         "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
+      },
+      {
+        "name": "Gem 01 ND1042 Princess",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 02 ND1042 Princess",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 03 ND1042 Princess",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
         "name": "Gem 01 ND1042 Asscher",

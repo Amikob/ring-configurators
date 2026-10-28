@@ -1,4 +1,4 @@
-import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=nd1042-1';
+import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=nd1042-1-s8';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=nd1042-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd1042-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
