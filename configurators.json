@@ -989,6 +989,34 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/6_ct_oval_b17955d5e7.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "aimi",
+      "name": "Aimi",
+      "path": "aimi/",
+      "ijewelProjectId": "HMicrH5SQX-O-QYHXojQCA",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Pear"
+      ],
+      "carats": [
+        3,
+        8
+      ],
+      "rings": 35,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/5_ct_oval_3d5e6ab48e.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
