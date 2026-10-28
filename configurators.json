@@ -1311,6 +1311,34 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_e1eaf9d0f6.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "aiko",
+      "name": "Aiko",
+      "path": "aiko/",
+      "ijewelProjectId": "ciiZmFJ3T6CpdURbH8E7JQ",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Old Cut Cushion",
+        "Pear"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Ring"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_f0cf22e45f.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
