@@ -1191,7 +1191,12 @@
         8
       ],
       "rings": 40,
-      "bands": null,
+      "bands": {
+        "files": 3,
+        "styles": [
+          "Matching band"
+        ]
+      },
       "eastWest": false,
       "metalZones": [
         "Ring"

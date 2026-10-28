@@ -383,6 +383,27 @@
           ],
           "regex": true,
           "selectedIndex": 0
+        },
+        {
+          "uuid": "Metal 03",
+          "title": "Band gold",
+          "preview": "generate:sphere",
+          "materials": [
+            {
+              "uuid": "eab7dc79-a863-4a35-8597-b2933618079a",
+              "resource": "materials"
+            },
+            {
+              "uuid": "d2f4ea5d-5f93-49c1-9173-98adc89f4152",
+              "resource": "materials"
+            },
+            {
+              "uuid": "f500675a-eb8a-439c-b288-d544ccbebcaa",
+              "resource": "materials"
+            }
+          ],
+          "regex": true,
+          "selectedIndex": 0
         }
       ],
       "type": "MaterialConfiguratorPlugin",
@@ -1782,6 +1803,14 @@
       {
         "name": "Gem 02 Alana Round",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Metal 03",
+        "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
+      },
+      {
+        "name": "Gem 03",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       }
     ],
     "type": "MaterialPresetPlugin"
@@ -1849,7 +1878,7 @@
       "isVector3": true
     },
     "target": {
-      "x": -3.4265994580673365e-7,
+      "x": -3.4265994580673365e-07,
       "y": 0.06763885608983722,
       "z": -0.041713794167153685,
       "isVector3": true
@@ -1869,7 +1898,7 @@
       "intensity": 0.2,
       "radius": 1.07,
       "falloff": 0.33,
-      "bias": 0.00001,
+      "bias": 1e-05,
       "smoothEnabled": true,
       "sssAoPower": 1,
       "sssExponents": {
@@ -1889,8 +1918,8 @@
     },
     "modelRotation": {
       "x": 1.5707963267948963,
-      "y": -1.0017768124246595e-7,
-      "z": 1.017453856186509e-7,
+      "y": -1.0017768124246595e-07,
+      "z": 1.017453856186509e-07,
       "isVector3": true
     }
   },

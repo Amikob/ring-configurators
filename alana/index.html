@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Customize the Alana ring shape, carat, and gold colors.">
+  <meta name="description" content="Customize the Alana ring shape, carat, matching band, and gold colors.">
   <title>Alana | Next Diamonds</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23181818'/%3E%3Ccircle cx='16' cy='19' r='8' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M11 8l5-5 5 5-5 5z' fill='%239cb8c0'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./style.css?v=alana-ui2">
@@ -31,6 +31,7 @@
       <header><h1>Alana</h1></header>
       <fieldset id="shape-field"><legend>Diamond shape <span id="shape-label">Round</span></legend><div id="shapes" class="shape-grid"></div></fieldset>
       <fieldset id="carat-field"><legend>Center stone <span id="carat-label">1 ct</span></legend><div id="carats" class="segments"></div></fieldset>
+      <fieldset id="band-field"><legend>Matching band <span id="band-note"></span></legend><div id="bands" class="segments"></div></fieldset>
       <fieldset id="orientation-field"><legend>Stone orientation</legend><div id="orientations" class="segments"></div></fieldset>
       <div class="metal-fields">
         <fieldset id="head-gold-field" hidden><legend>Head gold</legend><div id="head-gold" class="gold-options"></div></fieldset>
@@ -43,7 +44,7 @@
   <script src="https://releases.ijewel3d.com/libs/webgi-v0/bundle-0.22.0.js"></script>
   <script>window.webgi = window;</script>
   <script src="https://releases.ijewel3d.com/libs/mini-viewer/0.6.18/bundle.nowebgi.iife.js"></script>
-  <script type="module" src="./app.js?v=20261028v2"></script>
+  <script type="module" src="./app.js?v=20261028bands1"></script>
   <script src="../shared/ring-switcher.js?v=1" defer></script>
 </body>
 </html>
