@@ -7,7 +7,7 @@
         {
           "name": "Ring",
           "title": "",
-          "selectedIndex": 4,
+          "selectedIndex": 5,
           "position": {
             "x": 0,
             "y": 0,
@@ -45,6 +45,14 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_emerald_db750e6729.glb",
               "icon": "https://amikob.ijewel3d.com/files/3_ct_emerald_381c7d8078.png?h=ijewel3d.com",
               "fileId": "UPrHPL-zRsedhD48isvjtg",
+              "tags": []
+            },
+            {
+              "name": "3Ct Heart",
+              "title": "3Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_heart_a1075046dd.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_heart_024dfa2f5d.png?h=ijewel3d.com",
+              "fileId": "HUOMVzIMQNOFwwQp8OUQgQ",
               "tags": []
             },
             {
@@ -104,6 +112,14 @@
               "tags": []
             },
             {
+              "name": "4Ct Heart",
+              "title": "4Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_heart_2f4e5d615d.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_heart_482b62a342.png?h=ijewel3d.com",
+              "fileId": "c18_cvbzS96ddFf5QFkDgA",
+              "tags": []
+            },
+            {
               "name": "4Ct Marquise",
               "title": "4Ct Marquise",
               "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_marquise_62ba30a634.glb",
@@ -157,6 +173,14 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_emerald_7bd31ed707.glb",
               "icon": "https://amikob.ijewel3d.com/files/5_ct_emerald_6583cd4e2f.png?h=ijewel3d.com",
               "fileId": "RTM_PE1tRZeAH5uzTAbCHg",
+              "tags": []
+            },
+            {
+              "name": "5Ct Heart",
+              "title": "5Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_heart_886eb832a8.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_heart_3026216f64.png?h=ijewel3d.com",
+              "fileId": "VMR9tOjoQ5iaQckYehueaA",
               "tags": []
             },
             {
@@ -216,6 +240,14 @@
               "tags": []
             },
             {
+              "name": "6Ct Heart",
+              "title": "6Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_heart_cb97e633d4.glb",
+              "icon": "https://amikob.ijewel3d.com/files/6_ct_heart_ccc2d1844b.png?h=ijewel3d.com",
+              "fileId": "S36rUOImQFiomHu9_f9yBg",
+              "tags": []
+            },
+            {
               "name": "6Ct Marquise",
               "title": "6Ct Marquise",
               "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_marquise_ce245dc972.glb",
@@ -269,6 +301,14 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_emerald_2d9334b234.glb",
               "icon": "https://amikob.ijewel3d.com/files/8_ct_emerald_843f4cf6db.png?h=ijewel3d.com",
               "fileId": "Hq0t4vhnShaTum5d2bYFkA",
+              "tags": []
+            },
+            {
+              "name": "8Ct Heart",
+              "title": "8Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_heart_d7c9607bee.glb",
+              "icon": "https://amikob.ijewel3d.com/files/8_ct_heart_5fda6d8768.png?h=ijewel3d.com",
+              "fileId": "U2RgFuPPQqKndXclTXLlKQ",
               "tags": []
             },
             {
@@ -326,6 +366,27 @@
         {
           "uuid": "Metal 01",
           "title": "Shank gold",
+          "preview": "generate:sphere",
+          "materials": [
+            {
+              "uuid": "91647830-492f-4de6-99bd-91c90b9fe0d0",
+              "resource": "materials"
+            },
+            {
+              "uuid": "4a9d8bcb-d255-4500-9943-5acb64a72633",
+              "resource": "materials"
+            },
+            {
+              "uuid": "27e9b4e2-992c-419d-a365-ecc3a1d4a436",
+              "resource": "materials"
+            }
+          ],
+          "regex": true,
+          "selectedIndex": 0
+        },
+        {
+          "uuid": "Metal 02",
+          "title": "Extra gold (Metal 02)",
           "preview": "generate:sphere",
           "materials": [
             {
@@ -1722,12 +1783,28 @@
         "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
       },
       {
+        "name": "Metal 02",
+        "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
+      },
+      {
         "name": "Metal 03",
         "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
       },
       {
         "name": "Metal 04",
         "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
+      },
+      {
+        "name": "Gem 01 Aimi Heart",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 02 Aimi Heart",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 03 Aimi Heart",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
         "name": "Gem 01 Aimi Elongated Cushion",

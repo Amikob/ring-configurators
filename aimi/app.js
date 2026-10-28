@@ -1,4 +1,4 @@
-import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=aimi-1';
+import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=aimi-1-s8';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=aimi-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=aimi-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -13,7 +13,7 @@ import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, ap
 const $ = id => document.getElementById(id);
 const PROJECT_ID = 'HMicrH5SQX-O-QYHXojQCA';
 // Redone (v2) files: head/shank metal layers (checked from the GLBs by geometry).
-const LAYER_ROLES = {"6Ct Oval": {"headGold": "Metal 03"}};
+const LAYER_ROLES = {"6Ct Oval": {"headGold": "Metal 03"}, "3Ct Heart": {"headGold": "Metal 02"}};
 const DEFAULT_LAYERS = {"headGold": "Metal 04", "ringGold": "Metal 01"};
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
