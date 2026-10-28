@@ -1,11 +1,11 @@
-// ND1043: 6 shapes, 30 complete rings (carats [4, 5, 6, 8, 10]). No east-west versions and no bands.
+// ND1043: 8 shapes, 40 complete rings (carats [4, 5, 6, 8, 10]). No east-west versions and no bands.
 // The orientation field is kept so East-West or band variants can be added later without
 // changing the app's state model.
-export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'marquise', 'pear'];
+export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'pear', 'heart'];
 export const CARATS = [4, 5, 6, 8, 10];
 export const EAST_WEST = new Set();
 export const COLORS = ['white', 'yellow', 'rose'];
-export const RING_COUNT = 30;
+export const RING_COUNT = 40;
 // Shape:carat combinations that were never made.
 export const MISSING = new Set([]);
 export const available = (shape, carat) => !MISSING.has(`${shape}:${carat}`);

@@ -860,14 +860,16 @@
         "Oval",
         "Elongated Cushion",
         "Elongated Radiant",
+        "Emerald",
         "Marquise",
-        "Pear"
+        "Pear",
+        "Heart"
       ],
       "carats": [
         4,
         10
       ],
-      "rings": 30,
+      "rings": 40,
       "bands": null,
       "eastWest": false,
       "metalZones": [
