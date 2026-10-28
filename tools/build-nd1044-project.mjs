@@ -13,7 +13,7 @@ const native = read('tools/snapshots/nd1044-public.json');
 const config = typeof native.config === 'string' ? JSON.parse(native.config) : native.config;
 const source = config?.plugins?.RingConfigurator;
 const ring = source?.components?.find(component => component.name === 'Ring');
-if (!ring || ring.variations.length !== 35) throw new Error(`Expected 35 ND1044 ring variations, found ${ring?.variations.length}`);
+if (!ring || ring.variations.length !== 40) throw new Error(`Expected 40 ND1044 ring variations, found ${ring?.variations.length}`);
 
 ring.visible = true;
 ring.selectedIndex = ring.variations.findIndex(item => item.name === '3Ct Oval');
@@ -36,10 +36,11 @@ const metal = mapping.find(item => item.name === 'Metal 01')?.path;
 if (!diamond || !metal) throw new Error('Baseline material presets missing');
 
 // ND1044 has only a center stone per ring: layer "Gem 01 ND1044 <Shape>".
-const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Elongated Radiant', 'Emerald', 'Marquise', 'Pear'];
+const NEW_GEMS = [1,2,3].map(n => `Gem 0${n} ND1044 Heart`);
+const SHAPES = ['Round', 'Oval', 'Elongated Cushion', 'Elongated Radiant', 'Emerald', 'Marquise', 'Pear', 'Heart'];
 baseline.materialConfig.mapping = USED_METALS.map(name => ({ name, path: metal }));
-for (const name of ["Gem 01 ND1044 Elongated Cushion", "Gem 01 ND1044 Elongated Radiant", "Gem 01 ND1044 Emerald", "Gem 01 ND1044 Marquise", "Gem 01 ND1044 Oval", "Gem 01 ND1044 Pear", "Gem 01 ND1044 Round", "Gem 02 ND1044 Elongated Cushion", "Gem 02 ND1044 Elongated Radiant", "Gem 02 ND1044 Emerald", "Gem 02 ND1044 Marquise", "Gem 02 ND1044 Oval", "Gem 02 ND1044 Pear", "Gem 02 ND1044 Round", "Gem 03 ND1044 Elongated Cushion", "Gem 03 ND1044 Elongated Radiant", "Gem 03 ND1044 Emerald", "Gem 03 ND1044 Marquise", "Gem 03 ND1044 Oval", "Gem 03 ND1044 Pear", "Gem 03 ND1044 Round", "Gem 04 ND1044 Elongated Radiant"]) baseline.materialConfig.mapping.push({ name, path: diamond });
-if (SHAPES.some(s => !["Gem 01 ND1044 Elongated Cushion", "Gem 01 ND1044 Elongated Radiant", "Gem 01 ND1044 Emerald", "Gem 01 ND1044 Marquise", "Gem 01 ND1044 Oval", "Gem 01 ND1044 Pear", "Gem 01 ND1044 Round", "Gem 02 ND1044 Elongated Cushion", "Gem 02 ND1044 Elongated Radiant", "Gem 02 ND1044 Emerald", "Gem 02 ND1044 Marquise", "Gem 02 ND1044 Oval", "Gem 02 ND1044 Pear", "Gem 02 ND1044 Round", "Gem 03 ND1044 Elongated Cushion", "Gem 03 ND1044 Elongated Radiant", "Gem 03 ND1044 Emerald", "Gem 03 ND1044 Marquise", "Gem 03 ND1044 Oval", "Gem 03 ND1044 Pear", "Gem 03 ND1044 Round", "Gem 04 ND1044 Elongated Radiant"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
+for (const name of [...NEW_GEMS, "Gem 01 ND1044 Elongated Cushion", "Gem 01 ND1044 Elongated Radiant", "Gem 01 ND1044 Emerald", "Gem 01 ND1044 Marquise", "Gem 01 ND1044 Oval", "Gem 01 ND1044 Pear", "Gem 01 ND1044 Round", "Gem 02 ND1044 Elongated Cushion", "Gem 02 ND1044 Elongated Radiant", "Gem 02 ND1044 Emerald", "Gem 02 ND1044 Marquise", "Gem 02 ND1044 Oval", "Gem 02 ND1044 Pear", "Gem 02 ND1044 Round", "Gem 03 ND1044 Elongated Cushion", "Gem 03 ND1044 Elongated Radiant", "Gem 03 ND1044 Emerald", "Gem 03 ND1044 Marquise", "Gem 03 ND1044 Oval", "Gem 03 ND1044 Pear", "Gem 03 ND1044 Round", "Gem 04 ND1044 Elongated Radiant"]) baseline.materialConfig.mapping.push({ name, path: diamond });
+if (SHAPES.some(s => ![...NEW_GEMS, "Gem 01 ND1044 Elongated Cushion", "Gem 01 ND1044 Elongated Radiant", "Gem 01 ND1044 Emerald", "Gem 01 ND1044 Marquise", "Gem 01 ND1044 Oval", "Gem 01 ND1044 Pear", "Gem 01 ND1044 Round", "Gem 02 ND1044 Elongated Cushion", "Gem 02 ND1044 Elongated Radiant", "Gem 02 ND1044 Emerald", "Gem 02 ND1044 Marquise", "Gem 02 ND1044 Oval", "Gem 02 ND1044 Pear", "Gem 02 ND1044 Round", "Gem 03 ND1044 Elongated Cushion", "Gem 03 ND1044 Elongated Radiant", "Gem 03 ND1044 Emerald", "Gem 03 ND1044 Marquise", "Gem 03 ND1044 Oval", "Gem 03 ND1044 Pear", "Gem 03 ND1044 Round", "Gem 04 ND1044 Elongated Radiant"].some(n => n.endsWith(' ' + s)))) throw new Error('Gem layer missing for a shape');
 
 baseline.basePath = 'https://amikob.ijewel3d.com/files/';
 baseline.modelUrl = baseline.basePath + native.file;

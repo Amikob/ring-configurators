@@ -7,7 +7,7 @@
         {
           "name": "Ring",
           "title": "",
-          "selectedIndex": 4,
+          "selectedIndex": 5,
           "position": {
             "x": 0,
             "y": 0,
@@ -45,6 +45,14 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_emerald_5e5752596c.glb",
               "icon": "https://amikob.ijewel3d.com/files/3_ct_emerald_521867d77d.png?h=ijewel3d.com",
               "fileId": "OJ7Tout5TeqzgrzsmhXTdQ",
+              "tags": []
+            },
+            {
+              "name": "3Ct Heart",
+              "title": "3Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/3_ct_heart_3dedf56b5d.glb",
+              "icon": "https://amikob.ijewel3d.com/files/3_ct_heart_f22feaaf71.png?h=ijewel3d.com",
+              "fileId": "IT8nXKxhRmGneXPxVsFIHA",
               "tags": []
             },
             {
@@ -104,6 +112,14 @@
               "tags": []
             },
             {
+              "name": "4Ct Heart",
+              "title": "4Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_heart_e304647d9c.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_heart_dd730474b1.png?h=ijewel3d.com",
+              "fileId": "C1PpZc2rReyZ9yKZcWEd_g",
+              "tags": []
+            },
+            {
               "name": "4Ct Marquise",
               "title": "4Ct Marquise",
               "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_marquise_6923ce34ee.glb",
@@ -157,6 +173,14 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_emerald_bbe1c80a06.glb",
               "icon": "https://amikob.ijewel3d.com/files/5_ct_emerald_a376a0486d.png?h=ijewel3d.com",
               "fileId": "UuIPHGUqS_mxgTfruKHSuA",
+              "tags": []
+            },
+            {
+              "name": "5Ct Heart",
+              "title": "5Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_heart_9dff8c51b7.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_heart_2fdf99a7ca.png?h=ijewel3d.com",
+              "fileId": "aJQ6L4oDSmqf4LUwUoD7Jg",
               "tags": []
             },
             {
@@ -216,6 +240,14 @@
               "tags": []
             },
             {
+              "name": "6Ct Heart",
+              "title": "6Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_heart_0fdf519785.glb",
+              "icon": "https://amikob.ijewel3d.com/files/6_ct_heart_7b04064247.png?h=ijewel3d.com",
+              "fileId": "c-80dHePS-WaIW7fQWD3wQ",
+              "tags": []
+            },
+            {
               "name": "6Ct Marquise",
               "title": "6Ct Marquise",
               "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_marquise_aa889ddba4.glb",
@@ -269,6 +301,14 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_emerald_a70add5f01.glb",
               "icon": "https://amikob.ijewel3d.com/files/8_ct_emerald_82e90d3a27.png?h=ijewel3d.com",
               "fileId": "IfNFrwd8T46REVT2o_ZcBw",
+              "tags": []
+            },
+            {
+              "name": "8Ct Heart",
+              "title": "8Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_heart_1e795903f2.glb",
+              "icon": "https://amikob.ijewel3d.com/files/8_ct_heart_037e5fcd21.png?h=ijewel3d.com",
+              "fileId": "EqUgRsMuQhCkAsNlTun27w",
               "tags": []
             },
             {
@@ -1703,6 +1743,18 @@
       {
         "name": "Metal 04",
         "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
+      },
+      {
+        "name": "Gem 01 ND1044 Heart",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 02 ND1044 Heart",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 03 ND1044 Heart",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
         "name": "Gem 01 ND1044 Elongated Cushion",
