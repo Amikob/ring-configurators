@@ -398,7 +398,7 @@ async function start() {
     const baseline = await response.json();
     const savedResponse = await fetch('./saved-config.json?v=20261027', {cache:'no-store'})   /* local corrected config: the iJewel copy is stale (old-style configurator, cannot re-sync) */;
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
-    const {applySavedScene} = await import('./saved-project.js?v=nd1040-1');
+    const {applySavedScene} = await import('./saved-project.js?v=scene-1');
     const project = applySavedScene(baseline, await savedResponse.json());
     portalStart = await loadPortalStart();
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });
