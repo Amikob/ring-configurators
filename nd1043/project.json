@@ -7,7 +7,7 @@
         {
           "name": "Ring",
           "title": "",
-          "selectedIndex": 3,
+          "selectedIndex": 5,
           "position": {
             "x": 0,
             "y": 0,
@@ -37,6 +37,22 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_elongated_radiant_2b530e7f5b.glb",
               "icon": "https://amikob.ijewel3d.com/files/4_ct_elongated_radiant_4b74fec49a.png?h=ijewel3d.com",
               "fileId": "S10CqCBAR920EUHgNGI2ZQ",
+              "tags": []
+            },
+            {
+              "name": "4Ct Emerald",
+              "title": "4Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_emerald_5a7409e2ae.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_emerald_89c61aef3b.png?h=ijewel3d.com",
+              "fileId": "ZFqW-BzaQmenT-rNFNdhzQ",
+              "tags": []
+            },
+            {
+              "name": "4Ct Heart",
+              "title": "4Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/4_ct_heart_ed64b5d70f.glb",
+              "icon": "https://amikob.ijewel3d.com/files/4_ct_heart_c093ac3c07.png?h=ijewel3d.com",
+              "fileId": "HVhiecnQTwiHEcRLBhja9Q",
               "tags": []
             },
             {
@@ -88,6 +104,22 @@
               "tags": []
             },
             {
+              "name": "5Ct Emerald",
+              "title": "5Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_emerald_0d2b764e5d.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_emerald_c0188d8d30.png?h=ijewel3d.com",
+              "fileId": "H2Ij1OuFShCWu7vFMI33bQ",
+              "tags": []
+            },
+            {
+              "name": "5Ct Heart",
+              "title": "5Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_heart_35df32887b.glb",
+              "icon": "https://amikob.ijewel3d.com/files/5_ct_heart_d6a14a4eb9.png?h=ijewel3d.com",
+              "fileId": "T-eJsfiwToGR3Msv-Q18tA",
+              "tags": []
+            },
+            {
               "name": "5Ct Marquise",
               "title": "5Ct Marquise",
               "modelUrl": "https://amikob.ijewel3d.com/files/5_ct_marquise_14e9e52e7b.glb",
@@ -133,6 +165,22 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_elongated_radiant_ab5bd2e9c9.glb",
               "icon": "https://amikob.ijewel3d.com/files/6_ct_elongated_radiant_5493d6528a.png?h=ijewel3d.com",
               "fileId": "YE4VdrtZRiuaKdrEhI5q2g",
+              "tags": []
+            },
+            {
+              "name": "6Ct Emerald",
+              "title": "6Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_emerald_b06cf5253c.glb",
+              "icon": "https://amikob.ijewel3d.com/files/6_ct_emerald_607dea4eb4.png?h=ijewel3d.com",
+              "fileId": "c4gXZH_QTgSQb2KC32GmCQ",
+              "tags": []
+            },
+            {
+              "name": "6Ct Heart",
+              "title": "6Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/6_ct_heart_1dc7d1d102.glb",
+              "icon": "https://amikob.ijewel3d.com/files/6_ct_heart_1934d92dc5.png?h=ijewel3d.com",
+              "fileId": "aS-Jt1xzR1C4tCMOtlheIg",
               "tags": []
             },
             {
@@ -184,6 +232,22 @@
               "tags": []
             },
             {
+              "name": "8Ct Emerald",
+              "title": "8Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_emerald_b5e9cbc327.glb",
+              "icon": "https://amikob.ijewel3d.com/files/8_ct_emerald_ccd94abdb5.png?h=ijewel3d.com",
+              "fileId": "VH1-jwa4TgaQMLzVeVgpRQ",
+              "tags": []
+            },
+            {
+              "name": "8Ct Heart",
+              "title": "8Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_heart_7e0030f3ec.glb",
+              "icon": "https://amikob.ijewel3d.com/files/8_ct_heart_ba8a002602.png?h=ijewel3d.com",
+              "fileId": "Dn35XLKzSlOi8pJuBmjcNw",
+              "tags": []
+            },
+            {
               "name": "8Ct Marquise",
               "title": "8Ct Marquise",
               "modelUrl": "https://amikob.ijewel3d.com/files/8_ct_marquise_fc7b4c33fd.glb",
@@ -229,6 +293,22 @@
               "modelUrl": "https://amikob.ijewel3d.com/files/10_ct_elongated_radiant_6cd278a405.glb",
               "icon": "https://amikob.ijewel3d.com/files/10_ct_elongated_radiant_da2aa3acb3.png?h=ijewel3d.com",
               "fileId": "V_s1SCGgTNqsjTaaPpL2Wg",
+              "tags": []
+            },
+            {
+              "name": "10Ct Emerald",
+              "title": "10Ct Emerald",
+              "modelUrl": "https://amikob.ijewel3d.com/files/10_ct_emerald_0de7ab2252.glb",
+              "icon": "https://amikob.ijewel3d.com/files/10_ct_emerald_74db2b3269.png?h=ijewel3d.com",
+              "fileId": "GIivtQaPQ6aDqt4MNfN1HA",
+              "tags": []
+            },
+            {
+              "name": "10Ct Heart",
+              "title": "10Ct Heart",
+              "modelUrl": "https://amikob.ijewel3d.com/files/10_ct_heart_c099a2f84c.glb",
+              "icon": "https://amikob.ijewel3d.com/files/10_ct_heart_f8e077b309.png?h=ijewel3d.com",
+              "fileId": "JRtqxd3NRg-x9W7s60wyOQ",
               "tags": []
             },
             {
@@ -1665,6 +1745,14 @@
         "path": "https://packs.ijewel3d.com/files/1_metal_whitegold_polished_0db3fb834b.pmat"
       },
       {
+        "name": "Gem 01 ND1043 Round",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 01 ND1043 Oval",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
         "name": "Gem 01 ND1043 Elongated Cushion",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
@@ -1673,11 +1761,11 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 01 ND1043 Marquise",
+        "name": "Gem 01 ND1043 Emerald",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 01 ND1043 Oval",
+        "name": "Gem 01 ND1043 Marquise",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1685,7 +1773,15 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 01 ND1043 Round",
+        "name": "Gem 01 ND1043 Heart",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 02 ND1043 Round",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 02 ND1043 Oval",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1697,11 +1793,11 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 02 ND1043 Marquise",
+        "name": "Gem 02 ND1043 Emerald",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 02 ND1043 Oval",
+        "name": "Gem 02 ND1043 Marquise",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1709,7 +1805,15 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 02 ND1043 Round",
+        "name": "Gem 02 ND1043 Heart",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 03 ND1043 Round",
+        "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
+      },
+      {
+        "name": "Gem 03 ND1043 Oval",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1721,11 +1825,11 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 03 ND1043 Marquise",
+        "name": "Gem 03 ND1043 Emerald",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 03 ND1043 Oval",
+        "name": "Gem 03 ND1043 Marquise",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
@@ -1733,7 +1837,7 @@
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       },
       {
-        "name": "Gem 03 ND1043 Round",
+        "name": "Gem 03 ND1043 Heart",
         "path": "https://packs.ijewel3d.com/files/1_gem_diamond_white_1_4aa77fb087.dmat"
       }
     ],

@@ -5,7 +5,7 @@ import {applySavedScene} from '../nd1043/saved-project.js';
 
 const project = JSON.parse(fs.readFileSync(new URL('../nd1043/project.json', import.meta.url)));
 const variations = project.plugins.RingConfigurator.components.find(item => item.name === 'Ring').variations;
-assert.equal(variations.length, 30);
+assert.equal(variations.length, 40);
 const catalog = createCatalog(variations);
 let combinations = 0;
 for (const shape of SHAPES) for (const carat of CARATS) {
@@ -17,13 +17,13 @@ for (const shape of SHAPES) for (const carat of CARATS) {
     combinations++;
   }
 }
-assert.equal(combinations, 270);
+assert.equal(combinations, 360);
 assert.equal(MISSING.size, 0);
 assert.equal(EAST_WEST.size, 0);
 assert.throws(() => resolveSelection(catalog, {shape: 'oval', carat: 4, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
 assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ["Metal 01", "Metal 04"]);
 const gems = project.materialConfig.mapping.filter(item => /^Gem (\d+ |Hidden_old)/.test(item.name));
-assert.equal(gems.length, 18);
+assert.equal(gems.length, 24);
 assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
 const saved = {plugins: {RingConfigurator: project.plugins.RingConfigurator}, sceneConfig: {type: 'PresetLibraryPlugin'}};
 const merged = applySavedScene(project, {config: JSON.stringify(saved)});
@@ -31,4 +31,4 @@ assert.deepEqual(merged.materialConfig, project.materialConfig);
 const html = fs.readFileSync(new URL('../nd1043/index.html', import.meta.url), 'utf8');
 assert(html.includes("ND1043"));
 for (const shape of SHAPES) assert(fs.existsSync(new URL(`../nd1043/assets/shapes/${shape}.png`, import.meta.url)));
-console.log('ND1043: 30 models, 270 valid shape/carat/gold selections, 18 diamond layers mapped.');
+console.log('ND1043: 40 models, 360 valid shape/carat/gold selections, 24 diamond layers mapped.');
