@@ -791,6 +791,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/6_ct_oval_a4a6b17000.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "romy",
+      "name": "Romy",
+      "path": "romy/",
+      "ijewelProjectId": "auyQn_s2T52AhBqKFwNdgA",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Pear",
+        "Asscher"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_e35fbbe74e.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
