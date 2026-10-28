@@ -1108,6 +1108,34 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_e7a7ac0c74.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "bn631",
+      "name": "BN631",
+      "path": "bn631/",
+      "ijewelProjectId": "b6H3E4HpRf2Vq-F2oCGeFA",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Old Cut Cushion",
+        "Pear"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Ring"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_ddc17afeb4.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
