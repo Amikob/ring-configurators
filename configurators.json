@@ -1192,6 +1192,35 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_09a9b27a99.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "eva",
+      "name": "Eva",
+      "path": "eva/",
+      "ijewelProjectId": "XyABSA3hSiuB_Df6v7CxPQ",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Old Cut Cushion",
+        "Pear"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_bcf50fce99.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
