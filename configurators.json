@@ -98,6 +98,40 @@
       "status": "live"
     },
     {
+      "id": "ariella",
+      "name": "Ariella",
+      "path": "ariella/",
+      "ijewelProjectId": "JdXeNqwRQESS9oPko--UtA",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Emerald",
+        "Elongated Radiant",
+        "Pear",
+        "Marquise",
+        "Square Cushion"
+      ],
+      "carats": [
+        1,
+        5
+      ],
+      "rings": 40,
+      "bands": {
+        "files": 1,
+        "styles": [
+          "Pave"
+        ]
+      },
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_05fb26d9e4.png?h=ijewel3d.com",
+      "status": "new"
+    },
+    {
       "id": "erica",
       "name": "Erica",
       "path": "erica/",
