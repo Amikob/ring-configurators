@@ -1266,6 +1266,39 @@
       "status": "new"
     },
     {
+      "id": "nd_ear_02",
+      "name": "ND_EAR_02 Cleopatra",
+      "path": "nd_ear_02/",
+      "ijewelProjectId": "fYv356twSX2KaT_6OTNsgA",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Pear",
+        "Marquise",
+        "Heart",
+        "Princess",
+        "Emerald",
+        "Asscher",
+        "Baguette",
+        "Elongated Cushion",
+        "Square Cushion",
+        "Elongated Radiant",
+        "Square Radiant"
+      ],
+      "carats": [
+        0.5,
+        5
+      ],
+      "rings": 120,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Ring"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_80186555ad.png?h=ijewel3d.com",
+      "status": "new"
+    },
+    {
       "id": "eva",
       "name": "Eva",
       "path": "eva/",

@@ -8,7 +8,7 @@ for (const site of sites) {
   const line = app.match(/^let desired = (\{[^\n]*\});$/m)?.[1];
   assert(line, `${site}: default selection not found`);
   const desired = Function(`return ${line}`)();
-  if (site === 'nd_ear_01') { // earrings open on Round 1 ct, yellow gold, upright (no ring pose)
+  if (['nd_ear_01', 'nd_ear_02'].includes(site)) { // earrings open on Round 1 ct, yellow gold, upright (no ring pose)
     assert.deepEqual([desired.shape, desired.carat, desired.ringGold, desired.pose], ['round', 1, 'yellow', 'upright'], site);
     continue;
   }
