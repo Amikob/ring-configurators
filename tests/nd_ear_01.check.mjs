@@ -5,7 +5,7 @@ import {applySavedScene} from '../nd_ear_01/saved-project.js';
 
 const project = JSON.parse(fs.readFileSync(new URL('../nd_ear_01/project.json', import.meta.url)));
 const variations = project.plugins.RingConfigurator.components.find(item => item.name === 'Ring').variations;
-assert.equal(variations.length, 78);
+assert.equal(variations.length, 120);
 assert.equal(project.plugins.RingConfigurator.components[0].rotation.y, 0);
 const savedCfg = JSON.parse(JSON.parse(fs.readFileSync(new URL('../nd_ear_01/saved-config.json', import.meta.url))).config);
 assert.equal(savedCfg.plugins.RingConfigurator.components[0].rotation.y, 0);
@@ -22,8 +22,9 @@ for (const shape of SHAPES) for (const carat of CARATS) {
 }
 assert.equal(combinations, 702);
 assert.equal(MISSING.size, 0);
-assert.equal(EAST_WEST.size, 0);
-assert.throws(() => resolveSelection(catalog, {shape: 'oval', carat: 1, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
+assert.equal(EAST_WEST.size, 7);
+for (const shape of EAST_WEST) for (const carat of CARATS) assert.match(resolveSelection(catalog, {shape, carat, orientation: 'ew', headGold: 'white', ringGold: 'white'}).ring.variation.name, / Regular$/);
+assert.throws(() => resolveSelection(catalog, {shape: 'round', carat: 1, orientation: 'ew', headGold: 'white', ringGold: 'white'}));
 assert.deepEqual(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid), ['Metal 01']);
 const gems = project.materialConfig.mapping.filter(item => /^Gem (\d+ |Hidden_old)/.test(item.name));
 assert.equal(gems.length, 13);
@@ -35,4 +36,4 @@ assert(fs.readFileSync(new URL('../nd_ear_01/app.js', import.meta.url), 'utf8').
 const html = fs.readFileSync(new URL('../nd_ear_01/index.html', import.meta.url), 'utf8');
 assert(html.includes("ND_EAR_01"));
 for (const shape of SHAPES) assert(fs.existsSync(new URL(`../nd_ear_01/assets/shapes/${shape}.png`, import.meta.url)));
-console.log('ND_EAR_01: 78 models, 702 valid shape/carat/gold selections, 13 diamond layers mapped.');
+console.log('ND_EAR_01: 120 models (42 Regular), 702 valid shape/carat/gold selections, 13 diamond layers mapped.');

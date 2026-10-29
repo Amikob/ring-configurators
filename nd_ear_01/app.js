@@ -1,4 +1,4 @@
-import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=nd_ear_01-1';
+import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=nd_ear_01-2';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=nd_ear_01-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd_ear_01-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -68,7 +68,7 @@ for (const shape of SHAPES) {
   const text = document.createElement('span'); text.textContent = label(shape); button.append(icon, text); button.setAttribute('aria-label', label(shape));
 }
 for (const ct of CARATS) makeChoice('carats', `${ct} ct`, ct, 'carat', '');
-for (const [value, text] of [['ns', 'North-South'], ['ew', 'East-West']]) makeChoice('orientations', text, value, 'orientation', '');
+for (const [value, text] of [['ns', 'Compass'], ['ew', 'Regular']]) makeChoice('orientations', text, value, 'orientation', '');
 $('pose-toggle').addEventListener('click', () => choose({pose:desired.pose === 'flat' ? 'upright' : 'flat'}));
 $('center-view').addEventListener('click', () => {
   if (ready && !busy && tryonSession?.phase === 'idle') frontView(viewer);
@@ -86,7 +86,7 @@ function render() {
   $('carat-label').textContent = `${desired.carat} ct`;
   $('shape-label').textContent = label(desired.shape);
   $('update-status').textContent = busy ? 'Updating...' : '';
-  if (applied) $('selection-summary').textContent = `${label(applied.shape)} / ${applied.carat} ct${EAST_WEST.has(applied.shape) ? ` / ${applied.orientation.toUpperCase()}` : ''}`;
+  if (applied) $('selection-summary').textContent = `${label(applied.shape)} / ${applied.carat} ct${EAST_WEST.has(applied.shape) ? ` / ${applied.orientation === 'ew' ? 'Regular' : 'Compass'}` : ''}`;
   document.body.dataset.ready = String(ready);
   document.body.dataset.busy = String(busy);
   $('viewer').setAttribute('aria-busy', String(busy));
@@ -426,7 +426,7 @@ async function start() {
     const response = await fetch('./project.json?v=2', {cache:'no-store'});
     if (!response.ok) throw new Error('ND_EAR_01 scene could not be loaded.');
     const baseline = await response.json();
-    const savedResponse = await fetch('./saved-config.json?v=20261027', {cache:'no-store'})   /* local corrected config: the iJewel copy is stale (old-style configurator, cannot re-sync) */;
+    const savedResponse = await fetch('./saved-config.json?v=20261029reg', {cache:'no-store'})   /* local corrected config: the iJewel copy is stale (old-style configurator, cannot re-sync) */;
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=scene-1');
     const project = applySavedScene(baseline, await savedResponse.json());

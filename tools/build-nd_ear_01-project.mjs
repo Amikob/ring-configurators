@@ -1,7 +1,9 @@
 // Builds nd_ear_01/project.json from the ND336 baseline (scene, metals, try-on defaults)
 // plus the live ND_EAR_01 iJewel configurator saved at tools/snapshots/nd_ear_01-public.json.
 //
-// Refresh the snapshot:
+// The iJewel item is now a plain folder (config {}); the 42 '<c>Ct <Shape> Regular' files were appended to the snapshot
+// via /api/proxy/file-resolve?name=<file>.glb&scope=J4erhy18SICM3XhnmpQKOg (tools/add-nd_ear_01-regular.py).
+// Old refresh (no longer works):
 //   curl -s 'https://amikob.ijewel3d.com/api/raw/v1/files/view/J4erhy18SICM3XhnmpQKOg?select=id,name,file,config' > tools/snapshots/nd_ear_01-public.json
 // then run: node tools/build-nd_ear_01-project.mjs
 import fs from 'node:fs';
@@ -13,7 +15,7 @@ const native = read('tools/snapshots/nd_ear_01-public.json');
 const config = typeof native.config === 'string' ? JSON.parse(native.config) : native.config;
 const source = config?.plugins?.RingConfigurator;
 const ring = source?.components?.find(component => component.name === 'Ring');
-if (!ring || ring.variations.length !== 78) throw new Error(`Expected 78 ND_EAR_01 ring variations, found ${ring?.variations.length}`);
+if (!ring || ring.variations.length !== 120) throw new Error(`Expected 120 ND_EAR_01 ring variations, found ${ring?.variations.length}`);
 
 ring.visible = true;
 // Earring files differ in orientation (stone toward -Z or +Z); app.js faceFront() turns each loaded file to face the camera.

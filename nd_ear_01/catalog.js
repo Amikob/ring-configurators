@@ -3,9 +3,11 @@
 // changing the app's state model.
 export const SHAPES = ['round', 'oval', 'pear', 'marquise', 'heart', 'princess', 'emerald', 'asscher', 'baguette', 'elongated_cushion', 'square_cushion', 'elongated_radiant', 'square_radiant'];
 export const CARATS = [0.5, 1, 2, 3, 4, 5];
-export const EAST_WEST = new Set();
+// Shapes with both a Compass (default, 'ns') and a Regular ('ew' slot) version. Regular files are named '<c>Ct <Shape> Regular'.
+export const EAST_WEST = new Set(['baguette', 'elongated_cushion', 'elongated_radiant', 'emerald', 'marquise', 'oval', 'pear']);
+export const STYLE_LABEL = { ns: 'Compass', ew: 'Regular' };
 export const COLORS = ['white', 'yellow', 'rose'];
-export const RING_COUNT = 78;
+export const RING_COUNT = 120;
 // Shape:carat combinations that were never made.
 export const MISSING = new Set([]);
 export const available = (shape, carat) => !MISSING.has(`${shape}:${carat}`);
@@ -17,10 +19,10 @@ export function parseRing(variation) {
   const names = [variation.name, variation.title, variation.fileName, variation.filename]
     .filter(Boolean).map(value => String(value).replace(/\.(3dm|glb)$/i, '').trim().toLowerCase());
   for (const name of names) {
-    const match = name.match(/^(\d+(?:\.\d+)?)ct\s+(.+?)(?:\s+(ns|ew))?$/);
+    const match = name.match(/^(\d+(?:\.\d+)?)ct\s+(.+?)(?:\s+(ns|ew|regular))?$/);
     const shape = match?.[2].replaceAll(' ', '_');
     if (match && SHAPES.includes(shape) && CARATS.includes(Number(match[1]))) return {
-      shape, carat: Number(match[1]), orientation: match[3] || 'ns', variation
+      shape, carat: Number(match[1]), orientation: match[3] === 'regular' ? 'ew' : (match[3] || 'ns'), variation
     };
   }
   return null;
