@@ -8,6 +8,10 @@ for (const site of sites) {
   const line = app.match(/^let desired = (\{[^\n]*\});$/m)?.[1];
   assert(line, `${site}: default selection not found`);
   const desired = Function(`return ${line}`)();
+  if (site === 'nd_ear_01') { // earrings open on Round 1 ct, yellow gold, upright (no ring pose)
+    assert.deepEqual([desired.shape, desired.carat, desired.ringGold, desired.pose], ['round', 1, 'yellow', 'upright'], site);
+    continue;
+  }
   assert.equal(desired.shape, 'oval', site);
   // Oval 3 ct, or the smallest carat when the set has no 3 ct (e.g. 4-10 ct sets).
   const carats = (fs.existsSync(new URL(`../${site}/catalog.js`, import.meta.url)) ? fs.readFileSync(new URL(`../${site}/catalog.js`, import.meta.url), 'utf8') : '').match(/CARATS\s*=\s*\[([^\]]*)\]/)?.[1]?.split(',').map(Number).filter(n => !isNaN(n));

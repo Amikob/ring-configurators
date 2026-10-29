@@ -4,6 +4,8 @@ import { execFileSync } from 'node:child_process';
 //  1. swap hold + first-load gem shading + lying default   2. lying front view from the head side   3. camera kept on Stand/Rest.
 // Roll out with: python3 tools/apply-page-fixes.py [--only <slug>]   (see SWAPHOLD notes). No per-slug list: new pages must carry them too.
 const PRESERVED = ['erica', 'arlet', 'arlet-test', 'dior', 'nd1061', 'nd336', 'nd344p']; // live before this work: must stay byte-identical
+// Earring pages have no rest/stand pose: they open on a fixed front view of the stone and skip the ring pose checks.
+const EARRINGS = ['nd_ear_01'];
 const BASELINE = '764f696'; // origin/main before the page-fix work
 const FIX_VERSION = '20261026zzfront7';
 const fail = msg => { console.error(`page-fixes: ${msg}`); process.exit(1); };
@@ -25,13 +27,13 @@ for (const slug of pages) {
   if (!app.includes('beginSceneUpdate(viewer, { hold: !resumeView })')) f('selection update (incl. the first load) does not hold the previous frame');
   if (!app.includes('whenGemsShaded } from \'./scene-refresh.js?v=hold-6\'')) f('scene-refresh.js import not versioned for the hold');
   if (!app.includes('await drain(); await whenGemsShaded(viewer); $(\'startup\').hidden = true;')) f('loading screen is not kept until the stones are shaded');
-  if (!/let desired = \{[^\n]*pose: 'flat' \}/.test(app)) f("default pose is not lying ('flat')");
+  if (!EARRINGS.includes(slug) && !/let desired = \{[^\n]*pose: 'flat' \}/.test(app)) f("default pose is not lying ('flat')");
   if (!/import \{ captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio \} from '\.\/view-controls\.js\?v=keepcam-2';/.test(app)) f('view-controls import missing/unversioned');
-  if (!/if \(!applied && target\.pose === 'flat'\) holdFrontView\(viewer, \{remeasure:!portalStart\?\.settings\?\.angle\}\);/.test(app)) f('first-load front-view guard (holdFrontView) missing');
+  if (!EARRINGS.includes(slug) && !/if \(!applied && target\.pose === 'flat'\) holdFrontView\(viewer, \{remeasure:!portalStart\?\.settings\?\.angle\}\);/.test(app)) f('first-load front-view guard (holdFrontView) missing');
   if (!/if \(applied\) endFrontHold\(\);/.test(app)) f('front-view guard is not released on later selection updates');
   if (!/await settleCameraAnimations\(viewer\);\n\s*restoreView\(\);/.test(app)) f('SDK camera animation is not stopped before framing/restoring the view');
   if (!/const keepRatio = applied && !resumeView \? zoomRatio\(viewer\) : null;/.test(app)) f('keepRatio missing');
-  if (!/if \(!applied\) centerView\(viewer, \{resting:target\.pose === 'flat'\}\);\n\s*else if \(target\.pose !== applied\.pose\) centerView\(viewer, \{keepRatio\}\);/.test(app)) f('front view must apply only on the first load; pose toggles must keep the camera');
+  if (!EARRINGS.includes(slug) && !/if \(!applied\) centerView\(viewer, \{resting:target\.pose === 'flat'\}\);\n\s*else if \(target\.pose !== applied\.pose\) centerView\(viewer, \{keepRatio\}\);/.test(app)) f('front view must apply only on the first load; pose toggles must keep the camera');
   if (/enteringRest/.test(app)) f('pose toggles must not re-enter the fixed front view (enteringRest)');
   const version = html.match(/\.\/app\.js\?v=([^"]*)"/)?.[1];
   if (!(version >= FIX_VERSION)) f(`index.html must load ./app.js?v=${FIX_VERSION} (or a later cache-buster), found ${version}`);

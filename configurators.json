@@ -1233,6 +1233,39 @@
       "status": "new"
     },
     {
+      "id": "nd_ear_01",
+      "name": "ND_EAR_01 Aphrodite",
+      "path": "nd_ear_01/",
+      "ijewelProjectId": "J4erhy18SICM3XhnmpQKOg",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Pear",
+        "Marquise",
+        "Heart",
+        "Princess",
+        "Emerald",
+        "Asscher",
+        "Baguette",
+        "Elongated Cushion",
+        "Square Cushion",
+        "Elongated Radiant",
+        "Square Radiant"
+      ],
+      "carats": [
+        0.5,
+        5
+      ],
+      "rings": 78,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Ring"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_12599c2284.png?h=ijewel3d.com",
+      "status": "new"
+    },
+    {
       "id": "eva",
       "name": "Eva",
       "path": "eva/",

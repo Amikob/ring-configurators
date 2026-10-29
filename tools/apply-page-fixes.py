@@ -23,6 +23,7 @@ Pages made by /workspace/ijewel/redo/newpage.py inherit the fixes from the patch
 import re, sys, hashlib, pathlib
 
 FIX_VERSION = '20261026zzfront7'
+EARRINGS = {'nd_ear_01'}  # earring pages: fixed front view, no ring pose; the ring-pose fixes do not apply
 PRESERVED = {'erica', 'arlet', 'arlet-test', 'dior', 'nd1061', 'nd336', 'nd344p'}  # live before this work; never touched
 # sha256 of the pre-fix files that are known-safe to replace with the templates
 VC_BASELINES = {'63638fe8fdb2eeaa0f369debcb1946b72059a601be7891f84a853d83a4a51c18',  # view-controls.js at 764f696 (all pages)
@@ -113,7 +114,7 @@ def main(argv):
     tpl_vc = (root / 'shared' / 'view-controls.template.js').read_text()
     pending, failed, ok = [], {}, []
     for d in sorted(root.iterdir()):
-        if not ((d / 'app.js').is_file() and (d / 'scene-refresh.js').is_file()) or d.name in PRESERVED or (only and d.name != only): continue
+        if not ((d / 'app.js').is_file() and (d / 'scene-refresh.js').is_file()) or d.name in PRESERVED or d.name in EARRINGS or (only and d.name != only): continue
         try: changes = plan(d, tpl_sr, tpl_vc)
         except Skip as e: failed[d.name] = str(e); continue
         if changes:
