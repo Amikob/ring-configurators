@@ -1299,6 +1299,40 @@
       "status": "new"
     },
     {
+      "id": "nd_ear_03",
+      "name": "ND_EAR_03",
+      "path": "nd_ear_03/",
+      "ijewelProjectId": "P1583E4oRj-j9DX_8niVaA",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Pear",
+        "Marquise",
+        "Heart",
+        "Princess",
+        "Emerald",
+        "Asscher",
+        "Baguette",
+        "Elongated Cushion",
+        "Square Cushion",
+        "Elongated Radiant",
+        "Square Radiant",
+        "Old Cut Cushion"
+      ],
+      "carats": [
+        0.5,
+        5
+      ],
+      "rings": 84,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Ring"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/1_ct_round_863342138a.png?h=ijewel3d.com",
+      "status": "new"
+    },
+    {
       "id": "eva",
       "name": "Eva",
       "path": "eva/",
