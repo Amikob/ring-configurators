@@ -404,7 +404,7 @@ async function start() {
     if(!saved?.plugins?.RingConfigurator)throw new Error('The Erica ring catalogue is not ready.');
     project.plugins.RingConfigurator = saved.plugins.RingConfigurator;
     for(const component of project.plugins.RingConfigurator.components){component.visible=component.name==='Ring';component.selectedIndex=0;}
-    portalStart = await loadPortalStart();
+    portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });
     preselectRing(project);
     project.sceneConfig = saved.sceneConfig;
