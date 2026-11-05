@@ -24,6 +24,7 @@
         <button id="tryon" class="icon-tool labeled-tool" type="button" title="Try on your hand" data-tooltip="Try on your hand" aria-label="Try on" hidden disabled><img src="./assets/icons/hand.svg" alt=""><span id="tryon-label">Try on</span></button>
         <button id="flip-camera" class="icon-tool" type="button" title="Flip camera" data-tooltip="Flip camera" aria-label="Flip camera" hidden><img src="./assets/icons/switch-camera.svg" alt=""></button>
         <select id="finger" aria-label="Try-On finger" hidden><option value="thumb">Thumb</option><option value="index">Index</option><option value="middle">Middle</option><option value="ring" selected>Ring finger</option><option value="pinky">Pinky</option></select>
+        <button id="share-client" class="icon-tool labeled-tool" type="button" title="Copy client share link" data-tooltip="Copy client share link" aria-label="Share with client" style="width:auto;padding:0 8px"><span id="share-client-label">Share</span></button>
       </div>
       </div>
     </main>
@@ -43,7 +44,18 @@
   <script src="https://releases.ijewel3d.com/libs/webgi-v0/bundle-0.22.0.js"></script>
   <script>window.webgi = window;</script>
   <script src="https://releases.ijewel3d.com/libs/mini-viewer/0.6.18/bundle.nowebgi.iife.js"></script>
-  <script type="module" src="./app.js?v=20261104hold6b"></script>
+  <script type="module" src="./app.js?v=20261104hold6b-share1"></script>
   <script src="../shared/ring-switcher.js?v=1" defer></script>
+  <script>
+  (() => {
+    const b = document.getElementById('share-client'), l = document.getElementById('share-client-label');
+    const url = new URL('../nd336-intug38c83/', location.href).href;
+    b.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(url); l.textContent = 'Copied'; }
+      catch { window.prompt('Client link:', url); }
+      setTimeout(() => { l.textContent = 'Share'; }, 2000);
+    });
+  })();
+  </script>
 </body>
 </html>

@@ -430,7 +430,7 @@ async function start() {
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=scene-1');
     const project = applySavedScene(baseline, await savedResponse.json());
-    portalStart = await loadPortalStart();
+    portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });
     portalStart.settings = { ...portalStart.settings }; delete portalStart.settings.pose; delete portalStart.settings.angle;   // earrings: ring pose/angle settings do not apply
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });
     preselectRing(project);

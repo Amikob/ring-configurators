@@ -401,7 +401,7 @@ async function start() {
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=nd801-1');
     const project = applySavedScene(baseline, await savedResponse.json());
-    portalStart = await loadPortalStart();
+    portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });
     preselectRing(project);
     initialCamera = project.cameraConfig;
