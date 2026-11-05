@@ -2,7 +2,7 @@ import { SHAPES, EAST_WEST, COLORS, label, createCatalog, resolveSelection, pars
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=nd336-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd336-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
-import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=nd336-1';
+import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-6';
 import { manageTryonSession } from './tryon-session.js?v=nd336-1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd336-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=nd336-1';
@@ -121,7 +121,7 @@ async function drain() {
   tryonResuming = Boolean(resumeView);
   busy = true; clearError(); render();
   let fading = false, shadowsChanged = false, capturesReleased = false;
-  const finishSceneUpdate = beginSceneUpdate(viewer);
+  const finishSceneUpdate = beginSceneUpdate(viewer, { hold: Boolean(applied) && !resumeView });
   // Never replace meshes or release their textures while Try-On owns the scene.
   try {
     if (resumeView) {
@@ -255,7 +255,7 @@ async function setup() {
     for (const key of ['headGold','ringGold']) for (const color of COLORS) if (!groups[key] || !materialFor(groups[key],color)) throw new Error(`Missing ${key} ${color}`);
     modelResources = manageModelResources(viewer, [ringComponent]);
     desired = guardDesired(desired, PAGE_DEFAULTS, value => resolveSelection(catalog, value));
-    ready = true; clearTimeout(startupTimeout); render(); await drain(); $('startup').hidden = true;
+    ready = true; clearTimeout(startupTimeout); render(); await drain(); await whenGemsShaded(viewer); $('startup').hidden = true;
   } catch (error) {
     console.error('ND336 setup failed',error);
     $('startup-text').textContent = 'ND336 is not available yet.';
