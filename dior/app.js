@@ -2,7 +2,7 @@ import { SHAPES, COLORS, GROUPS, label, createCatalog, resolveSelection, parseRi
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=15.1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
-import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
+import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-6';
 import { manageTryonSession } from './tryon-session.js?v=11';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.3';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
@@ -120,7 +120,7 @@ async function drain() {
   tryonResuming = Boolean(resumeView);
   busy = true; clearError(); render();
   let fading = false, shadowsChanged = false, capturesReleased = false;
-  const finishSceneUpdate = beginSceneUpdate(viewer);
+  const finishSceneUpdate = beginSceneUpdate(viewer, { hold: Boolean(applied) && !resumeView });
   // Never replace meshes or release their textures while Try-On owns the scene.
   try {
     if (resumeView) {
@@ -265,7 +265,7 @@ async function setup() {
     for (const key of ['headGold','ringGold','bandGold']) for (const color of COLORS) if (!groups[key] || !materialFor(groups[key],color)) throw new Error(`Missing ${key} ${color}`);
     modelResources = manageModelResources(viewer, [ringComponent, bandComponent]);
     desired = guardDesired(desired, PAGE_DEFAULTS, value => resolveSelection(catalog, value));
-    ready = true; clearTimeout(startupTimeout); render(); await drain(); $('startup').hidden = true;
+    ready = true; clearTimeout(startupTimeout); render(); await drain(); await whenGemsShaded(viewer); $('startup').hidden = true;
   } catch (error) {
     console.error('Dior setup failed',error);
     $('startup-text').textContent = 'Dior is not available yet.';
