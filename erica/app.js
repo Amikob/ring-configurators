@@ -120,7 +120,7 @@ async function drain() {
   tryonResuming = Boolean(resumeView);
   busy = true; clearError(); render();
   let fading = false, shadowsChanged = false, capturesReleased = false;
-  const finishSceneUpdate = beginSceneUpdate(viewer, { hold: !resumeView });
+  const finishSceneUpdate = beginSceneUpdate(viewer, { hold: Boolean(applied) && !resumeView });
   // Never replace meshes or release their textures while Try-On owns the scene.
   try {
     if (resumeView) {
