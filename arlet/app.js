@@ -380,7 +380,7 @@ const startupTimeout = setTimeout(()=> {
 async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
-    portalStart = await loadPortalStart();
+    portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });
     applyPortalDesired(desired, portalStart, { colors: COLORS });
     const miniViewer = await ijewelViewer.loadModelById(PROJECT_ID,'amikob',$('viewer'),{
       showConfigurator:false,showCard:false,transparentBg:false,showUiButtons:false,hideTryOn:true,hideCameraViews:true,
