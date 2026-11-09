@@ -9,7 +9,8 @@ import fs from 'node:fs';
 const root = new URL('../', import.meta.url);
 const read = path => JSON.parse(fs.readFileSync(new URL(path, root)));
 const baseline = read('nd336/project.json');
-const native = read('tools/snapshots/aaron-public.json');
+// v2: prefer the local snapshot built from the re-uploaded files (tools/build-aaron-local.mjs)
+const native = fs.existsSync(new URL('tools/snapshots/aaron-v2-public.json', root)) ? read('tools/snapshots/aaron-v2-public.json') : read('tools/snapshots/aaron-public.json');
 const config = typeof native.config === 'string' ? JSON.parse(native.config) : native.config;
 const source = config?.plugins?.RingConfigurator;
 const ring = source?.components?.find(component => component.name === 'Ring');

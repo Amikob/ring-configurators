@@ -480,7 +480,7 @@
       "id": "aaron",
       "name": "Aaron",
       "path": "aaron/",
-      "ijewelProjectId": "JKIOiv7VQVa4Prqa7LE8fQ",
+      "ijewelProjectId": null,
       "shapes": [
         "Round",
         "Oval",
@@ -501,8 +501,9 @@
       "metalZones": [
         "Ring"
       ],
-      "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_7170774832.png?h=ijewel3d.com",
-      "status": "new"
+      "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_181e89175d.png?h=ijewel3d.com",
+      "status": "new",
+      "ijewelFolderId": "VcOWtWKtQi6vA80XDiyPHQ"
     },
     {
       "id": "nd334ph",

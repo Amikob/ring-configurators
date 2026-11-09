@@ -401,7 +401,7 @@ async function start() {
     const response = await fetch('./project.json?v=2', {cache:'no-store'});
     if (!response.ok) throw new Error('Aaron scene could not be loaded.');
     const baseline = await response.json();
-    const savedResponse = await fetch(`https://amikob.ijewel3d.com/api/raw/v1/files/view/${PROJECT_ID}?select=id,name,file,config`, {cache:'no-store'});
+    const savedResponse = await fetch('./saved-config.json?v=20261109v2', {cache:'no-store'})   /* local config: iJewel project JKIOiv7VQVa4Prqa7LE8fQ is gone; rings re-uploaded to new Drive folder VcOWtWKtQi6vA80XDiyPHQ (tools/build-aaron-local.mjs) */;
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=aaron-1');
     const project = applySavedScene(baseline, await savedResponse.json());
