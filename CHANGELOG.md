@@ -2,6 +2,14 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-09 - Arlet on a hand: private TEST page (not live)
+
+- New test-only folder `arlet-hand-<random>/` (a copy of `arlet/`): opens Arlet 2 ct Oval on a static hand; Oval and Emerald only, carats 1-5, ring gold. No band, rest pose, Try-On or Share on this page.
+- The hand is the free official iJewel3D hand (`Hand-animation.blend`, frame 1, left hand), exported as a static 1.2 MB GLB (`assets/hand.glb`) with its skin and nail textures from the iJewel `skin materials.vjson`.
+- The hand is fitted to the ring automatically for every shape and carat (`hand-view.js`): the ring's hole is measured from the loaded model, the ring finger (proximal phalanx) is centered through it, the stone faces the back of the hand, and the hand is scaled so the finger fits the ring's inner diameter.
+- `?edit=1` opens a scene editor (hand position/rotation/scale, ring position on the finger, skin, nails, light, exposure, background, camera, shadows) with "Copy settings". Edits are saved in that browser; defaults come from `hand-scene.json`.
+- Why: Jacob asked to try a hand scene for all rings. `noindex`, not in `configurators.json`, not linked from anywhere. `arlet/` and all live pages and shared files are unchanged.
+
 ## 2026-10-25 - Reset: pages back to earlier iJewel projects
 
 - Dior, ND344P and ND1061 point to their original (early) iJewel projects again; the ND1061 page no longer uses the ND1060 project id.
