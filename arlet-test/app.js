@@ -3,7 +3,7 @@ import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=15.1
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=15.1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
 import { beginSceneUpdate, refreshSceneShadows } from './scene-refresh.js?v=9';
-import { manageTryonSession } from './tryon-session.js?v=11';
+import { manageTryonSession } from './tryon-session.js?v=live1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=16.3';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=15.1';
 import { initDebugOverlay, noteSwitch } from './debug-overlay.js?v=1';
@@ -113,10 +113,16 @@ async function choose(patch) {
   if (!ready || tryonLoading || tryonSession?.phase === 'starting') return;
   desired = normalizePose({ ...desired, ...patch }); render(); await drain();
 }
+let liveSwapOk = true;
+// A band can be shown live only if it was part of the AR assembly when Try-On started.
+const bandReady = selection => !selection || selection.band === 'none' || tryonSession.holds(bandComponent);
 async function drain() {
   if (busy || !ready) return;
   if (applied && JSON.stringify(applied) === JSON.stringify(desired)) return;
   const resumeView = tryonSession?.captureView();
+  // Try-On running: swap the ring inside the live AR session (same camera stream, same front/back camera,
+  // tracking continues). No stop/restart, so no white default view and no camera reset.
+  const liveSwap = Boolean(resumeView) && liveSwapOk && tryonSession.canSwapLive() && bandReady(desired);
   const resumeGeneration = tryonGeneration;
   tryonResuming = Boolean(resumeView);
   busy = true; clearError(); render();
@@ -124,12 +130,12 @@ async function drain() {
   const finishSceneUpdate = beginSceneUpdate(viewer);
   // Never replace meshes or release their textures while Try-On owns the scene.
   try {
-    if (resumeView) {
+    if (resumeView && !liveSwap) {
       fading = true;
       await fadeViewer($('viewer'), true);
       await paintViewer();
     }
-    await tryonSession?.stop();
+    if (!liveSwap) await tryonSession?.stop();
   }
   catch (error) {
     console.error('Arlet Try-On stop failed', error);
@@ -148,6 +154,7 @@ async function drain() {
         await paintViewer();
       }
       const target = { ...desired };
+      if (liveSwap && !bandReady(target)) break; // band not in the AR assembly: the drain below reruns with a full AR restart
       const restoreView = applied && !resumeView ? captureView(viewer) : () => {};
       const enteringRest = target.pose === 'flat' && applied?.pose !== 'flat';
       const {ring,band} = resolveSelection(catalog,target);
@@ -160,8 +167,8 @@ async function drain() {
       }
       shadowsChanged ||= ringChanged || bandChanged || needsModelTransition(applied, target);
       if (ringChanged || bandChanged) {
-        applyRenderProfile(viewer, profile, selectedQuality);
-        modelResources?.cleanup();
+        if (!liveSwap) applyRenderProfile(viewer, profile, selectedQuality);
+        if (!liveSwap) modelResources?.cleanup();
         modelResources?.beginLoad();
         releaseDiamondCuts(viewer);
         capturesReleased = true;
@@ -188,10 +195,10 @@ async function drain() {
       if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat', {band: band ? bandModel : undefined});
       if (ringChanged || bandChanged) {
         modelResources?.endLoad();
-        modelResources?.cleanup();
+        if (!liveSwap) modelResources?.cleanup();
       }
-      applyRenderProfile(viewer, profile, selectedQuality);
-      restoreView();
+      if (!liveSwap) applyRenderProfile(viewer, profile, selectedQuality);
+      if (!liveSwap) restoreView();
       if (enteringRest || applied && target.pose !== applied.pose) centerView(viewer, {resting:enteringRest});
       shadowsChanged ||= target.pose !== applied?.pose;
       if (!applied && portalStart?.settings?.angle) applyStartAngle(viewer, portalStart.settings.angle);
@@ -200,8 +207,9 @@ async function drain() {
     }
   } catch (error) {
     console.error('Arlet selection failed',error);
+    if (liveSwap) liveSwapOk = false;
     modelResources?.endLoad();
-    modelResources?.cleanup();
+    if (!liveSwap) modelResources?.cleanup();
     if (capturesReleased) {
       try { refreshDiamondCuts(viewer, profile); }
       catch (captureError) { console.warn('Arlet diamond recovery failed', captureError); }
@@ -215,14 +223,15 @@ async function drain() {
     showError('This selection could not load. Please try again.');
   } finally {
     try {
-      if (shadowsChanged) {
+      if (shadowsChanged && liveSwap) tryonSession.whenStopped(() => { modelResources?.cleanup(); refreshSceneShadows(viewer); });
+      else if (shadowsChanged) {
         refreshSceneShadows(viewer);
       }
     } catch (error) {
       console.warn('Arlet shadow refresh failed', error);
     }
     try {
-      if (resumeView && applied && resumeGeneration === tryonGeneration && !document.hidden) {
+      if (resumeView && !liveSwap && applied && resumeGeneration === tryonGeneration && !document.hidden) {
         // Rebuild the new assembly before resuming the existing AR experience.
         await openTryon({ generation: resumeGeneration, resumeView });
       }
@@ -306,6 +315,7 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
       refreshSceneShadows(viewer);
     }
     prepared = window.ijewelViewer.prepareConfiguratorTryon(viewer, tryon);
+    tryonSession.prepareStart(tryon); // reopen on the camera the shopper last chose (back stays back)
     await tryon.start();
     if (cancelled()) { await tryonSession.stop(); prepared.restore(); return; }
     if (!tryon.running) {
@@ -337,7 +347,7 @@ $('flip-camera').addEventListener('click', async () => {
   const tryon = viewer?.getPluginByType('RingTryonPlugin');
   if (!tryon?.running) return;
   $('flip-camera').disabled = true;
-  try { await tryon.flipCamera(); }
+  try { await tryon.flipCamera(); tryonSession?.rememberCamera(); }
   catch (error) { showTryonError('The camera could not switch. Please try again.'); }
   finally { $('flip-camera').disabled = false; }
 });
