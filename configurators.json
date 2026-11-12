@@ -1506,6 +1506,33 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_9d333daeab.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "noya",
+      "name": "Noya",
+      "path": "noya/",
+      "ijewelProjectId": null,
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Old Cut Cushion"
+      ],
+      "carats": [
+        2,
+        6
+      ],
+      "rings": 29,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Ring"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_40d4d72a51.png?h=ijewel3d.com",
+      "status": "new",
+      "ijewelFolderId": "Ob9B3sx0RuSlIO7rEJ8c9A"
     }
   ]
 }
