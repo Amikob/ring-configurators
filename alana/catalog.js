@@ -16,7 +16,8 @@ export const MATERIAL_TARGETS = { headGold: 'Metal 01', ringGold: 'Metal 01', ba
 export const BAND_GROUP = { oval: 'elongated', elongated_cushion: 'elongated', elongated_radiant: 'elongated', emerald: 'elongated', round: 'rpa', pear: 'rpa', asscher: 'rpa' };
 export const BAND_FILES = { 'elongated:3-5': 'alana band elongated 3-5ct', 'elongated:6-8': 'alana band elongated 6-8ct', 'rpa:3-5': 'alana band round pear asscher 3-5ct' };
 export const bandKey = (shape, carat) => { const g = BAND_GROUP[shape]; if (!g) return null; const k = `${g}:${carat <= 5 ? '3-5' : '6-8'}`; return BAND_FILES[k] ? k : null; };
-export const bandAvailable = (shape, carat) => bandKey(shape, carat) !== null;
+export const BANDS_ENABLED = false; // Koby 2026-11-15: bands overlap the ring, hidden until he sends finished band files
+export const bandAvailable = (shape, carat) => BANDS_ENABLED && bandKey(shape, carat) !== null;
 
 // iJewel file names look like "1Ct Square Cushion" (optionally with .glb/.3dm and an NS/EW suffix).
 export function parseRing(variation) {
