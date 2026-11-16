@@ -107,10 +107,11 @@ export class RingViewer extends EventTarget {
     this.accQuad = quad(this.accMat); this.outQuad = quad(this.outMat);
   }
 
-  async loadEnvironment(url, { saturation = 0.15, exposure = 1.0, target = 'both', lift = 0 } = {}) {
+  async loadEnvironment(url, { saturation = 0.15, exposure = 1.0, target = 'both', lift = 0, isCurrent = () => true } = {}) {
     // Load as float, neutralise the room colour (jewellery studios are grey/white), store as half float
     // (half-float linear filtering works on every phone; float does not on iOS).
     const src = await new HDRLoader().setDataType(THREE.FloatType).loadAsync(url);
+    if (!isCurrent()) { src.dispose(); return false; }   // a newer pick replaced this one while it downloaded
     const { width, height, data } = src.image;
     const half = new Uint16Array(width * height * 4);
     for (let i = 0; i < width * height; i++) {

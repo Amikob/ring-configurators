@@ -1,0 +1,9 @@
+{
+  "defaults": { "metal": "m00", "diamond": "d00" },
+  "metal": [
+    { "id": "m00", "file": "metal.hdr", "name": "Pilot default (Studio Small 09, CC0)", "exposure": 1.3, "lift": 0.05, "saturation": 0 }
+  ],
+  "diamond": [
+    { "id": "d00", "file": "studio.hdr", "name": "Pilot default (Brown Photostudio 02, CC0)", "exposure": 1.6, "saturation": 0 }
+  ]
+}

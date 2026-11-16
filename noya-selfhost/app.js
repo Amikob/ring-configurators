@@ -1,4 +1,4 @@
-import { RingViewer } from './viewer.js?v=sh2';
+import { RingViewer } from './viewer.js?v=sh3';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -88,9 +88,60 @@ if (params.has('tune')) {
 
 viewer.applyPose(state.pose);
 render();
-const envOpts = { saturation: params.has('sat') ? Number(params.get('sat')) : 0, exposure: Number(params.get('exp')) || 1.6 };
-await viewer.loadEnvironment(params.get('env') ? `./env/${params.get('env')}.hdr` : './env/studio.hdr', { ...envOpts, target: 'gem' });
-await viewer.loadEnvironment(params.get('menv') ? `./env/${params.get('menv')}.hdr` : './env/metal.hdr', { saturation: 0, exposure: Number(params.get('mexp')) || 1.3, lift: params.has('lift') ? Number(params.get('lift')) : 0.05, target: 'metal' });
+// Environment maps: separate lists for metal (gold) and diamond lighting, see env/envs.json.
+// ?metalenv=mNN / ?diamondenv=dNN pick one; the on-page HDRI picker keeps those params in sync.
+const envs = await (await fetch('./env/envs.json?v=' + Date.now().toString(36).slice(0, -3))).json();
+const envKinds = { metal: { param: 'metalenv', target: 'metal' }, diamond: { param: 'diamondenv', target: 'gem' } };
+const envState = {};
+const envSeq = { metal: 0, diamond: 0 };
+async function setEnv(kind, id, { sync = true } = {}) {
+  const list = envs[kind];
+  const entry = list.find(e => e.id === id) || list.find(e => e.id === envs.defaults[kind]) || list[0];
+  envState[kind] = entry.id;
+  const seq = ++envSeq[kind];
+  renderEnvUI();
+  $('env-status').textContent = `Loading ${entry.id}...`;
+  try {
+    const opts = kind === 'metal'
+      ? { saturation: params.has('sat') ? Number(params.get('sat')) : (entry.saturation ?? 1), exposure: (Number(params.get('mexp')) || 1) * (entry.exposure ?? 1), lift: entry.lift ?? 0, target: 'metal' }
+      : { saturation: params.has('sat') ? Number(params.get('sat')) : (entry.saturation ?? 0), exposure: (Number(params.get('exp')) || 1) * (entry.exposure ?? 1.6), target: 'gem' };
+    await viewer.loadEnvironment(`./env/${entry.file}`, { ...opts, isCurrent: () => seq === envSeq[kind] });
+    if (seq === envSeq[kind]) $('env-status').textContent = entry.name || '';
+  } catch (e) { console.error(e); $('env-status').textContent = `Could not load ${entry.id}`; }
+  if (sync) {
+    const u = new URL(location.href);
+    if (entry.id === envs.defaults[kind]) u.searchParams.delete(envKinds[kind].param); else u.searchParams.set(envKinds[kind].param, entry.id);
+    history.replaceState(null, '', u);
+  }
+}
+function renderEnvUI() {
+  for (const kind of Object.keys(envKinds)) {
+    const row = document.querySelector(`.env-row[data-kind="${kind}"]`), sel = row.querySelector('select');
+    if (!sel.options.length) for (const e of envs[kind]) sel.add(new Option(e.name ? `${e.id} - ${e.name}` : e.id, e.id));
+    sel.value = envState[kind] || envs.defaults[kind];
+    sel.disabled = envs[kind].length < 2;
+    row.querySelectorAll('.env-step').forEach(b => { b.disabled = envs[kind].length < 2; });
+  }
+  $('env-current').textContent = envState.metal || '';
+}
+for (const kind of Object.keys(envKinds)) {
+  const row = document.querySelector(`.env-row[data-kind="${kind}"]`), sel = row.querySelector('select');
+  sel.addEventListener('change', () => setEnv(kind, sel.value));
+  row.querySelectorAll('.env-step').forEach(b => b.addEventListener('click', () => {
+    const list = envs[kind], i = list.findIndex(e => e.id === envState[kind]);
+    setEnv(kind, list[(i + Number(b.dataset.dir) + list.length) % list.length].id);
+  }));
+}
+$('env-toggle').addEventListener('click', () => {
+  const open = $('env-panel').hidden;
+  $('env-panel').hidden = !open; $('env-toggle').setAttribute('aria-expanded', String(open));
+});
+if (params.has('hdri')) { $('env-panel').hidden = false; $('env-toggle').setAttribute('aria-expanded', 'true'); }
+// Old pilot params still work: ?env=<file> (diamond) and ?menv=<file> (metal) load a raw file from env/.
+if (params.get('env')) await viewer.loadEnvironment(`./env/${params.get('env')}.hdr`, { saturation: 0, exposure: Number(params.get('exp')) || 1.6, target: 'gem' });
+else await setEnv('diamond', params.get('diamondenv'), { sync: false });
+if (params.get('menv')) await viewer.loadEnvironment(`./env/${params.get('menv')}.hdr`, { saturation: 0, exposure: Number(params.get('mexp')) || 1.3, lift: 0.05, target: 'metal' });
+else await setEnv('metal', params.get('metalenv'), { sync: false });
 if (params.has('rot')) viewer.setEnvRotation(Number(params.get('rot')));
 viewer.setGold(state.gold);
 await choose({});

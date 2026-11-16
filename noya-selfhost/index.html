@@ -6,10 +6,20 @@
   <meta name="robots" content="noindex">
   <title>Noya (self-hosted pilot) | Next Diamonds</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./style.css?v=sh2">
+  <link rel="stylesheet" href="./style.css?v=sh3">
   <style>
     #viewer canvas { display:block; touch-action:none; }
     .pilot-badge { position:absolute; left:28px; top:44px; font-size:11px; color:#7b7b7b; z-index:2; }
+    .env-panel { position:absolute; right:16px; bottom:64px; z-index:4; background:#fff; border:1px solid #d9dedb; border-radius:10px; box-shadow:0 6px 24px #0002; padding:10px; display:flex; flex-direction:column; gap:8px; min-width:260px; }
+    .env-panel[hidden] { display:none; }
+    .env-row { display:flex; align-items:center; gap:6px; }
+    .env-kind { width:60px; font-size:13px; font-weight:600; }
+    .env-row select { flex:1; min-width:0; height:36px; font-size:14px; border:1px solid #c9d1cd; border-radius:6px; background:#fff; padding:0 6px; }
+    .env-step { width:36px; height:36px; border:1px solid #c9d1cd; border-radius:6px; background:#f4f6f5; font-size:20px; line-height:1; cursor:pointer; }
+    .env-row select:disabled + .env-step, .env-step:disabled { opacity:.4; }
+    .env-status { font-size:11px; color:#7b7b7b; min-height:14px; }
+    .env-current { font-size:12px; color:#244c3e; font-weight:600; }
+    @media (max-width: 760px) { .env-panel { left:8px; right:8px; bottom:56px; min-width:0; } }
     #tuning { display:none; gap:6px; flex-direction:column; font-size:12px; padding-top:14px; border-top:1px solid var(--line); }
     #tuning.on { display:flex; } #tuning label { display:flex; justify-content:space-between; gap:8px; align-items:center; } #tuning input[type=range]{ width:55%; }
   </style>
@@ -28,11 +38,17 @@
       <div id="viewer" aria-label="Interactive 3D viewer"></div>
       <div id="startup" class="startup" role="status"><img class="loading-monogram" src="./assets/monogram-champagne.png" alt="Next Diamonds" width="960" height="960"><span class="spinner"></span><span id="startup-text">Opening Noya...</span></div>
       <div class="pilot-badge">Self-hosted pilot (own engine, own storage)</div>
+      <div id="env-panel" class="env-panel" hidden role="dialog" aria-label="Lighting">
+        <div class="env-row" data-kind="metal"><span class="env-kind">Metal</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous metal HDRI">&#8249;</button><select aria-label="Metal HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next metal HDRI">&#8250;</button></div>
+        <div class="env-row" data-kind="diamond"><span class="env-kind">Diamond</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous diamond HDRI">&#8249;</button><select aria-label="Diamond HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next diamond HDRI">&#8250;</button></div>
+        <div class="env-status" id="env-status" aria-live="polite"></div>
+      </div>
       <div class="viewer-footer">
         <div class="stage-caption"><span id="selection-summary">Noya</span><span id="update-status" role="status" aria-live="polite"></span></div>
         <div class="viewer-tools" role="group" aria-label="Viewer controls">
           <button id="pose-toggle" class="icon-tool labeled-tool" type="button" title="Stand ring up" aria-pressed="true"><img src="./assets/icons/rotate-3d.svg" alt=""><span id="pose-label">Stand</span></button>
           <button id="center-view" class="icon-tool" type="button" title="Center view" aria-label="Center view"><img src="./assets/icons/focus.svg" alt=""></button>
+          <button id="env-toggle" class="icon-tool labeled-tool" type="button" title="Lighting (HDRI)" aria-expanded="false" aria-controls="env-panel" style="width:auto;padding:0 8px"><span>HDRI</span>&nbsp;<span id="env-current" class="env-current"></span></button>
           <div class="quality-control"><div id="quality" class="quality-buttons" role="group" aria-label="Render quality">
             <button type="button" data-quality="1" aria-pressed="false">Med</button><button type="button" data-quality="1.5" aria-pressed="false">High</button><button type="button" data-quality="2" aria-pressed="false">Ultra</button>
           </div></div>
@@ -50,6 +66,6 @@
       <div id="tuning"></div>
     </aside>
   </div>
-  <script type="module" src="./app.js?v=sh2"></script>
+  <script type="module" src="./app.js?v=sh3"></script>
 </body>
 </html>

@@ -2,6 +2,12 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-16 - Noya self-hosted pilot: HDRI picker (metal and diamond lighting)
+
+- `noya-selfhost/` only. New "HDRI" button in the viewer toolbar opens a small picker with two rows, Metal and Diamond (prev / next arrows and a list), that swaps the lighting live. Works on phones.
+- Metal and diamond use separate environment maps, listed in `noya-selfhost/env/envs.json` (`m00` and `d00` = the pilot's current maps). URL params `?metalenv=mNN` and `?diamondenv=dNN` select a map and stay in sync with the picker; `?hdri=1` opens the picker.
+- Why: Koby is sending his own HDRI maps for gold and for diamonds and wants to compare them himself.
+
 ## 2026-11-16 - Noya self-hosted pilot (own engine, own storage, no iJewel)
 
 - New unlisted test folder `noya-selfhost/` (`noindex`, not in `configurators.json`, not linked anywhere). Existing pages, including `noya/`, are unchanged.
