@@ -2,6 +2,14 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-16 - Noya self-hosted pilot (own engine, own storage, no iJewel)
+
+- New unlisted test folder `noya-selfhost/` (`noindex`, not in `configurators.json`, not linked anywhere). Existing pages, including `noya/`, are unchanged.
+- Renders Noya with our own viewer: three.js + three-mesh-bvh (both MIT) and our own diamond shader (ray-traced internal bounces, Fresnel, total internal reflection, dispersion), progressive anti-aliasing, soft ground shadow, white / yellow / rose gold, rest and stand poses.
+- All 40 Noya rings (8 shapes x 2-6 ct, including princess, marquise and 6 ct elongated radiant that are not on iJewel yet) are converted from Koby's .3dm files on the box with `tools/selfhost/3dm2glb.py` (no mesh reduction) and compressed with `tools/selfhost/pack-glb.mjs` (about 8 MB total, stored in the repo).
+- Environment maps are CC0 Poly Haven HDRIs. Nothing on this page loads from iJewel.
+- Why: Koby asked for a replacement for iJewel with our own storage, because iJewel support has not been able to sell more model slots. This is a pilot to compare the diamond look side by side.
+
 ## 2026-11-09 - Arlet on a hand: private TEST page (not live)
 
 - New test-only folder `arlet-hand-<random>/` (a copy of `arlet/`): opens Arlet 2 ct Oval on a static hand; Oval and Emerald only, carats 1-5, ring gold. No band, rest pose, Try-On or Share on this page.

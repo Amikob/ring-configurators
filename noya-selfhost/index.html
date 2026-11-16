@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Noya (self-hosted pilot) | Next Diamonds</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css?v=sh1">
+  <style>
+    #viewer canvas { display:block; touch-action:none; }
+    .pilot-badge { position:absolute; left:28px; top:44px; font-size:11px; color:#7b7b7b; z-index:2; }
+    #tuning { display:none; gap:6px; flex-direction:column; font-size:12px; padding-top:14px; border-top:1px solid var(--line); }
+    #tuning.on { display:flex; } #tuning label { display:flex; justify-content:space-between; gap:8px; align-items:center; } #tuning input[type=range]{ width:55%; }
+  </style>
+  <script type="importmap">
+  { "imports": {
+      "three": "./vendor/three/three.module.js",
+      "three/addons/": "./vendor/three/addons/",
+      "three-mesh-bvh": "./vendor/three-mesh-bvh.module.js"
+  } }
+  </script>
+</head>
+<body>
+  <div class="app">
+    <main class="stage" aria-label="Noya 3D ring">
+      <div class="stage-brand"><img src="./assets/wordmark-1row-black.png" alt="Next Diamonds" width="1800" height="220"><span>Noya</span></div>
+      <div id="viewer" aria-label="Interactive 3D viewer"></div>
+      <div id="startup" class="startup" role="status"><img class="loading-monogram" src="./assets/monogram-champagne.png" alt="Next Diamonds" width="960" height="960"><span class="spinner"></span><span id="startup-text">Opening Noya...</span></div>
+      <div class="pilot-badge">Self-hosted pilot (own engine, own storage)</div>
+      <div class="viewer-footer">
+        <div class="stage-caption"><span id="selection-summary">Noya</span><span id="update-status" role="status" aria-live="polite"></span></div>
+        <div class="viewer-tools" role="group" aria-label="Viewer controls">
+          <button id="pose-toggle" class="icon-tool labeled-tool" type="button" title="Stand ring up" aria-pressed="true"><img src="./assets/icons/rotate-3d.svg" alt=""><span id="pose-label">Stand</span></button>
+          <button id="center-view" class="icon-tool" type="button" title="Center view" aria-label="Center view"><img src="./assets/icons/focus.svg" alt=""></button>
+          <div class="quality-control"><div id="quality" class="quality-buttons" role="group" aria-label="Render quality">
+            <button type="button" data-quality="1" aria-pressed="false">Med</button><button type="button" data-quality="1.5" aria-pressed="false">High</button><button type="button" data-quality="2" aria-pressed="false">Ultra</button>
+          </div></div>
+        </div>
+      </div>
+    </main>
+    <aside class="panel" aria-label="Customize Noya">
+      <header><h1>Noya</h1></header>
+      <fieldset><legend>Diamond shape <span id="shape-label">Oval</span></legend><div id="shapes" class="shape-grid"></div></fieldset>
+      <fieldset><legend>Center stone <span id="carat-label">3 ct</span></legend><div id="carats" class="segments"></div></fieldset>
+      <div class="metal-fields" style="grid-template-columns:1fr">
+        <fieldset><legend>Gold</legend><div id="ring-gold" class="gold-options" style="max-width:220px"></div></fieldset>
+      </div>
+      <p id="error" class="error" role="alert" hidden></p>
+      <div id="tuning"></div>
+    </aside>
+  </div>
+  <script type="module" src="./app.js?v=sh1"></script>
+</body>
+</html>
