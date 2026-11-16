@@ -1,4 +1,4 @@
-import { RingViewer } from './viewer.js?v=sh3';
+import { RingViewer } from './viewer.js?v=sh4';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);

@@ -2,6 +2,13 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-16 - Noya self-hosted pilot: Koby's HDRI maps for metal and diamonds
+
+- `noya-selfhost/` only. Added 21 metal maps (`env/metal/m01..m21`, iJewel `env_metal_001..019, 004_a, 004_b, 061` from Koby's IJEWEL folder) and 3 diamond maps (`env/diamond/d01` Diamond, `d02` Enviroment, `d03` env-gem-1 from GrownBrilliance Assets). Sources listed in `env/*/SOURCES.tsv`.
+- Web copies: metal maps resampled to 512x256 .hdr (they are blurred by the metal reflections anyway), diamond maps kept at full sharpness (max 1024 wide). Brightness normalised per map (`exposure` in `env/envs.json`). Tools: `tools/selfhost/prep-hdri.py`, `rgbe.py`, `exr2raw.mjs`.
+- New defaults: metal `m13` (env_metal_012), diamond `d03` (env-gem-1). The old maps stay as `m00` / `d00`. All maps are in the on-page HDRI picker and in `?metalenv=` / `?diamondenv=`.
+- Why: Koby sent these maps to make the gold and the diamonds look like his iJewel renders.
+
 ## 2026-11-16 - Noya self-hosted pilot: HDRI picker (metal and diamond lighting)
 
 - `noya-selfhost/` only. New "HDRI" button in the viewer toolbar opens a small picker with two rows, Metal and Diamond (prev / next arrows and a list), that swaps the lighting live. Works on phones.

@@ -1,0 +1,13 @@
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
+import { FloatType } from 'three';
+import fs from 'fs';
+const [inp, out] = process.argv.slice(2);
+const buf = fs.readFileSync(inp);
+const l = new EXRLoader(); l.setDataType(FloatType);
+const r = l.parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
+const { width, height, data, format } = r;
+const ch = data.length / (width * height);
+const rgb = new Float32Array(width * height * 3);
+for (let i = 0; i < width * height; i++) for (let c = 0; c < 3; c++) rgb[i * 3 + c] = data[i * ch + Math.min(c, ch - 1)];
+fs.writeFileSync(out, Buffer.concat([Buffer.from(JSON.stringify({ width, height, flipY: true }) + '\n'), Buffer.from(rgb.buffer)]));
+console.log(inp, width, height, ch);
