@@ -107,7 +107,7 @@ export class RingViewer extends EventTarget {
     this.accQuad = quad(this.accMat); this.outQuad = quad(this.outMat);
   }
 
-  async loadEnvironment(url, { saturation = 0.15, exposure = 1.0, target = 'both' } = {}) {
+  async loadEnvironment(url, { saturation = 0.15, exposure = 1.0, target = 'both', lift = 0 } = {}) {
     // Load as float, neutralise the room colour (jewellery studios are grey/white), store as half float
     // (half-float linear filtering works on every phone; float does not on iOS).
     const src = await new HDRLoader().setDataType(THREE.FloatType).loadAsync(url);
@@ -115,10 +115,10 @@ export class RingViewer extends EventTarget {
     const half = new Uint16Array(width * height * 4);
     for (let i = 0; i < width * height; i++) {
       const r = data[i * 4], g = data[i * 4 + 1], b = data[i * 4 + 2];
-      const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-      half[i * 4] = THREE.DataUtils.toHalfFloat((l + (r - l) * saturation) * exposure);
-      half[i * 4 + 1] = THREE.DataUtils.toHalfFloat((l + (g - l) * saturation) * exposure);
-      half[i * 4 + 2] = THREE.DataUtils.toHalfFloat((l + (b - l) * saturation) * exposure);
+      const l = 0.2126 * r + 0.7152 * g + 0.0722 * b + lift;
+      half[i * 4] = THREE.DataUtils.toHalfFloat((l + (r + lift - l) * saturation) * exposure);
+      half[i * 4 + 1] = THREE.DataUtils.toHalfFloat((l + (g + lift - l) * saturation) * exposure);
+      half[i * 4 + 2] = THREE.DataUtils.toHalfFloat((l + (b + lift - l) * saturation) * exposure);
       half[i * 4 + 3] = THREE.DataUtils.toHalfFloat(1);
     }
     src.dispose();

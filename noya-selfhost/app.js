@@ -1,4 +1,4 @@
-import { RingViewer } from './viewer.js?v=sh1';
+import { RingViewer } from './viewer.js?v=sh2';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -90,7 +90,7 @@ viewer.applyPose(state.pose);
 render();
 const envOpts = { saturation: params.has('sat') ? Number(params.get('sat')) : 0, exposure: Number(params.get('exp')) || 1.6 };
 await viewer.loadEnvironment(params.get('env') ? `./env/${params.get('env')}.hdr` : './env/studio.hdr', { ...envOpts, target: 'gem' });
-await viewer.loadEnvironment(params.get('menv') ? `./env/${params.get('menv')}.hdr` : './env/metal.hdr', { saturation: 0, exposure: Number(params.get('mexp')) || 1.3, target: 'metal' });
+await viewer.loadEnvironment(params.get('menv') ? `./env/${params.get('menv')}.hdr` : './env/metal.hdr', { saturation: 0, exposure: Number(params.get('mexp')) || 1.3, lift: params.has('lift') ? Number(params.get('lift')) : 0.05, target: 'metal' });
 if (params.has('rot')) viewer.setEnvRotation(Number(params.get('rot')));
 viewer.setGold(state.gold);
 await choose({});
