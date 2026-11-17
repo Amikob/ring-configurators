@@ -1,4 +1,4 @@
-import { RingViewer } from './viewer.js?v=sh4';
+import { RingViewer } from './viewer.js?v=sh5';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -18,11 +18,27 @@ const quality = Number(params.get('q')) || Number(localStorage.getItem('noya-sh-
 const manifest = await (await fetch('./models/manifest.json')).json();
 const have = new Set(manifest.map(m => `${m.shape}:${m.carat}`));
 
+// Adaptive quality: phones / tablets (coarse pointer or small screen) get fewer internal bounces,
+// a lower pixel ratio cap and fewer accumulation frames; everyone drops to fewer bounces while dragging.
+const mobile = params.has('mobile') ? params.get('mobile') !== '0' : (matchMedia('(pointer:coarse)').matches || Math.min(screen.width, screen.height) < 600);
+const LOOK_DEFAULTS = { toneMapping: 'neutral', exposure: 1.0, bloom: 0.12, floor: 1.0 };
+const look = {
+  toneMapping: params.get('tm') || LOOK_DEFAULTS.toneMapping,
+  exposure: params.has('exposure') ? Number(params.get('exposure')) : LOOK_DEFAULTS.exposure,
+  bloom: params.has('bloom') ? Number(params.get('bloom')) : LOOK_DEFAULTS.bloom,
+  floor: params.has('floor') ? Number(params.get('floor')) : LOOK_DEFAULTS.floor,
+};
 const viewer = new RingViewer($('viewer'), {
-  pixelRatio: Math.min((window.devicePixelRatio || 1), 2) * (quality / 1.5),
-  maxFrames: Number(params.get('frames')) || 48,
-  bounces: Number(params.get('bounces')) || 7,
+  pixelRatio: Math.min((window.devicePixelRatio || 1), mobile ? 1.5 : 2) * (quality / 1.5),
+  maxFrames: Number(params.get('frames')) || (mobile ? 32 : 48),
+  bounces: Number(params.get('bounces')) || (mobile ? 5 : 7),
+  motionBounces: Number(params.get('mbounces')) || (mobile ? 3 : 4),
+  cubeSize: mobile ? 128 : 256,
+  metalInStone: params.has('metalstone') ? Number(params.get('metalstone')) : 0.35,
+  shadow: { samples: mobile ? 96 : 128 },
+  bakePerFrame: mobile ? 16 : 32,
   preserveDrawingBuffer: params.has('capture'),
+  look,
 });
 window.noyaViewer = viewer;
 
@@ -67,7 +83,7 @@ async function choose(patch) {
 }
 
 function viewParams() {
-  return { elevation: params.has('el') ? Number(params.get('el')) : (state.pose === 'flat' ? 26 : 6), azimuth: params.has('az') ? Number(params.get('az')) : (state.pose === 'flat' ? -14 : -30), fill: Number(params.get('fill')) || 0.44 };
+  return { elevation: params.has('el') ? Number(params.get('el')) : (state.pose === 'flat' ? 24 : 6), azimuth: params.has('az') ? Number(params.get('az')) : (state.pose === 'flat' ? -14 : -30), fill: Number(params.get('fill')) || 0.45, lower: params.has('lower') ? Number(params.get('lower')) : 0.16 };
 }
 $('pose-toggle').addEventListener('click', () => { state.pose = state.pose === 'flat' ? 'upright' : 'flat'; viewer.applyPose(state.pose); viewer.frontView(viewParams()); render(); });
 $('center-view').addEventListener('click', () => viewer.frontView(viewParams()));
@@ -85,6 +101,27 @@ if (params.has('tune')) {
   slider('Env rotation', 0, 6.283, 0.01, () => viewer.envRotation || 0, v => viewer.setEnvRotation(v));
   slider('Metal roughness', 0, 0.4, 0.01, () => viewer.metalMaterial.roughness, v => { viewer.metalMaterial.roughness = v; viewer.reset(); });
 }
+
+// Look controls (tone mapping / exposure / bloom / floor) live in the HDRI panel; kept in the URL (?tm=&exposure=&bloom=&floor=).
+const lookInputs = { exposure: $('exposure'), bloom: $('bloom'), floor: $('floor') };
+function renderLook() {
+  $('tm-select').value = look.toneMapping;
+  for (const [k, el] of Object.entries(lookInputs)) { el.value = look[k]; $(`${k}-val`).textContent = Number(look[k]).toFixed(2); }
+}
+function setLook(patch) {
+  Object.assign(look, patch);
+  viewer.setLook(look);
+  renderLook();
+  const u = new URL(location.href);
+  const keys = { toneMapping: 'tm', exposure: 'exposure', bloom: 'bloom', floor: 'floor' };
+  for (const [k, p] of Object.entries(keys)) { if (look[k] === LOOK_DEFAULTS[k]) u.searchParams.delete(p); else u.searchParams.set(p, look[k]); }
+  history.replaceState(null, '', u);
+}
+$('tm-select').addEventListener('change', e => setLook({ toneMapping: e.target.value }));
+for (const [k, el] of Object.entries(lookInputs)) el.addEventListener('input', () => setLook({ [k]: Number(el.value) }));
+$('look-reset').addEventListener('click', () => setLook({ ...LOOK_DEFAULTS }));
+viewer.setLook(look);
+renderLook();
 
 viewer.applyPose(state.pose);
 render();

@@ -26,6 +26,9 @@ export class DiamondMaterial extends ShaderMaterial {
         objToWorld: { value: new Matrix4() },
         worldToObj: { value: new Matrix4() },
         rayEps: { value: 1e-3 },
+        bounceLimit: { value: bounces },
+        metalCube: { value: null },
+        metalMix: { value: 0 },
       },
       vertexShader: /* glsl */`
         varying vec3 vWorldPos;
@@ -49,14 +52,19 @@ export class DiamondMaterial extends ShaderMaterial {
         uniform sampler2D envMap;
         uniform float envRotation, envIntensity, envContrast, ior, dispersion, rayEps;
         uniform vec3 tint;
+        uniform int bounceLimit;
+        uniform samplerCube metalCube;
+        uniform float metalMix;
         uniform mat4 objToWorld, worldToObj;
         const float PI_ = 3.14159265359;
 
         vec3 env(vec3 d) {
           float u = atan(d.z, d.x) / (2.0 * PI_) + 0.5 + envRotation;
           float v = asin(clamp(d.y, -1.0, 1.0)) / PI_ + 0.5;
-          vec3 c = textureLod(envMap, vec2(fract(u), v), 0.0).rgb;
-          return pow(c, vec3(envContrast)) * envIntensity;
+          vec3 c = pow(textureLod(envMap, vec2(fract(u), v), 0.0).rgb, vec3(envContrast)) * envIntensity;
+          // Metal (prongs / band) seen from inside the stone, from the cube map captured at the stone centre.
+          vec4 m = textureLod(metalCube, d, 0.0);
+          return mix(c, m.rgb, clamp(m.a, 0.0, 1.0) * metalMix);
         }
         // Exact unpolarised Fresnel reflectance. cosi = cos of incident angle, eta = n_from / n_to.
         float fresnel(float cosi, float eta) {
@@ -82,6 +90,7 @@ export class DiamondMaterial extends ShaderMaterial {
           vec3 inside = vec3(0.0);
           float thr = 1.0;
           for (int i = 0; i < BOUNCES; i++) {
+            if (i >= bounceLimit) break;
             uvec4 faceIndices = uvec4(0u);
             vec3 faceNormal = vec3(0.0, 0.0, 1.0);
             vec3 bary = vec3(0.0);

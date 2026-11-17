@@ -17,3 +17,19 @@ engine and shaders are all served from this repo (GitHub Pages).
 
 URL options: `?shape=oval&ct=3&gold=yellow&pose=flat|upright`, `?tune=1` shows diamond sliders,
 `?frames=N`, `?bounces=N`, `?q=1|1.5|2`.
+
+## v8 (Nov 16 2026)
+
+- Floor: the ring rests on a visible floor plane (y = 0), drawn in the output pass (light grey, lighter around
+  the ring, fading toward the horizon). `?floor=0..1.5` or the Floor slider.
+- Ground shadow: baked once per ring / pose into a 512² texture (camera independent, so it is always soft,
+  even while dragging): 128 jittered area-key-light directions + 128 sky directions (contact / ambient occlusion),
+  spread over a few frames, then a small blur. Mobile uses 96 + 96.
+- Bloom: soft-threshold bright pass + 5-level down/up blur, added after tone mapping. `?bloom=` (default 0.12).
+- Tone mapping: Neutral (default) / ACES / AgX / Reinhard / Linear, plus exposure, in the HDRI panel.
+  `?tm=neutral|aces|agx|reinhard|linear&exposure=1.0`. Defaults are left out of the URL.
+- Metal inside the stones: a cube map of the ring's metal captured from the stone centre is mixed into the
+  diamond's environment lookups (prongs / band show through and reflect). `?metalstone=0..1` (default 0.35).
+- Gold F0 colours retuned against the iJewel Noya page (median gold pixel ratios): yellow 1/0.74/0.36, rose 0.98/0.68/0.43.
+- Adaptive quality: phones (coarse pointer or small screen, or `?mobile=1`) get 5 bounces, pixel ratio cap 1.5,
+  32 accumulation frames, 128² metal cube; while dragging every device drops to 3-4 bounces without accumulation.

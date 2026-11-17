@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex">
   <title>Noya (self-hosted pilot) | Next Diamonds</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./style.css?v=sh4">
+  <link rel="stylesheet" href="./style.css?v=sh5">
   <style>
     #viewer canvas { display:block; touch-action:none; }
     .pilot-badge { position:absolute; left:28px; top:44px; font-size:11px; color:#7b7b7b; z-index:2; }
@@ -17,6 +17,10 @@
     .env-row select { flex:1; min-width:0; height:36px; font-size:14px; border:1px solid #c9d1cd; border-radius:6px; background:#fff; padding:0 6px; }
     .env-step { width:36px; height:36px; border:1px solid #c9d1cd; border-radius:6px; background:#f4f6f5; font-size:20px; line-height:1; cursor:pointer; }
     .env-row select:disabled + .env-step, .env-step:disabled { opacity:.4; }
+    .look-slider { display:flex; align-items:center; gap:6px; font-size:13px; }
+    .look-slider input { flex:1; min-width:0; }
+    .look-slider output { width:38px; text-align:right; font-size:12px; color:#555; font-variant-numeric:tabular-nums; }
+    .look-reset { align-self:flex-end; font-size:12px; border:1px solid #c9d1cd; border-radius:6px; background:#f4f6f5; padding:4px 10px; cursor:pointer; }
     .env-status { font-size:11px; color:#7b7b7b; min-height:14px; }
     .env-current { font-size:12px; color:#244c3e; font-weight:600; }
     @media (max-width: 760px) { .env-panel { left:8px; right:8px; bottom:56px; min-width:0; } }
@@ -42,6 +46,12 @@
         <div class="env-row" data-kind="metal"><span class="env-kind">Metal</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous metal HDRI">&#8249;</button><select aria-label="Metal HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next metal HDRI">&#8250;</button></div>
         <div class="env-row" data-kind="diamond"><span class="env-kind">Diamond</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous diamond HDRI">&#8249;</button><select aria-label="Diamond HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next diamond HDRI">&#8250;</button></div>
         <div class="env-status" id="env-status" aria-live="polite"></div>
+        <div class="env-row look-row"><span class="env-kind">Tone</span><select id="tm-select" aria-label="Tone mapping">
+          <option value="neutral">Neutral (Khronos PBR)</option><option value="aces">ACES Filmic</option><option value="agx">AgX</option><option value="reinhard">Reinhard</option><option value="linear">Linear (clip)</option></select></div>
+        <label class="look-slider"><span class="env-kind">Exposure</span><input id="exposure" type="range" min="0.4" max="2.5" step="0.05"><output id="exposure-val"></output></label>
+        <label class="look-slider"><span class="env-kind">Bloom</span><input id="bloom" type="range" min="0" max="0.6" step="0.01"><output id="bloom-val"></output></label>
+        <label class="look-slider"><span class="env-kind">Floor</span><input id="floor" type="range" min="0" max="1.5" step="0.05"><output id="floor-val"></output></label>
+        <button type="button" id="look-reset" class="look-reset">Reset look</button>
       </div>
       <div class="viewer-footer">
         <div class="stage-caption"><span id="selection-summary">Noya</span><span id="update-status" role="status" aria-live="polite"></span></div>
@@ -66,6 +76,6 @@
       <div id="tuning"></div>
     </aside>
   </div>
-  <script type="module" src="./app.js?v=sh4"></script>
+  <script type="module" src="./app.js?v=sh5"></script>
 </body>
 </html>
