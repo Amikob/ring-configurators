@@ -77,6 +77,9 @@
         <div class="env-row" data-kind="metal"><span class="env-kind">Metal</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous metal HDRI">&#8249;</button><select aria-label="Metal HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next metal HDRI">&#8250;</button></div>
         <div class="env-row" data-kind="diamond"><span class="env-kind">Diamond</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous diamond HDRI">&#8249;</button><select aria-label="Diamond HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next diamond HDRI">&#8250;</button></div>
         <div class="env-status" id="env-status" aria-live="polite"></div>
+        <label class="look-slider"><span class="env-kind">Metal rot.</span><input id="rot-metal" type="range" min="0" max="359" step="1"><output id="rot-metal-val"></output></label>
+        <label class="look-slider"><span class="env-kind">Diam. rot.</span><input id="rot-diamond" type="range" min="0" max="359" step="1"><output id="rot-diamond-val"></output></label>
+        <label class="look-slider" style="justify-content:flex-end;font-size:12px"><input id="rot-lock" type="checkbox" style="flex:none;width:auto;margin:0"> Lock rotations together</label>
         <div class="env-row look-row"><span class="env-kind">Tone</span><select id="tm-select" aria-label="Tone mapping">
           <option value="neutral">Neutral (Khronos PBR)</option><option value="aces">ACES Filmic</option><option value="agx">AgX</option><option value="reinhard">Reinhard</option><option value="linear">Linear (clip)</option><option value="linburn">Linear + Burn (FStorm-style)</option></select></div>
         <label class="look-slider"><span class="env-kind">Exposure</span><input id="exposure" type="range" min="0.4" max="2.5" step="0.05"><output id="exposure-val"></output></label>
@@ -100,6 +103,6 @@
       <div id="tuning"></div>
     </aside>
   </div>
-  <script type="module" src="./app.js?v=sh8"></script>
+  <script type="module" src="./app.js?v=sh9"></script>
 </body>
 </html>

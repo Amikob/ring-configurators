@@ -1,4 +1,4 @@
-import { RingViewer, GRADE_DEFAULTS } from './viewer.js?v=sh8';
+import { RingViewer, GRADE_DEFAULTS, GOLDS } from './viewer.js?v=sh9';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -21,7 +21,10 @@ const have = new Set(manifest.map(m => `${m.shape}:${m.carat}`));
 // Adaptive quality: phones / tablets (coarse pointer or small screen) get fewer internal bounces,
 // a lower pixel ratio cap and fewer accumulation frames; everyone drops to fewer bounces while dragging.
 const mobile = params.has('mobile') ? params.get('mobile') !== '0' : (matchMedia('(pointer:coarse)').matches || Math.min(screen.width, screen.height) < 600);
-const LOOK_DEFAULTS = { toneMapping: 'neutral', exposure: 1.0, bloom: 0.12, floor: 1.0 };
+// Defaults copied from the iJewel Noya scene (Tonemap: ACESFilmic, exposure 1; Bloom intensity 0.2).
+// Test override: ?mcolor=<gold>:<r>,<g>,<b> (linear) to try a metal colour without editing the code.
+if (params.has('mcolor')) { const [g, v] = params.get('mcolor').split(':'); if (GOLDS[g]) GOLDS[g] = v.split(',').map(Number); }
+const LOOK_DEFAULTS = { toneMapping: 'aces', exposure: 1.0, bloom: 0.2, floor: 1.0 };
 const GRADE_PARAMS = { gamma: 'gamma', contrast: 'contrast', saturation: 'sat', vibrance: 'vib', burn: 'burn', temperature: 'temp', tint: 'tint', highlights: 'hl', shadows: 'sh' };
 const look = {
   ...Object.fromEntries(Object.entries(GRADE_PARAMS).map(([k, p]) => [k, params.has(p) ? Number(params.get(p)) : GRADE_DEFAULTS[k]])),
@@ -33,16 +36,18 @@ const look = {
 const viewer = new RingViewer($('viewer'), {
   pixelRatio: Math.min((window.devicePixelRatio || 1), mobile ? 1.5 : 2) * (quality / 1.5),
   maxFrames: Number(params.get('frames')) || (mobile ? 32 : 48),
-  bounces: Number(params.get('bounces')) || (mobile ? 5 : 7),
+  bounces: Number(params.get('bounces')) || 5,   // iJewel diamond material: rayBounces 5
   // Same bounce count while dragging as at rest: fewer bounces changed the stone's reflection pattern,
   // so it visibly jumped when the drag ended. (?mbounces= still allows a test override.)
-  motionBounces: Number(params.get('mbounces')) || Number(params.get('bounces')) || (mobile ? 5 : 7),
+  motionBounces: Number(params.get('mbounces')) || Number(params.get('bounces')) || 5,
   cubeSize: mobile ? 128 : 256,
   metalInStone: params.has('metalstone') ? Number(params.get('metalstone')) : 0.35,
-  shadow: { samples: mobile ? 96 : 128 },
+  shadow: { samples: mobile ? 96 : 128, ...(params.has('keyaz') ? { keyAzimuth: Number(params.get('keyaz')) } : {}) },
   bakePerFrame: mobile ? 16 : 32,
   preserveDrawingBuffer: params.has('capture'),
   look,
+  metalRotationRef: 120 * Math.PI / 180,   // shadow direction below is tuned for this metal HDRI rotation
+  gem: Object.fromEntries([['ior', 'ior'], ['dispersion', 'disp']].filter(([, q]) => params.has(q)).map(([k, q]) => [k, Number(params.get(q))])),
 });
 window.noyaViewer = viewer;
 
@@ -87,7 +92,7 @@ async function choose(patch) {
 }
 
 function viewParams() {
-  return { elevation: params.has('el') ? Number(params.get('el')) : (state.pose === 'flat' ? 24 : 6), azimuth: params.has('az') ? Number(params.get('az')) : (state.pose === 'flat' ? -14 : -30), fill: Number(params.get('fill')) || 0.45, lower: params.has('lower') ? Number(params.get('lower')) : 0.16 };
+  return { elevation: params.has('el') ? Number(params.get('el')) : (state.pose === 'flat' ? 20 : 6), azimuth: params.has('az') ? Number(params.get('az')) : (state.pose === 'flat' ? 0 : -30), fill: Number(params.get('fill')) || 0.45, lower: params.has('lower') ? Number(params.get('lower')) : 0.16 };
 }
 $('pose-toggle').addEventListener('click', () => { state.pose = state.pose === 'flat' ? 'upright' : 'flat'; viewer.applyPose(state.pose); viewer.frontView(viewParams()); render(); });
 $('center-view').addEventListener('click', () => viewer.frontView(viewParams()));
@@ -128,6 +133,29 @@ $('tm-select').addEventListener('change', e => setLook({ toneMapping: e.target.v
 $('grade-reset').addEventListener('click', () => setLook({ ...GRADE_DEFAULTS }));
 for (const [k, el] of Object.entries(lookInputs)) el.addEventListener('input', () => setLook({ [k]: Number(el.value) }));
 $('look-reset').addEventListener('click', () => setLook({ ...LOOK_DEFAULTS, ...GRADE_DEFAULTS }));
+
+// HDRI rotation (degrees): metal and diamond separately, or locked together. ?metalrot= / ?diamondrot= .
+// Defaults turn our maps to face the camera the way iJewel's do (their camera looks from -Z, ours from +Z).
+// Picked side by side + metal deltaE against live iJewel (sweeps of 0-315 deg): metal 120, diamond 0 (star pattern).
+// (180 would be the geometric equivalent of iJewel's rotation 0 seen from -Z, but measured further off: iJewel's SSR /
+// ground reflection darken its metal in ways a pure env lookup cannot.)
+const ROT_DEFAULTS = { metal: 120, diamond: 0 };
+const rot = { metal: params.has('metalrot') ? Number(params.get('metalrot')) : ROT_DEFAULTS.metal, diamond: params.has('diamondrot') ? Number(params.get('diamondrot')) : ROT_DEFAULTS.diamond };
+function applyRot(kind, deg, { sync = true } = {}) {
+  rot[kind] = ((Math.round(deg) % 360) + 360) % 360;
+  const rad = THREE_DEG * rot[kind];
+  if (kind === 'metal') viewer.setMetalRotation(rad); else viewer.setDiamondRotation(rad);
+  $(`rot-${kind}`).value = rot[kind]; $(`rot-${kind}-val`).textContent = `${rot[kind]}°`;
+  if (sync) { const u = new URL(location.href); const p = kind === 'metal' ? 'metalrot' : 'diamondrot';
+    if (rot[kind] === ROT_DEFAULTS[kind]) u.searchParams.delete(p); else u.searchParams.set(p, rot[kind]); history.replaceState(null, '', u); }
+}
+const THREE_DEG = Math.PI / 180;
+for (const kind of ['metal', 'diamond']) $(`rot-${kind}`).addEventListener('input', e => {
+  const v = Number(e.target.value), d = v - rot[kind];
+  applyRot(kind, v);
+  if ($('rot-lock').checked) { const other = kind === 'metal' ? 'diamond' : 'metal'; applyRot(other, rot[other] + d); }
+});
+applyRot('metal', rot.metal, { sync: false }); applyRot('diamond', rot.diamond, { sync: false });
 viewer.setLook(look);
 renderLook();
 
@@ -195,7 +223,7 @@ if (params.get('env')) await viewer.loadEnvironment(`./env/${params.get('env')}.
 else await setEnv('diamond', params.get('diamondenv'), { sync: false });
 if (params.get('menv')) await viewer.loadEnvironment(`./env/${params.get('menv')}.hdr`, { saturation: 0, exposure: Number(params.get('mexp')) || 1.3, lift: 0.05, target: 'metal' });
 else await setEnv('metal', params.get('metalenv'), { sync: false });
-if (params.has('rot')) viewer.setEnvRotation(Number(params.get('rot')));
+if (params.has('rot')) viewer.setEnvRotation(Number(params.get('rot')));   // old pilot param (radians, both)
 viewer.setGold(state.gold);
 await choose({});
 viewer.frontView(viewParams());

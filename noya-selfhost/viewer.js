@@ -8,11 +8,17 @@ import { MeshBVH, SAH } from 'three-mesh-bvh';
 import { DiamondMaterial } from './diamond-material.js?v=sh5';
 
 // Linear-sRGB metal reflectance (F0) for 18k alloys.
+// Metal colours = the iJewel Noya page's materials (packs.ijewel3d.com 1_metal_*_polished.pmat, read from the live
+// viewer): sRGB #e5b377 / #f2af83 / #c2c2c3, roughness 0, metalness 1, envMapIntensity 1. Stored as linear sRGB.
 export const GOLDS = {
-  white: [0.86, 0.85, 0.82],
-  yellow: [1.0, 0.74, 0.36],   // creamier 18k yellow, matched to the iJewel Noya page (median gold pixel ratios)
-  rose: [0.98, 0.68, 0.43],
+  white: [0.5395, 0.5395, 0.5457],
+  // Yellow / rose start from the iJewel colours (in the comments) made deeper and redder. iJewel's screen-space
+  // reflections let the gold reflect itself, which deepens it on screen; a pure env reflection cannot, so the base
+  // colour carries part of that. Values picked by mean Lab deltaE on the band against live iJewel (white: no change).
+  yellow: [0.72, 0.37, 0.155],   // iJewel #e5b377 = [0.7835, 0.4508, 0.1845]
+  rose: [0.84, 0.32, 0.20],      // iJewel #f2af83 = [0.8879, 0.4287, 0.227]
 };
+export const IJEWEL = { metalRoughness: 0, metalEnvIntensity: 1 };
 
 const halton = (b, n) => { let f = 1, r = 0; n += 1; while (n > 0) { f /= b; r += f * (n % b); n = Math.floor(n / b); } return r; };
 const HALTON = Array.from({ length: 64 }, (_, i) => {
@@ -20,7 +26,7 @@ const HALTON = Array.from({ length: 64 }, (_, i) => {
   return [h(2, i) - 0.5, h(3, i) - 0.5];
 });
 
-export const GRADE_DEFAULTS = { gamma: 1, contrast: 1, saturation: 1, vibrance: 0, burn: 0, temperature: 0, tint: 0, highlights: 0, shadows: 0 };
+export const GRADE_DEFAULTS = { gamma: 1, contrast: 1.1, saturation: 1, vibrance: 0, burn: 0, temperature: 0, tint: 0, highlights: 0, shadows: 0 };
 
 const fsVert = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
 
@@ -28,7 +34,7 @@ export class RingViewer extends EventTarget {
   constructor(container, opts = {}) {
     super();
     this.container = container;
-    this.opts = { maxFrames: 48, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), bounces: 7, motionBounces: 7, ...opts };
+    this.opts = { maxFrames: 48, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), bounces: 5, motionBounces: 5, ...opts };
     this.stats = { frames: 0 };
     const r = this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'high-performance', preserveDrawingBuffer: !!opts.preserveDrawingBuffer });
     r.setPixelRatio(this.opts.pixelRatio);
@@ -49,7 +55,8 @@ export class RingViewer extends EventTarget {
     // a top-down render of a shadow catcher, averaged over many jittered light directions =
     // (a) a soft key-light shadow (area light, like iJewel's directional shadow) and
     // (b) sky occlusion (cosine-weighted hemisphere) = dark, tight contact shadow where the band touches the floor.
-    this.shadowOpts = { key: 0.72, ao: 0.75, keyAzimuth: 252, keyElevation: 52, keySoftness: 10, samples: 96, ...(opts.shadow || {}) };
+    this.shadowOpts = { key: 0.72, ao: 0.75, keyAzimuth: 225, keyElevation: 34,   // iJewel ground-shadow-backleft light (target -0.593,-0.543,-0.595) seen from our side
+      keySoftness: 10, samples: 96, ...(opts.shadow || {}) };
     this.bakeSize = 512;
     this.rtShadow = new THREE.WebGLRenderTarget(this.bakeSize, this.bakeSize, { type: THREE.HalfFloatType, depthBuffer: true });
     this.bakeLight = new THREE.DirectionalLight(0xffffff, 0);
@@ -90,9 +97,9 @@ export class RingViewer extends EventTarget {
     this.ringRoot = new THREE.Group();
     this.scene.add(this.ringRoot);
     this.gold = 'yellow';
-    this.metalMaterial = new THREE.MeshPhysicalMaterial({ metalness: 1, roughness: 0.09, envMapIntensity: 1.7 });
+    this.metalMaterial = new THREE.MeshPhysicalMaterial({ metalness: 1, roughness: IJEWEL.metalRoughness, envMapIntensity: IJEWEL.metalEnvIntensity });
     this.metalMaterial.color.setRGB(...GOLDS.yellow, THREE.LinearSRGBColorSpace);
-    this.gemTuning = { ior: 2.418, dispersion: 0.025, envIntensity: 1.0, envContrast: 1.0 };
+    this.gemTuning = { ior: 2.6, dispersion: 0.02, envIntensity: 1.0, envContrast: 1.0, ...(this.opts.gem || {}) };
 
     this.loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
     this.frame = 0; this.pose = 'flat'; this.needsFrame = true;
@@ -114,8 +121,10 @@ export class RingViewer extends EventTarget {
         void main(){ gl_FragColor = mix(texture2D(tPrev, vUv), texture2D(tFrame, vUv), weight); }` });
 
     // Bloom (glow around highlights): soft-threshold bright pass, then a down/up mip chain (dual filter).
-    this.look = { toneMapping: 'neutral', exposure: 1.0, bloom: 0.12, bloomThreshold: 1.6, floor: 1.0, ...GRADE_DEFAULTS, ...(this.opts.look || {}) };
-    this.bloomLevels = 5;
+    // Defaults = the iJewel Noya scene (ss-001.vjson): Tonemap ACESFilmic, exposure 1, contrast 1.1, saturation 1;
+    // Bloom threshold 2, softThreshold 0.5, intensity 0.2, 4 iterations.
+    this.look = { toneMapping: 'aces', exposure: 1.0, bloom: 0.2, bloomThreshold: 2.0, floor: 1.0, ...GRADE_DEFAULTS, ...(this.opts.look || {}) };
+    this.bloomLevels = 4;
     const brt = () => new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, depthBuffer: false });
     this.rtDown = Array.from({ length: this.bloomLevels }, brt);
     this.rtUp = Array.from({ length: this.bloomLevels }, brt);
@@ -126,7 +135,7 @@ export class RingViewer extends EventTarget {
         void main(){
           vec3 c = (s(vec2(-1.,-1.)) + s(vec2(1.,-1.)) + s(vec2(-1.,1.)) + s(vec2(1.,1.))) * 0.25;
           float l = max(c.r, max(c.g, c.b));
-          float knee = threshold * 0.5; float soft = clamp(l - threshold + knee, 0.0, 2.0 * knee); soft = soft * soft / (4.0 * knee + 1e-4);
+          float knee = threshold * 0.5 + 1e-4; /* softThreshold 0.5 */ float soft = clamp(l - threshold + knee, 0.0, 2.0 * knee); soft = soft * soft / (4.0 * knee + 1e-4);
           float w = max(soft, l - threshold) / max(l, 1e-4);
           gl_FragColor = vec4(min(c * w, vec3(32.0)), 1.0); }` });
     this.downMat = new THREE.ShaderMaterial({ vertexShader: fsVert, depthTest: false, depthWrite: false,
@@ -188,20 +197,20 @@ export class RingViewer extends EventTarget {
         float luma(vec3 c){ return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
         // Colour grade after tone mapping (display-referred, linear light in / out). Neutral values = identity.
         vec3 grade(vec3 c) {
+          // iJewel / Threepipe TonemapPlugin order: contrast then saturation, right after tone mapping, in linear.
+          c = (c - vec3(0.5)) * gContrast + vec3(0.5);
+          c = max(vec3(0.0), mix(vec3(dot(c, vec3(0.2125, 0.7154, 0.0721))), c, gSaturation));
           float l = luma(c);
           // highlights / shadows: push luminance up or down in the top / bottom range only
           float hl = gHighlights * smoothstep(0.35, 1.0, l) * 0.35, sw = 1.0 - smoothstep(0.0, 0.45, l);
           c *= max(0.0, l + hl) / max(l, 1e-5);
           // shadows: + lifts dark areas with neutral light (no saturation boost), - crushes them
           c = gShadows >= 0.0 ? c + vec3(gShadows * sw * 0.08) : c * max(0.0, 1.0 + gShadows * 0.7 * sw);
-          l = luma(c);
-          c = max(vec3(0.0), mix(vec3(l), c, gSaturation));
           float mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b));
           float sat = mx > 1e-5 ? (mx - mn) / mx : 0.0;
           c = max(vec3(0.0), mix(vec3(luma(c)), c, 1.0 + gVibrance * (1.0 - sat)));
-          // contrast (around mid grey) and gamma act on the sRGB-encoded value, like an image editor
+          // gamma acts on the sRGB-encoded value, like an image editor
           vec3 e = toSRGB(clamp(c, 0.0, 1.0));
-          e = clamp((e - 0.5) * gContrast + 0.5, 0.0, 1.0);
           e = pow(e, vec3(1.0 / gGamma));
           return toLin(e);
         }
@@ -417,9 +426,20 @@ export class RingViewer extends EventTarget {
     this.reset();
   }
 
-  setEnvRotation(rad) {
-    this.envRotation = rad;
+  setEnvRotation(rad) { this.setMetalRotation(rad); this.setDiamondRotation(rad); }
+  // Metal HDRI rotation (radians, about the vertical axis). The ground key light turns with it, so the shadow
+  // keeps falling away from the HDRI's main light.
+  setMetalRotation(rad) {
+    this.metalRotation = rad;
     this.scene.environmentRotation.set(0, rad, 0);
+    this.cubeDirty = true;
+    const az = this.shadowOpts.baseAzimuth ?? (this.shadowOpts.baseAzimuth = this.shadowOpts.keyAzimuth);
+    this.shadowOpts.keyAzimuth = az + THREE.MathUtils.radToDeg(rad - (this.opts.metalRotationRef || 0));
+    clearTimeout(this._rebake); this._rebake = setTimeout(() => this.bakeShadow(), 120);
+    this.reset();
+  }
+  setDiamondRotation(rad) {
+    this.envRotation = rad;
     if (this.diamond) this.diamond.uniforms.envRotation.value = -rad / (2 * Math.PI);
     this.reset();
   }
@@ -488,6 +508,14 @@ export class RingViewer extends EventTarget {
     h.matrixAutoUpdate = false;
     h.matrix.copy(pose === 'flat' ? this.restMatrix : new THREE.Matrix4());
     h.position.set(0, 0, 0);
+    if (pose === 'flat' && this.gemMesh) {
+      // Turn the resting ring about the vertical so the stone faces the camera (+Z), for every ring.
+      // (The converter's rest pose leaves the yaw arbitrary: round 2 ct lay with its head turned away.)
+      h.updateMatrixWorld(true);
+      const all = exactBounds(h).getCenter(new THREE.Vector3()), gem = exactBounds(this.gemMesh).getCenter(new THREE.Vector3());
+      const yaw = Math.atan2(gem.x - all.x, gem.z - all.z);
+      if (Math.hypot(gem.x - all.x, gem.z - all.z) > 1e-4) h.matrix.premultiply(new THREE.Matrix4().makeRotationY(-yaw));
+    }
     // Measure with the ring root at the origin: the previous ring / pose offset must not leak into the new one
     // (it did before: the old offset was added to the new bounds, so each ring floated or sank by the last one's offset).
     this.ringRoot.position.set(0, 0, 0);
