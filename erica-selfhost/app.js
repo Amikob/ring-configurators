@@ -1,4 +1,4 @@
-import { RingViewer, GRADE_DEFAULTS, GOLDS } from './viewer.js?v=e1';
+import { RingViewer, GRADE_DEFAULTS, GOLDS } from './viewer.js?v=e2';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -32,7 +32,9 @@ const mobile = params.has('mobile') ? params.get('mobile') !== '0' : (matchMedia
 // Defaults copied from the iJewel Noya scene (Tonemap: ACESFilmic, exposure 1; Bloom intensity 0.2).
 // Test override: ?mcolor=<gold>:<r>,<g>,<b> (linear) to try a metal colour without editing the code.
 if (params.has('mcolor')) { const [g, v] = params.get('mcolor').split(':'); if (GOLDS[g]) GOLDS[g] = v.split(',').map(Number); }
-const LOOK_DEFAULTS = { toneMapping: 'aces', exposure: 1.0, bloom: 0.2, floor: 1.0 };
+// Erica: tuned against the live Erica page (metal mean-Lab dE00 5.3 -> 1.4): the Erica GLBs are larger and more
+// reflective than Noya's, so iJewel's bloom 0.2 / threshold 2 haloed every metal edge and exposure 1 washed the gold.
+const LOOK_DEFAULTS = { toneMapping: 'aces', exposure: 0.7, bloom: 0.05, floor: 1.0 };
 const GRADE_PARAMS = { gamma: 'gamma', contrast: 'contrast', saturation: 'sat', vibrance: 'vib', burn: 'burn', temperature: 'temp', tint: 'tint', highlights: 'hl', shadows: 'sh' };
 const look = {
   ...Object.fromEntries(Object.entries(GRADE_PARAMS).map(([k, p]) => [k, params.has(p) ? Number(params.get(p)) : GRADE_DEFAULTS[k]])),
@@ -106,7 +108,7 @@ async function choose(patch) {
     const ring = ringFor(state.shape, state.carat), band = state.band === 'none' ? null : bandFor(state.shape, state.carat, state.band);
     try {
       const ok = await viewer.loadSet(`./models/${ring.file}`, band ? `./models/${band.file}` : null, { rest: ring.rest, setRest: manifest.setRest[`${state.shape}:${state.carat}:${state.band}`] });
-      if (ok && patch.band !== undefined && !patch.init) viewer.frontView(viewParams());
+      if (ok && patch.band !== undefined && !patch.init) viewer.ijewelView(viewParams());
       if (ok) loadedKey = key;
       $('error').hidden = true;
     } catch (e) { console.error(e); $('error').textContent = 'This ring could not load. Please try again.'; $('error').hidden = false; }
@@ -115,11 +117,12 @@ async function choose(patch) {
 }
 
 function viewParams() {
-  // Upright: like the live Erica page, seen from the band side (the band sits behind the ring along -Z), from above.
-  return { elevation: params.has('el') ? Number(params.get('el')) : (state.pose === 'flat' ? 24 : 50), azimuth: params.has('az') ? Number(params.get('az')) : (state.pose === 'flat' ? 0 : 155), fill: Number(params.get('fill')) || (state.pose === 'flat' ? 0.45 : 0.5), lower: params.has('lower') ? Number(params.get('lower')) : 0.12 };
+  // Same camera as the live Erica page: its saved direction (elevation 57.2, azimuth 150 in the model frame) and
+  // centerView distance; Rest keeps the azimuth at a 30 deg floor-level angle, as on the live page.
+  return { elevation: params.has('el') ? Number(params.get('el')) : (state.pose === 'flat' ? 30 : 57.2), azimuth: params.has('az') ? Number(params.get('az')) : 150 };
 }
-$('pose-toggle').addEventListener('click', () => { state.pose = state.pose === 'flat' ? 'upright' : 'flat'; viewer.applyPose(state.pose); viewer.frontView(viewParams()); render(); });
-$('center-view').addEventListener('click', () => viewer.frontView(viewParams()));
+$('pose-toggle').addEventListener('click', () => { state.pose = state.pose === 'flat' ? 'upright' : 'flat'; viewer.applyPose(state.pose); viewer.ijewelView(viewParams()); render(); });
+$('center-view').addEventListener('click', () => viewer.ijewelView(viewParams()));
 
 // Optional live tuning panel for diamond look: add ?tune=1
 if (params.has('tune')) {
@@ -236,7 +239,7 @@ function setEnvPanel(open) {
   $('env-panel').hidden = !open; $('env-toggle').setAttribute('aria-expanded', String(open));
   document.querySelector('.panel').classList.toggle('look-open', open);
   if (open) $('env-panel').scrollIntoView({ block: 'nearest' });
-  requestAnimationFrame(() => requestAnimationFrame(() => { if (Math.abs($('viewer').clientHeight - before) > 8 && viewer.bounds) { viewer.resize(); viewer.frontView(viewParams()); } }));
+  requestAnimationFrame(() => requestAnimationFrame(() => { if (Math.abs($('viewer').clientHeight - before) > 8 && viewer.bounds) { viewer.resize(); viewer.ijewelView(viewParams()); } }));
 }
 $('env-toggle').addEventListener('click', () => setEnvPanel($('env-panel').hidden));
 $('env-close').addEventListener('click', () => setEnvPanel(false));
@@ -249,6 +252,6 @@ else await setEnv('metal', params.get('metalenv'), { sync: false });
 if (params.has('rot')) viewer.setEnvRotation(Number(params.get('rot')));   // old pilot param (radians, both)
 viewer.setGold(state.gold); viewer.setBandGold(state.bandGold);
 await choose({ init: true });
-viewer.frontView(viewParams());
+viewer.ijewelView(viewParams());
 $('startup').hidden = true;
 viewer.addEventListener('converged', () => { document.documentElement.dataset.converged = '1'; });

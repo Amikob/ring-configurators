@@ -16,7 +16,7 @@ export const GOLDS = {
   // reflections let the gold reflect itself, which deepens it on screen; a pure env reflection cannot, so the base
   // colour carries part of that. Values picked by mean Lab deltaE on the band against live iJewel (white: no change).
   yellow: [0.72, 0.37, 0.155],   // iJewel #e5b377 = [0.7835, 0.4508, 0.1845]
-  rose: [0.84, 0.32, 0.20],      // iJewel #f2af83 = [0.8879, 0.4287, 0.227]
+  rose: [0.70, 0.30, 0.15],      // tuned vs live Erica (dE00 0.99 at exposure 0.7); iJewel #f2af83 = [0.8879, 0.4287, 0.227]
 };
 export const IJEWEL = { metalRoughness: 0, metalEnvIntensity: 1 };
 
@@ -126,7 +126,7 @@ export class RingViewer extends EventTarget {
     // Bloom (glow around highlights): soft-threshold bright pass, then a down/up mip chain (dual filter).
     // Defaults = the iJewel Noya scene (ss-001.vjson): Tonemap ACESFilmic, exposure 1, contrast 1.1, saturation 1;
     // Bloom threshold 2, softThreshold 0.5, intensity 0.2, 4 iterations.
-    this.look = { toneMapping: 'aces', exposure: 1.0, bloom: 0.2, bloomThreshold: 2.0, floor: 1.0, ...GRADE_DEFAULTS, ...(this.opts.look || {}) };
+    this.look = { toneMapping: 'aces', exposure: 1.0, bloom: 0.05, bloomThreshold: 4.0, floor: 1.0, ...GRADE_DEFAULTS, ...(this.opts.look || {}) };
     this.bloomLevels = 4;
     const brt = () => new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, depthBuffer: false });
     this.rtDown = Array.from({ length: this.bloomLevels }, brt);
@@ -532,11 +532,11 @@ export class RingViewer extends EventTarget {
     h.matrix.copy(pose === 'flat' ? this.restMatrix : new THREE.Matrix4());
     h.position.set(0, 0, 0);
     if (pose === 'flat' && this.ringGemCenter) {
-      // Turn the resting ring / set about the vertical so the centre stone faces the camera (+Z).
+      // Turn the resting ring / set about the vertical so the centre stone points to -Z, like erica/ring-pose.js.
       h.updateMatrixWorld(true);
       const all = exactBounds(h).getCenter(new THREE.Vector3()), gem = this.ringGemCenter.clone().applyMatrix4(h.matrixWorld);
       const yaw = Math.atan2(gem.x - all.x, gem.z - all.z);
-      if (Math.hypot(gem.x - all.x, gem.z - all.z) > 1e-4) h.matrix.premultiply(new THREE.Matrix4().makeRotationY(-yaw));
+      if (Math.hypot(gem.x - all.x, gem.z - all.z) > 1e-4) h.matrix.premultiply(new THREE.Matrix4().makeRotationY(Math.PI - yaw));   // head toward -Z (the live page's forward)
     }
     // Measure with the ring root at the origin: the previous ring / pose offset must not leak into the new one
     // (it did before: the old offset was added to the new bounds, so each ring floated or sank by the last one's offset).
@@ -552,6 +552,21 @@ export class RingViewer extends EventTarget {
     if (this.gemMesh) this.diamond.syncObject(this.gemMesh);
     this.bakeShadow();
     this.cubeDirty = true;
+    this.reset();
+  }
+
+  // Erica: the live page's framing (erica/view-controls.js centerView): look at the centre of the model bounds from
+  // the saved camera direction, at size * 0.5 / sin(limiting half-FOV) * 1.12, FOV 25.
+  ijewelView({ elevation = 57.2, azimuth = 150, fov = 25 } = {}) {
+    if (!this.bounds) return;
+    const el = THREE.MathUtils.degToRad(elevation), az = THREE.MathUtils.degToRad(azimuth);
+    const dir = new THREE.Vector3(Math.cos(el) * Math.sin(az), Math.sin(el), Math.cos(el) * Math.cos(az));
+    const cam = this.camera; cam.fov = fov; cam.updateProjectionMatrix();
+    const center = this.bounds.getCenter(new THREE.Vector3()), size = this.bounds.getSize(new THREE.Vector3()).length();
+    const half = THREE.MathUtils.degToRad(fov / 2), limiting = Math.min(half, Math.atan(Math.tan(half) * cam.aspect));
+    const dist = size * 0.5 / Math.sin(limiting) * 1.12;   // same factor as erica/view-controls.js centerView
+    cam.position.copy(center).addScaledVector(dir, dist);
+    this.controls.target.copy(center); cam.lookAt(center); this.controls.update();
     this.reset();
   }
 
