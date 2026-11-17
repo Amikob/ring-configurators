@@ -3,7 +3,7 @@
 // configure_<slug> model-context tool, records every .glb request and asserts they all belong to the new
 // configurator's files; screenshots each state; fails on page/console errors or HTTP >= 400.
 //
-//   node tools/cfg-migrate/verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath> [<pagePath>...] [--switches 5]
+//   node tools/cfg-migrate/verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath> [<pagePath>...] [--switches 5 | --all]
 //   e.g. node tools/cfg-migrate/verify.mjs http://127.0.0.1:8800 EiSEtivuSsmgccThjvV6sw /tmp/v lacey/ lacey-2jjz4se99k/
 //
 // Needs playwright-core (PW_DIR, default /workspace/pw) and Chrome (CHROME, default /usr/bin/google-chrome).
@@ -13,8 +13,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(`${process.env.PW_DIR || '/workspace/pw'}/`);
 const { chromium } = require('playwright-core');
 const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36';
-const a = process.argv.slice(2); let n = 5; const pos = [];
-for (let i = 0; i < a.length; i++) { if (a[i] === '--switches') n = +a[++i]; else pos.push(a[i]); }
+const a = process.argv.slice(2); let n = 5, all = false; const pos = [];
+for (let i = 0; i < a.length; i++) { if (a[i] === '--switches') n = +a[++i]; else if (a[i] === '--all') all = true; else pos.push(a[i]); }
 const [base, cfgId, outDir, ...pages] = pos;
 if (!pages.length) { console.error('usage: verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath>... [--switches N]'); process.exit(2); }
 fs.mkdirSync(outDir, { recursive: true });
@@ -49,8 +49,9 @@ for (const p of pages) {
     await page.screenshot({ path: `${outDir}/${tag}-default.png` });
     const schema = await page.evaluate(t => window.__tools[t].inputSchema.properties, setTool);
     const shapes = schema.shape.enum, carats = schema.carat.enum; let tried = 0;
-    for (let i = 0; tried < n && i < shapes.length * carats.length * 3; i++) {
-      const sel = { shape: shapes[(i * 3 + 1) % shapes.length], carat: carats[(i * 2 + 1) % carats.length] };
+    const combos = all ? shapes.flatMap(sh => carats.map(c => ({ shape: sh, carat: c }))) : null;
+    for (let i = 0; combos ? i < combos.length : (tried < n && i < shapes.length * carats.length * 3); i++) {
+      const sel = combos ? combos[i] : { shape: shapes[(i * 3 + 1) % shapes.length], carat: carats[(i * 2 + 1) % carats.length] };
       try {
         const r = await page.evaluate(([t, s]) => window.__tools[t].execute(s), [setTool, sel]);
         await page.waitForTimeout(1500);
