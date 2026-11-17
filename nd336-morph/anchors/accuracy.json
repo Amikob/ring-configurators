@@ -1,0 +1,2669 @@
+{
+ "note": "Head-only symmetric surface distance in mm (metal, y > 8 mm). fromBase3 = pure morph from the 3 ct file. neighbours = each real file morphed to the next real carat (+-1 ct; the hybrid never morphs more than 0.5 ct). jumps = difference at x.5 ct between the two neighbouring files (what you see when the hybrid switches file). Penetration = metal / small stones inside the centre stone (convex test), hybrid ranges incl. 5->6 ct extrapolation; realPenetration = the same test on the modeller's own files.",
+ "shapes": {
+  "round": {
+   "shape": "round",
+   "fromBase3": {
+    "1": {
+     "morph": {
+      "mean": 0.169,
+      "p95": 0.424,
+      "max": 0.692
+     },
+     "noMorph": {
+      "mean": 0.492,
+      "p95": 1.437,
+      "max": 1.994
+     }
+    },
+    "2": {
+     "morph": {
+      "mean": 0.089,
+      "p95": 0.181,
+      "max": 0.508
+     },
+     "noMorph": {
+      "mean": 0.239,
+      "p95": 0.661,
+      "max": 0.992
+     }
+    },
+    "4": {
+     "morph": {
+      "mean": 0.117,
+      "p95": 0.261,
+      "max": 0.706
+     },
+     "noMorph": {
+      "mean": 0.237,
+      "p95": 0.598,
+      "max": 0.839
+     }
+    },
+    "5": {
+     "morph": {
+      "mean": 0.116,
+      "p95": 0.245,
+      "max": 0.934
+     },
+     "noMorph": {
+      "mean": 0.328,
+      "p95": 0.899,
+      "max": 1.331
+     }
+    }
+   },
+   "neighbours": {
+    "1->2": 0.176,
+    "2->1": 0.145,
+    "2->3": 0.095,
+    "3->2": 0.089,
+    "3->4": 0.117,
+    "4->3": 0.113,
+    "4->5": 0.093,
+    "5->4": 0.09
+   },
+   "jumps": {
+    "1.5": {
+     "mean": 0.162,
+     "p95": 0.394,
+     "max": 0.723
+    },
+    "2.5": {
+     "mean": 0.092,
+     "p95": 0.187,
+     "max": 0.488
+    },
+    "3.5": {
+     "mean": 0.115,
+     "p95": 0.256,
+     "max": 0.675
+    },
+    "4.5": {
+     "mean": 0.092,
+     "p95": 0.173,
+     "max": 0.848
+    }
+   },
+   "penetration": {
+    "1@1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@6": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "realPenetration": {
+    "1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "worstPenetration": {
+    "metal": 0,
+    "accent": 0
+   }
+  },
+  "oval": {
+   "shape": "oval",
+   "fromBase3": {
+    "1": {
+     "morph": {
+      "mean": 0.227,
+      "p95": 0.7,
+      "max": 1.135
+     },
+     "noMorph": {
+      "mean": 0.403,
+      "p95": 1.268,
+      "max": 1.721
+     }
+    },
+    "2": {
+     "morph": {
+      "mean": 0.097,
+      "p95": 0.171,
+      "max": 0.42
+     },
+     "noMorph": {
+      "mean": 0.186,
+      "p95": 0.506,
+      "max": 0.76
+     }
+    },
+    "4": {
+     "morph": {
+      "mean": 0.18,
+      "p95": 0.39,
+      "max": 0.712
+     },
+     "noMorph": {
+      "mean": 0.306,
+      "p95": 0.775,
+      "max": 1.181
+     }
+    },
+    "5": {
+     "morph": {
+      "mean": 0.166,
+      "p95": 0.329,
+      "max": 0.832
+     },
+     "noMorph": {
+      "mean": 0.389,
+      "p95": 1.064,
+      "max": 1.559
+     }
+    }
+   },
+   "neighbours": {
+    "1->2": 0.243,
+    "2->1": 0.191,
+    "2->3": 0.106,
+    "3->2": 0.097,
+    "3->4": 0.18,
+    "4->3": 0.168,
+    "4->5": 0.141,
+    "5->4": 0.133
+   },
+   "jumps": {
+    "1.5": {
+     "mean": 0.219,
+     "p95": 0.694,
+     "max": 1.012
+    },
+    "2.5": {
+     "mean": 0.102,
+     "p95": 0.181,
+     "max": 0.513
+    },
+    "3.5": {
+     "mean": 0.175,
+     "p95": 0.376,
+     "max": 0.718
+    },
+    "4.5": {
+     "mean": 0.138,
+     "p95": 0.341,
+     "max": 0.605
+    }
+   },
+   "penetration": {
+    "1@1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@6": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "realPenetration": {
+    "1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "worstPenetration": {
+    "metal": 0,
+    "accent": 0
+   }
+  },
+  "elongated_cushion": {
+   "shape": "elongated_cushion",
+   "fromBase3": {
+    "1": {
+     "morph": {
+      "mean": 0.154,
+      "p95": 0.444,
+      "max": 0.644
+     },
+     "noMorph": {
+      "mean": 0.432,
+      "p95": 1.409,
+      "max": 2.022
+     }
+    },
+    "2": {
+     "morph": {
+      "mean": 0.072,
+      "p95": 0.145,
+      "max": 0.42
+     },
+     "noMorph": {
+      "mean": 0.215,
+      "p95": 0.628,
+      "max": 1.022
+     }
+    },
+    "4": {
+     "morph": {
+      "mean": 0.131,
+      "p95": 0.285,
+      "max": 0.621
+     },
+     "noMorph": {
+      "mean": 0.19,
+      "p95": 0.473,
+      "max": 0.842
+     }
+    },
+    "5": {
+     "morph": {
+      "mean": 0.151,
+      "p95": 0.308,
+      "max": 0.718
+     },
+     "noMorph": {
+      "mean": 0.297,
+      "p95": 0.865,
+      "max": 1.284
+     }
+    }
+   },
+   "neighbours": {
+    "1->2": 0.174,
+    "2->1": 0.142,
+    "2->3": 0.075,
+    "3->2": 0.072,
+    "3->4": 0.131,
+    "4->3": 0.126,
+    "4->5": 0.101,
+    "5->4": 0.097
+   },
+   "jumps": {
+    "1.5": {
+     "mean": 0.161,
+     "p95": 0.522,
+     "max": 0.747
+    },
+    "2.5": {
+     "mean": 0.074,
+     "p95": 0.147,
+     "max": 0.442
+    },
+    "3.5": {
+     "mean": 0.129,
+     "p95": 0.281,
+     "max": 0.546
+    },
+    "4.5": {
+     "mean": 0.099,
+     "p95": 0.206,
+     "max": 0.426
+    }
+   },
+   "penetration": {
+    "1@1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.003
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.5": {
+     "metal": {
+      "verticesInside": 66,
+      "maxDepth": 0.146
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.75": {
+     "metal": {
+      "verticesInside": 67,
+      "maxDepth": 0.149
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.25": {
+     "metal": {
+      "verticesInside": 68,
+      "maxDepth": 0.156
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.5": {
+     "metal": {
+      "verticesInside": 68,
+      "maxDepth": 0.159
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@6": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "realPenetration": {
+    "1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4": {
+     "metal": {
+      "verticesInside": 68,
+      "maxDepth": 0.152
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "worstPenetration": {
+    "metal": 0.159,
+    "accent": 0
+   }
+  },
+  "elongated_radiant": {
+   "shape": "elongated_radiant",
+   "fromBase3": {
+    "1": {
+     "morph": {
+      "mean": 0.156,
+      "p95": 0.329,
+      "max": 0.717
+     },
+     "noMorph": {
+      "mean": 0.415,
+      "p95": 1.332,
+      "max": 2
+     }
+    },
+    "2": {
+     "morph": {
+      "mean": 0.093,
+      "p95": 0.179,
+      "max": 0.56
+     },
+     "noMorph": {
+      "mean": 0.198,
+      "p95": 0.569,
+      "max": 0.999
+     }
+    },
+    "4": {
+     "morph": {
+      "mean": 0.132,
+      "p95": 0.298,
+      "max": 0.627
+     },
+     "noMorph": {
+      "mean": 0.215,
+      "p95": 0.586,
+      "max": 0.909
+     }
+    },
+    "5": {
+     "morph": {
+      "mean": 0.134,
+      "p95": 0.325,
+      "max": 0.726
+     },
+     "noMorph": {
+      "mean": 0.321,
+      "p95": 0.97,
+      "max": 1.476
+     }
+    }
+   },
+   "neighbours": {
+    "1->2": 0.166,
+    "2->1": 0.137,
+    "2->3": 0.098,
+    "3->2": 0.093,
+    "3->4": 0.132,
+    "4->3": 0.128,
+    "4->5": 0.09,
+    "5->4": 0.086
+   },
+   "jumps": {
+    "1.5": {
+     "mean": 0.153,
+     "p95": 0.323,
+     "max": 0.666
+    },
+    "2.5": {
+     "mean": 0.096,
+     "p95": 0.188,
+     "max": 0.57
+    },
+    "3.5": {
+     "mean": 0.13,
+     "p95": 0.292,
+     "max": 0.65
+    },
+    "4.5": {
+     "mean": 0.089,
+     "p95": 0.17,
+     "max": 0.334
+    }
+   },
+   "penetration": {
+    "1@1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.008
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@6": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "realPenetration": {
+    "1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "worstPenetration": {
+    "metal": 0.008,
+    "accent": 0
+   }
+  },
+  "emerald": {
+   "shape": "emerald",
+   "fromBase3": {
+    "1": {
+     "morph": {
+      "mean": 0.184,
+      "p95": 0.472,
+      "max": 0.86
+     },
+     "noMorph": {
+      "mean": 0.365,
+      "p95": 1.157,
+      "max": 1.718
+     }
+    },
+    "2": {
+     "morph": {
+      "mean": 0.096,
+      "p95": 0.186,
+      "max": 0.328
+     },
+     "noMorph": {
+      "mean": 0.157,
+      "p95": 0.446,
+      "max": 0.835
+     }
+    },
+    "4": {
+     "morph": {
+      "mean": 0.136,
+      "p95": 0.315,
+      "max": 0.712
+     },
+     "noMorph": {
+      "mean": 0.219,
+      "p95": 0.59,
+      "max": 0.893
+     }
+    },
+    "5": {
+     "morph": {
+      "mean": 0.148,
+      "p95": 0.357,
+      "max": 0.774
+     },
+     "noMorph": {
+      "mean": 0.35,
+      "p95": 1.002,
+      "max": 1.503
+     }
+    }
+   },
+   "neighbours": {
+    "1->2": 0.215,
+    "2->1": 0.169,
+    "2->3": 0.105,
+    "3->2": 0.096,
+    "3->4": 0.136,
+    "4->3": 0.13,
+    "4->5": 0.084,
+    "5->4": 0.081
+   },
+   "jumps": {
+    "1.5": {
+     "mean": 0.196,
+     "p95": 0.494,
+     "max": 0.955
+    },
+    "2.5": {
+     "mean": 0.101,
+     "p95": 0.199,
+     "max": 0.305
+    },
+    "3.5": {
+     "mean": 0.134,
+     "p95": 0.305,
+     "max": 0.707
+    },
+    "4.5": {
+     "mean": 0.083,
+     "p95": 0.155,
+     "max": 0.39
+    }
+   },
+   "penetration": {
+    "1@1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@6": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "realPenetration": {
+    "1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "worstPenetration": {
+    "metal": 0,
+    "accent": 0
+   }
+  },
+  "pear": {
+   "shape": "pear",
+   "fromBase3": {
+    "1": {
+     "morph": {
+      "mean": 0.181,
+      "p95": 0.478,
+      "max": 0.876
+     },
+     "noMorph": {
+      "mean": 0.412,
+      "p95": 1.31,
+      "max": 2.71
+     }
+    },
+    "2": {
+     "morph": {
+      "mean": 0.117,
+      "p95": 0.303,
+      "max": 0.583
+     },
+     "noMorph": {
+      "mean": 0.178,
+      "p95": 0.46,
+      "max": 0.923
+     }
+    },
+    "4": {
+     "morph": {
+      "mean": 0.183,
+      "p95": 0.461,
+      "max": 0.852
+     },
+     "noMorph": {
+      "mean": 0.265,
+      "p95": 0.692,
+      "max": 1.206
+     }
+    },
+    "5": {
+     "morph": {
+      "mean": 0.235,
+      "p95": 0.59,
+      "max": 1.039
+     },
+     "noMorph": {
+      "mean": 0.397,
+      "p95": 1.149,
+      "max": 2.321
+     }
+    }
+   },
+   "neighbours": {
+    "1->2": 0.181,
+    "2->1": 0.149,
+    "2->3": 0.125,
+    "3->2": 0.117,
+    "3->4": 0.183,
+    "4->3": 0.175,
+    "4->5": 0.114,
+    "5->4": 0.108
+   },
+   "jumps": {
+    "1.5": {
+     "mean": 0.167,
+     "p95": 0.414,
+     "max": 0.88
+    },
+    "2.5": {
+     "mean": 0.121,
+     "p95": 0.314,
+     "max": 0.605
+    },
+    "3.5": {
+     "mean": 0.18,
+     "p95": 0.45,
+     "max": 0.796
+    },
+    "4.5": {
+     "mean": 0.112,
+     "p95": 0.246,
+     "max": 0.476
+    }
+   },
+   "penetration": {
+    "1@1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.01
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.5": {
+     "metal": {
+      "verticesInside": 3,
+      "maxDepth": 0.039
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.75": {
+     "metal": {
+      "verticesInside": 3,
+      "maxDepth": 0.04
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.25": {
+     "metal": {
+      "verticesInside": 3,
+      "maxDepth": 0.041
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.5": {
+     "metal": {
+      "verticesInside": 3,
+      "maxDepth": 0.042
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@6": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "realPenetration": {
+    "1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4": {
+     "metal": {
+      "verticesInside": 3,
+      "maxDepth": 0.041
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "worstPenetration": {
+    "metal": 0.042,
+    "accent": 0
+   }
+  },
+  "marquise": {
+   "shape": "marquise",
+   "fromBase3": {
+    "1": {
+     "morph": {
+      "mean": 0.173,
+      "p95": 0.559,
+      "max": 0.932
+     },
+     "noMorph": {
+      "mean": 0.464,
+      "p95": 1.381,
+      "max": 2.456
+     }
+    },
+    "2": {
+     "morph": {
+      "mean": 0.091,
+      "p95": 0.192,
+      "max": 0.543
+     },
+     "noMorph": {
+      "mean": 0.222,
+      "p95": 0.569,
+      "max": 1.059
+     }
+    },
+    "4": {
+     "morph": {
+      "mean": 0.184,
+      "p95": 0.373,
+      "max": 0.596
+     },
+     "noMorph": {
+      "mean": 0.24,
+      "p95": 0.576,
+      "max": 1.208
+     }
+    },
+    "5": {
+     "morph": {
+      "mean": 0.229,
+      "p95": 0.505,
+      "max": 0.707
+     },
+     "noMorph": {
+      "mean": 0.349,
+      "p95": 1.043,
+      "max": 2.071
+     }
+    }
+   },
+   "neighbours": {
+    "1->2": 0.204,
+    "2->1": 0.165,
+    "2->3": 0.096,
+    "3->2": 0.091,
+    "3->4": 0.184,
+    "4->3": 0.172,
+    "4->5": 0.102,
+    "5->4": 0.097
+   },
+   "jumps": {
+    "1.5": {
+     "mean": 0.187,
+     "p95": 0.554,
+     "max": 0.922
+    },
+    "2.5": {
+     "mean": 0.094,
+     "p95": 0.199,
+     "max": 0.474
+    },
+    "3.5": {
+     "mean": 0.179,
+     "p95": 0.36,
+     "max": 0.556
+    },
+    "4.5": {
+     "mean": 0.099,
+     "p95": 0.202,
+     "max": 0.39
+    }
+   },
+   "penetration": {
+    "1@1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@6": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "realPenetration": {
+    "1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "worstPenetration": {
+    "metal": 0,
+    "accent": 0
+   }
+  },
+  "square_cushion": {
+   "shape": "square_cushion",
+   "fromBase3": {
+    "1": {
+     "morph": {
+      "mean": 0.19,
+      "p95": 0.44,
+      "max": 0.776
+     },
+     "noMorph": {
+      "mean": 0.485,
+      "p95": 1.613,
+      "max": 2.293
+     }
+    },
+    "2": {
+     "morph": {
+      "mean": 0.11,
+      "p95": 0.249,
+      "max": 0.639
+     },
+     "noMorph": {
+      "mean": 0.281,
+      "p95": 0.859,
+      "max": 1.385
+     }
+    },
+    "4": {
+     "morph": {
+      "mean": 0.158,
+      "p95": 0.369,
+      "max": 0.734
+     },
+     "noMorph": {
+      "mean": 0.166,
+      "p95": 0.364,
+      "max": 0.532
+     }
+    },
+    "5": {
+     "morph": {
+      "mean": 0.185,
+      "p95": 0.443,
+      "max": 0.888
+     },
+     "noMorph": {
+      "mean": 0.265,
+      "p95": 0.663,
+      "max": 1.221
+     }
+    }
+   },
+   "neighbours": {
+    "1->2": 0.24,
+    "2->1": 0.192,
+    "2->3": 0.121,
+    "3->2": 0.11,
+    "3->4": 0.158,
+    "4->3": 0.147,
+    "4->5": 0.093,
+    "5->4": 0.089
+   },
+   "jumps": {
+    "1.5": {
+     "mean": 0.218,
+     "p95": 0.518,
+     "max": 0.878
+    },
+    "2.5": {
+     "mean": 0.116,
+     "p95": 0.267,
+     "max": 0.7
+    },
+    "3.5": {
+     "mean": 0.153,
+     "p95": 0.358,
+     "max": 0.833
+    },
+    "4.5": {
+     "mean": 0.091,
+     "p95": 0.158,
+     "max": 0.465
+    }
+   },
+   "penetration": {
+    "1@1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "1@1.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.009
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.5": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.028
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@1.75": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.029
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.25": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.032
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2@2.5": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.033
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@2.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.008
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@3.75": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.008
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.25": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.008
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4@4.5": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.009
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@4.5": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.024
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.25": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.026
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@5.5": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.026
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5@6": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.027
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "realPenetration": {
+    "1": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "2": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.031
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "3": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "4": {
+     "metal": {
+      "verticesInside": 0,
+      "maxDepth": 0.008
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    },
+    "5": {
+     "metal": {
+      "verticesInside": 4,
+      "maxDepth": 0.025
+     },
+     "accent": {
+      "verticesInside": 0,
+      "maxDepth": 0
+     }
+    }
+   },
+   "worstPenetration": {
+    "metal": 0.033,
+    "accent": 0
+   }
+  }
+ }
+}

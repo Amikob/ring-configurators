@@ -1,0 +1,14 @@
+import * as T from './nd336eval.mjs';
+import fs from 'fs';
+const shape = process.argv[2];
+const m = {}; for (const c of [1,2,3,4,5]) m[c] = await T.loadModel(shape, c);
+const YMIN = 8;
+const base = T.autoAnchors(m[3], shape, { y0: 10, y1: 12.5, rho0: 1.0, h: 0, kv: 1, yc: 12 });
+console.log(shape, 'centre', base.center, 'prongs', base.prongs.length, JSON.stringify(base.prongs));
+const mk = x => ({ ...base, deform: { y0: Math.max(8.5, x[0]), y1: Math.max(Math.max(8.5, x[0]) + 0.3, x[1]), rho0: Math.max(0.6, x[3]), h: 0, kv: 1, yc: x[2] } });
+const cost = x => { const A = mk(x); let e = 0; for (const ct of [2, 4]) e += T.compare(T.morphModel(m[3], A, ct, 3), m[ct], null, YMIN).mean; return e; };
+const t0 = Date.now();
+const r = T.nm(cost, [10, 12.5, base.center[1] - 2.5, 1.0], [1, 1, 1, 0.3], +(process.argv[3] || 40));
+const A = mk(r.x); A.deform = Object.fromEntries(Object.entries(A.deform).map(([k, v]) => [k, +(+v).toFixed(2)]));
+fs.writeFileSync(`../../../nd336-morph/anchors/${shape}.json`, JSON.stringify(A, null, 2) + '\n');
+console.log(shape, 'fit', JSON.stringify(A.deform), 'cost', r.f.toFixed(3), ((Date.now() - t0) / 1000).toFixed(0) + 's');

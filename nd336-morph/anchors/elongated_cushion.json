@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "shape": "elongated_cushion",
+  "ring": "ND336",
+  "baseCarat": 3,
+  "baseFile": "3_ct_elongated_cushion.glb",
+  "units": "mm, model frame (+Y up through the stone). Authored on the 3 ct model.",
+  "center": [
+    -0.001,
+    15.136,
+    0
+  ],
+  "deform": {
+    "y0": 8.8,
+    "y1": 11.65,
+    "rho0": 2.25,
+    "h": 0,
+    "kv": 1,
+    "yc": 9.9
+  },
+  "fixed": [],
+  "prongs": [
+    {
+      "p": [
+        -2.51,
+        15.69,
+        -3.87
+      ],
+      "r": 1.1
+    },
+    {
+      "p": [
+        2.53,
+        15.68,
+        -3.87
+      ],
+      "r": 1.09
+    },
+    {
+      "p": [
+        2.53,
+        15.69,
+        3.87
+      ],
+      "r": 1.09
+    },
+    {
+      "p": [
+        -2.51,
+        15.7,
+        3.85
+      ],
+      "r": 1.12
+    }
+  ]
+}

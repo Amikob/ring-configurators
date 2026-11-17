@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "shape": "emerald",
+  "ring": "ND336",
+  "baseCarat": 3,
+  "baseFile": "3_ct_emerald.glb",
+  "units": "mm, model frame (+Y up through the stone). Authored on the 3 ct model.",
+  "center": [
+    0,
+    14.678,
+    0
+  ],
+  "deform": {
+    "y0": 8.5,
+    "y1": 9.97,
+    "rho0": 1.97,
+    "h": 0,
+    "kv": 1,
+    "yc": 10.02
+  },
+  "fixed": [],
+  "prongs": [
+    {
+      "p": [
+        -2.59,
+        15.37,
+        -3.92
+      ],
+      "r": 1
+    },
+    {
+      "p": [
+        2.59,
+        15.37,
+        -3.92
+      ],
+      "r": 1
+    },
+    {
+      "p": [
+        2.59,
+        15.37,
+        3.92
+      ],
+      "r": 1
+    },
+    {
+      "p": [
+        -2.59,
+        15.37,
+        3.92
+      ],
+      "r": 1
+    }
+  ]
+}

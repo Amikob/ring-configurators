@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "shape": "oval",
+  "ring": "ND336",
+  "baseCarat": 3,
+  "baseFile": "3_ct_oval.glb",
+  "units": "mm, model frame (+Y up through the stone). Authored on the 3 ct model.",
+  "center": [
+    0,
+    14.774,
+    0
+  ],
+  "deform": {
+    "y0": 8.5,
+    "y1": 9.49,
+    "rho0": 2.3,
+    "h": 0,
+    "kv": 1,
+    "yc": 10.02
+  },
+  "fixed": [],
+  "prongs": [
+    {
+      "p": [
+        -2.84,
+        15.42,
+        -3.33
+      ],
+      "r": 0.98
+    },
+    {
+      "p": [
+        2.84,
+        15.42,
+        -3.32
+      ],
+      "r": 0.98
+    },
+    {
+      "p": [
+        2.84,
+        15.42,
+        3.32
+      ],
+      "r": 0.98
+    },
+    {
+      "p": [
+        -2.84,
+        15.42,
+        3.32
+      ],
+      "r": 0.98
+    }
+  ]
+}

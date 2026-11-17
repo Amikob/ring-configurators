@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "shape": "round",
+  "ring": "ND336",
+  "baseCarat": 3,
+  "baseFile": "3_ct_round.glb",
+  "units": "mm, model frame (+Y up through the stone). Authored on the 3 ct model.",
+  "center": [
+    0,
+    15.23,
+    0
+  ],
+  "deform": {
+    "y0": 8.5,
+    "y1": 9.93,
+    "rho0": 1,
+    "h": 0,
+    "kv": 1,
+    "yc": 10.04
+  },
+  "fixed": [],
+  "prongs": [
+    {
+      "p": [
+        -2.92,
+        16.07,
+        -2.91
+      ],
+      "r": 1.4
+    },
+    {
+      "p": [
+        2.91,
+        16.07,
+        -2.91
+      ],
+      "r": 1.4
+    },
+    {
+      "p": [
+        2.92,
+        16.07,
+        2.92
+      ],
+      "r": 1.39
+    },
+    {
+      "p": [
+        -2.91,
+        16.07,
+        2.91
+      ],
+      "r": 1.4
+    }
+  ]
+}

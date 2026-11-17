@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "shape": "elongated_radiant",
+  "ring": "ND336",
+  "baseCarat": 3,
+  "baseFile": "3_ct_elongated_radiant.glb",
+  "units": "mm, model frame (+Y up through the stone). Authored on the 3 ct model.",
+  "center": [
+    0.001,
+    14.463,
+    0.001
+  ],
+  "deform": {
+    "y0": 8.5,
+    "y1": 11.52,
+    "rho0": 2,
+    "h": 0,
+    "kv": 1,
+    "yc": 9.98
+  },
+  "fixed": [],
+  "prongs": [
+    {
+      "p": [
+        -2.77,
+        15.36,
+        -4.28
+      ],
+      "r": 1.13
+    },
+    {
+      "p": [
+        2.77,
+        15.36,
+        -4.28
+      ],
+      "r": 1.13
+    },
+    {
+      "p": [
+        2.77,
+        15.36,
+        4.28
+      ],
+      "r": 1.13
+    },
+    {
+      "p": [
+        -2.77,
+        15.36,
+        4.28
+      ],
+      "r": 1.13
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ND336 - live carat (pilot) | Next Diamonds</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css?v=n1">
+  <script type="importmap">
+  { "imports": {
+      "three": "./vendor/three/three.module.js",
+      "three/addons/": "./vendor/three/addons/",
+      "three-mesh-bvh": "./vendor/three-mesh-bvh.module.js"
+  } }
+  </script>
+</head>
+<body>
+  <div class="app">
+    <main class="stage">
+      <div class="brand"><img src="./assets/wordmark-1row-black.png" alt="Next Diamonds"><span>ND336 · live carat pilot</span></div>
+      <div id="viewer"></div>
+      <div id="startup" class="startup"><img src="./assets/monogram-champagne.png" alt=""><span id="startup-text">Loading...</span></div>
+      <div id="hud" class="hud"></div>
+    </main>
+    <aside class="panel">
+      <section>
+        <div class="label">Shape</div>
+        <div class="shapes" id="shapes"></div>
+      </section>
+      <section class="carat">
+        <div class="carat-head"><span>Carat</span><output id="ct-out">3.00 ct</output></div>
+        <input id="ct" type="range" min="1" max="6" step="0.05" value="3" aria-label="Carat">
+        <div class="ticks" id="ticks"></div>
+        <div id="dims" class="dims"></div>
+        <div id="ct-note" class="note"></div>
+      </section>
+      <section>
+        <div class="label">Metal</div>
+        <div class="seg" id="golds"><button data-gold="white">White</button><button data-gold="yellow">Yellow</button><button data-gold="rose">Rose</button></div>
+      </section>
+      <section>
+        <div class="label">Method</div>
+        <div class="seg" id="modes"><button data-mode="hybrid" title="Nearest real file (1/2/3/4/5 ct), morphed the rest of the way">Nearest file + morph</button><button data-mode="single" title="Everything from the 3 ct file">One file, morphed</button></div>
+      </section>
+      <section>
+        <div class="label">Check against the real models</div>
+        <div class="seg" id="views"><button data-view="normal">Normal</button><button data-view="ghost">Real overlay</button><button data-view="error">Error map</button><button data-view="weights">Weights</button></div>
+        <div id="view-note" class="note"></div>
+      </section>
+      <section id="editor" class="editor" hidden>
+        <div class="label">Anchor editor</div>
+        <div class="seg" id="tools"><button data-tool="orbit">Look</button><button data-tool="center">Stone centre</button><button data-tool="fixed">Fixed</button><button data-tool="prong">Prong</button><button data-tool="delete">Delete</button></div>
+        <label class="sl">Point radius <input id="ed-r" type="range" min="0.3" max="4" step="0.05" value="1.4"><output></output></label>
+        <label class="sl">Head starts at (mm) <input id="ed-y0" type="range" min="4" max="14" step="0.05"><output></output></label>
+        <label class="sl">Fully moving at (mm) <input id="ed-y1" type="range" min="5" max="15" step="0.05"><output></output></label>
+        <label class="sl">Scale pivot (mm) <input id="ed-yc" type="range" min="8" max="16" step="0.05"><output></output></label>
+        <label class="sl">Outside the stone: <small>translate ← → scale</small> <input id="ed-rho" type="range" min="1" max="2" step="0.01"><output></output></label>
+        <div id="ed-list" class="ed-list"></div>
+        <div class="row"><button id="ed-download">Download anchors JSON</button><button id="ed-reset">Reload saved</button></div>
+        <div id="ed-overlap" class="note"></div>
+        <p class="note">Click the ring to place points (in "Look" mode drag to turn it). Fixed = never moves (shank / basket base). Prong = moves rigidly with the stone, keeps its thickness. Save the JSON as <code>nd336-morph/anchors/&lt;shape&gt;.json</code>. The editor always works on the shape's 3 ct file.</p>
+      </section>
+      <p class="foot">Pilot: the nearest of the 5 real files (1-5 ct) is re-shaped live in the browser for every carat in between. Hidden-halo and band stones move with the metal, they never stretch. Nothing here uses iJewel. <a href="?edit=1" id="edit-link">Anchor editor</a></p>
+    </aside>
+  </div>
+  <script type="module" src="./app.js?v=n1"></script>
+</body>
+</html>
