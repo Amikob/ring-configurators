@@ -1,17 +1,15 @@
-// Noya (Clover): rings uploaded so far. Full set will be 8 shapes x 2-6 ct = 40.
-// To extend: upload the files to iJewel folder Ob9B3sx0RuSlIO7rEJ8c9A, add their ids to
-// tools/snapshots/noya-ids.json, add the shape to SHAPES / remove from MISSING, bump RING_COUNT,
-// then run: node tools/build-noya-local.mjs && node tools/build-noya-project.mjs
+// Noya (Clover): full set, 8 shapes x 2-6 ct = 40 rings, all in the new iJewel configurator aCzuAfLXRiipgfWjDBUBRQ.
+// To change rings, edit that configurator in iJewel and re-run tools/cfg-migrate/repoint.mjs
+// (see tools/cfg-migrate/README.md); the old build-noya-* scripts are SUPERSEDED.
 // The orientation field is kept so East-West or band variants can be added later without
 // changing the app's state model.
-// Not uploaded yet (no iJewel model slots): princess, marquise, 6 ct elongated radiant.
-export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'old_cut_cushion'];
+export const SHAPES = ['round', 'oval', 'elongated_cushion', 'elongated_radiant', 'emerald', 'old_cut_cushion', 'princess', 'marquise'];
 export const CARATS = [2, 3, 4, 5, 6];
 export const EAST_WEST = new Set();
 export const COLORS = ['white', 'yellow', 'rose'];
-export const RING_COUNT = 29;
-// Shape:carat combinations that were never made.
-export const MISSING = new Set(['elongated_radiant:6']);
+export const RING_COUNT = 40;
+// Shape:carat combinations that were never made (none: all 40 exist).
+export const MISSING = new Set();
 export const available = (shape, carat) => !MISSING.has(`${shape}:${carat}`);
 export const label = value => value.replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
 export const MATERIAL_TARGETS = { headGold: 'Metal 01', ringGold: 'Metal 02' };

@@ -1,3 +1,5 @@
+// SUPERSEDED (2026-11-17): the live Noya pages (noya/, noya-75xcgrro3v/) now load their 40 rings from the new iJewel configurator aCzuAfLXRiipgfWjDBUBRQ
+// (see tools/cfg-migrate/repoint.mjs). Re-running this builder would point noya/ back at the old "Noya Ring" folder files (and drop Princess/Marquise).
 // Builds noya/project.json from aaron/project.json (same scene, metals, diamond preset, try-on)
 // plus tools/snapshots/noya-public.json (tools/build-noya-local.mjs).
 import fs from 'node:fs';

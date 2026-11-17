@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Finish Noya once tools/snapshots/noya-ids.json (iJewel file ids from folder Ob9B3sx0RuSlIO7rEJ8c9A) exists.
+# SUPERSEDED (2026-11-17): Noya now loads all 40 rings from the new iJewel configurator aCzuAfLXRiipgfWjDBUBRQ (tools/cfg-migrate/repoint.mjs). Do NOT run this script: it would revert noya/ to the old "Noya Ring" files.
+exit 0
 # Files must be public in iJewel (meta.pub true), like Aaron's.
 set -euo pipefail
 cd "$(dirname "$0")/.."

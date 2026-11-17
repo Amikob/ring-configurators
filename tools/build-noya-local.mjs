@@ -1,3 +1,5 @@
+// SUPERSEDED (2026-11-17): the live Noya pages (noya/, noya-75xcgrro3v/) now load their 40 rings from the new iJewel configurator aCzuAfLXRiipgfWjDBUBRQ
+// (see tools/cfg-migrate/repoint.mjs). Re-running this builder would point noya/ back at the old "Noya Ring" folder files (and drop Princess/Marquise).
 // Noya (Clover), Nov 2026: plain public GLB files in iJewel Drive folder "Noya Ring"
 // (Ob9B3sx0RuSlIO7rEJ8c9A), auto-converted from 3dm, named like "2_ct_round.glb".
 // Same pattern as Aaron v2 (tools/build-aaron-local.mjs): the page loads noya/saved-config.json.

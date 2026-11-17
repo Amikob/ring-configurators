@@ -1,4 +1,4 @@
-import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=noya-1';
+import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing } from './catalog.js?v=noya-2';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=noya-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=noya-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -11,7 +11,7 @@ import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnima
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'JKIOiv7VQVa4Prqa7LE8fQ';
+const PROJECT_ID = 'aCzuAfLXRiipgfWjDBUBRQ';
 // Redone (v2) files, one-tone: the single metal layer of each ring (read from the GLBs).
 const LAYER_ROLES = {}; // Noya files use a single metal layer "Metal 01" and one gem layer "Gem 01".
 const DEFAULT_LAYERS = {"ringGold": "Metal 01", "headGold": "Metal 01"};
@@ -404,10 +404,10 @@ function preselectRing(project) {
 async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
-    const response = await fetch('./project.json?v=2', {cache:'no-store'});
+    const response = await fetch('./project.json?v=noya2', {cache:'no-store'});
     if (!response.ok) throw new Error('Noya scene could not be loaded.');
     const baseline = await response.json();
-    const savedResponse = await fetch('./saved-config.json?v=noya1', {cache:'no-store'})   /* local config: rings in iJewel Drive folder "Noya Ring" Ob9B3sx0RuSlIO7rEJ8c9A (tools/build-noya-local.mjs) */;
+    const savedResponse = await fetch('./saved-config.json?v=noya2', {cache:'no-store'})   /* local config: rings in the new iJewel configurator aCzuAfLXRiipgfWjDBUBRQ (tools/cfg-migrate/repoint.mjs) */;
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=noya-1');
     const project = applySavedScene(baseline, await savedResponse.json());
