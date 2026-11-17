@@ -23,12 +23,14 @@
     .look-slider { display:flex; align-items:center; gap:6px; font-size:13px; }
     .look-slider input { flex:1; min-width:0; }
     .look-slider output { width:38px; text-align:right; font-size:12px; color:#555; font-variant-numeric:tabular-nums; }
+    .advanced summary { cursor:pointer; font-size:13px; font-weight:600; padding:4px 0; }
+    .advanced[open] { display:flex; flex-direction:column; gap:5px; }
     .look-reset { align-self:flex-end; font-size:12px; border:1px solid #c9d1cd; border-radius:6px; background:#f4f6f5; padding:4px 10px; cursor:pointer; }
     .env-status { font-size:11px; color:#7b7b7b; min-height:14px; }
     .env-current { font-size:12px; color:#244c3e; font-weight:600; }
     @media (max-width: 850px) {
       .panel.look-open > fieldset, .panel.look-open > .metal-fields { display:none; }
-      .env-panel { padding:8px; gap:5px; border-radius:8px; }
+      .env-panel { padding:8px; gap:5px; border-radius:8px; max-height:46dvh; overflow-y:auto; }
       .env-row select, .env-step { height:32px; } .env-step { width:32px; }
       .env-head .env-close { width:28px; height:28px; }
     }
@@ -76,16 +78,28 @@
         <div class="env-row" data-kind="diamond"><span class="env-kind">Diamond</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous diamond HDRI">&#8249;</button><select aria-label="Diamond HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next diamond HDRI">&#8250;</button></div>
         <div class="env-status" id="env-status" aria-live="polite"></div>
         <div class="env-row look-row"><span class="env-kind">Tone</span><select id="tm-select" aria-label="Tone mapping">
-          <option value="neutral">Neutral (Khronos PBR)</option><option value="aces">ACES Filmic</option><option value="agx">AgX</option><option value="reinhard">Reinhard</option><option value="linear">Linear (clip)</option></select></div>
+          <option value="neutral">Neutral (Khronos PBR)</option><option value="aces">ACES Filmic</option><option value="agx">AgX</option><option value="reinhard">Reinhard</option><option value="linear">Linear (clip)</option><option value="linburn">Linear + Burn (FStorm-style)</option></select></div>
         <label class="look-slider"><span class="env-kind">Exposure</span><input id="exposure" type="range" min="0.4" max="2.5" step="0.05"><output id="exposure-val"></output></label>
         <label class="look-slider"><span class="env-kind">Bloom</span><input id="bloom" type="range" min="0" max="0.6" step="0.01"><output id="bloom-val"></output></label>
         <label class="look-slider"><span class="env-kind">Floor</span><input id="floor" type="range" min="0" max="1.5" step="0.05"><output id="floor-val"></output></label>
         <button type="button" id="look-reset" class="look-reset">Reset look</button>
+        <details id="advanced" class="advanced"><summary>Advanced colour</summary>
+          <label class="look-slider"><span class="env-kind">Gamma</span><input id="g-gamma" type="range" min="0.6" max="1.8" step="0.01"><output id="g-gamma-val"></output></label>
+          <label class="look-slider"><span class="env-kind">Contrast</span><input id="g-contrast" type="range" min="0.6" max="1.6" step="0.01"><output id="g-contrast-val"></output></label>
+          <label class="look-slider"><span class="env-kind">Saturation</span><input id="g-saturation" type="range" min="0" max="2" step="0.01"><output id="g-saturation-val"></output></label>
+          <label class="look-slider"><span class="env-kind">Vibrance</span><input id="g-vibrance" type="range" min="-1" max="1" step="0.01"><output id="g-vibrance-val"></output></label>
+          <label class="look-slider"><span class="env-kind">Burn</span><input id="g-burn" type="range" min="0" max="1" step="0.01"><output id="g-burn-val"></output></label>
+          <label class="look-slider"><span class="env-kind">Temp</span><input id="g-temperature" type="range" min="-1" max="1" step="0.01"><output id="g-temperature-val"></output></label>
+          <label class="look-slider"><span class="env-kind">Tint</span><input id="g-tint" type="range" min="-1" max="1" step="0.01"><output id="g-tint-val"></output></label>
+          <label class="look-slider"><span class="env-kind">Highlights</span><input id="g-highlights" type="range" min="-1" max="1" step="0.01"><output id="g-highlights-val"></output></label>
+          <label class="look-slider"><span class="env-kind">Shadows</span><input id="g-shadows" type="range" min="-1" max="1" step="0.01"><output id="g-shadows-val"></output></label>
+          <button type="button" id="grade-reset" class="look-reset">Reset advanced</button>
+        </details>
       </section>
       <p id="error" class="error" role="alert" hidden></p>
       <div id="tuning"></div>
     </aside>
   </div>
-  <script type="module" src="./app.js?v=sh6"></script>
+  <script type="module" src="./app.js?v=sh8"></script>
 </body>
 </html>

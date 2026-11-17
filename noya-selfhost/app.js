@@ -1,4 +1,4 @@
-import { RingViewer } from './viewer.js?v=sh6';
+import { RingViewer, GRADE_DEFAULTS } from './viewer.js?v=sh8';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -22,7 +22,9 @@ const have = new Set(manifest.map(m => `${m.shape}:${m.carat}`));
 // a lower pixel ratio cap and fewer accumulation frames; everyone drops to fewer bounces while dragging.
 const mobile = params.has('mobile') ? params.get('mobile') !== '0' : (matchMedia('(pointer:coarse)').matches || Math.min(screen.width, screen.height) < 600);
 const LOOK_DEFAULTS = { toneMapping: 'neutral', exposure: 1.0, bloom: 0.12, floor: 1.0 };
+const GRADE_PARAMS = { gamma: 'gamma', contrast: 'contrast', saturation: 'sat', vibrance: 'vib', burn: 'burn', temperature: 'temp', tint: 'tint', highlights: 'hl', shadows: 'sh' };
 const look = {
+  ...Object.fromEntries(Object.entries(GRADE_PARAMS).map(([k, p]) => [k, params.has(p) ? Number(params.get(p)) : GRADE_DEFAULTS[k]])),
   toneMapping: params.get('tm') || LOOK_DEFAULTS.toneMapping,
   exposure: params.has('exposure') ? Number(params.get('exposure')) : LOOK_DEFAULTS.exposure,
   bloom: params.has('bloom') ? Number(params.get('bloom')) : LOOK_DEFAULTS.bloom,
@@ -32,7 +34,9 @@ const viewer = new RingViewer($('viewer'), {
   pixelRatio: Math.min((window.devicePixelRatio || 1), mobile ? 1.5 : 2) * (quality / 1.5),
   maxFrames: Number(params.get('frames')) || (mobile ? 32 : 48),
   bounces: Number(params.get('bounces')) || (mobile ? 5 : 7),
-  motionBounces: Number(params.get('mbounces')) || (mobile ? 3 : 4),
+  // Same bounce count while dragging as at rest: fewer bounces changed the stone's reflection pattern,
+  // so it visibly jumped when the drag ended. (?mbounces= still allows a test override.)
+  motionBounces: Number(params.get('mbounces')) || Number(params.get('bounces')) || (mobile ? 5 : 7),
   cubeSize: mobile ? 128 : 256,
   metalInStone: params.has('metalstone') ? Number(params.get('metalstone')) : 0.35,
   shadow: { samples: mobile ? 96 : 128 },
@@ -103,23 +107,27 @@ if (params.has('tune')) {
 }
 
 // Look controls (tone mapping / exposure / bloom / floor) live in the HDRI panel; kept in the URL (?tm=&exposure=&bloom=&floor=).
-const lookInputs = { exposure: $('exposure'), bloom: $('bloom'), floor: $('floor') };
+const lookInputs = { exposure: $('exposure'), bloom: $('bloom'), floor: $('floor'), ...Object.fromEntries(Object.keys(GRADE_PARAMS).map(k => [k, $(`g-${k}`)])) };
+const valId = k => (k in GRADE_PARAMS ? `g-${k}-val` : `${k}-val`);
 function renderLook() {
   $('tm-select').value = look.toneMapping;
-  for (const [k, el] of Object.entries(lookInputs)) { el.value = look[k]; $(`${k}-val`).textContent = Number(look[k]).toFixed(2); }
+  for (const [k, el] of Object.entries(lookInputs)) { el.value = look[k]; $(valId(k)).textContent = Number(look[k]).toFixed(2); }
+  if (Object.keys(GRADE_PARAMS).some(k => look[k] !== GRADE_DEFAULTS[k])) $('advanced').open = true;
 }
 function setLook(patch) {
   Object.assign(look, patch);
   viewer.setLook(look);
   renderLook();
   const u = new URL(location.href);
-  const keys = { toneMapping: 'tm', exposure: 'exposure', bloom: 'bloom', floor: 'floor' };
-  for (const [k, p] of Object.entries(keys)) { if (look[k] === LOOK_DEFAULTS[k]) u.searchParams.delete(p); else u.searchParams.set(p, look[k]); }
+  const keys = { toneMapping: 'tm', exposure: 'exposure', bloom: 'bloom', floor: 'floor', ...GRADE_PARAMS };
+  const defs = { ...LOOK_DEFAULTS, ...GRADE_DEFAULTS };
+  for (const [k, p] of Object.entries(keys)) { if (look[k] === defs[k]) u.searchParams.delete(p); else u.searchParams.set(p, look[k]); }
   history.replaceState(null, '', u);
 }
-$('tm-select').addEventListener('change', e => setLook({ toneMapping: e.target.value }));
+$('tm-select').addEventListener('change', e => setLook({ toneMapping: e.target.value, ...(e.target.value === 'linburn' && !look.burn ? { burn: 0.5 } : {}) }));
+$('grade-reset').addEventListener('click', () => setLook({ ...GRADE_DEFAULTS }));
 for (const [k, el] of Object.entries(lookInputs)) el.addEventListener('input', () => setLook({ [k]: Number(el.value) }));
-$('look-reset').addEventListener('click', () => setLook({ ...LOOK_DEFAULTS }));
+$('look-reset').addEventListener('click', () => setLook({ ...LOOK_DEFAULTS, ...GRADE_DEFAULTS }));
 viewer.setLook(look);
 renderLook();
 

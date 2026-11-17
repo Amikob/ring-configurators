@@ -20,13 +20,15 @@ const HALTON = Array.from({ length: 64 }, (_, i) => {
   return [h(2, i) - 0.5, h(3, i) - 0.5];
 });
 
+export const GRADE_DEFAULTS = { gamma: 1, contrast: 1, saturation: 1, vibrance: 0, burn: 0, temperature: 0, tint: 0, highlights: 0, shadows: 0 };
+
 const fsVert = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
 
 export class RingViewer extends EventTarget {
   constructor(container, opts = {}) {
     super();
     this.container = container;
-    this.opts = { maxFrames: 48, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), bounces: 7, motionBounces: 4, ...opts };
+    this.opts = { maxFrames: 48, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), bounces: 7, motionBounces: 7, ...opts };
     this.stats = { frames: 0 };
     const r = this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'high-performance', preserveDrawingBuffer: !!opts.preserveDrawingBuffer });
     r.setPixelRatio(this.opts.pixelRatio);
@@ -112,7 +114,7 @@ export class RingViewer extends EventTarget {
         void main(){ gl_FragColor = mix(texture2D(tPrev, vUv), texture2D(tFrame, vUv), weight); }` });
 
     // Bloom (glow around highlights): soft-threshold bright pass, then a down/up mip chain (dual filter).
-    this.look = { toneMapping: 'neutral', exposure: 1.0, bloom: 0.12, bloomThreshold: 1.6, floor: 1.0, ...(this.opts.look || {}) };
+    this.look = { toneMapping: 'neutral', exposure: 1.0, bloom: 0.12, bloomThreshold: 1.6, floor: 1.0, ...GRADE_DEFAULTS, ...(this.opts.look || {}) };
     this.bloomLevels = 5;
     const brt = () => new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, depthBuffer: false });
     this.rtDown = Array.from({ length: this.bloomLevels }, brt);
@@ -150,13 +152,16 @@ export class RingViewer extends EventTarget {
       defines: { TM_OP: 4 },
       uniforms: { tAcc: { value: null }, tBloom: { value: this.blackTex }, bloomStrength: { value: 0 }, toneMappingExposure: { value: 1.0 },
         bg: { value: new THREE.Color(1, 1, 1) }, floorNear: { value: new THREE.Color(0.995, 0.995, 0.995) }, floorFar: { value: new THREE.Color(0.94, 0.94, 0.937) },
-        floorStrength: { value: 1 }, floorScale: { value: 25 }, invProjView: { value: new THREE.Matrix4() }, camPos: { value: new THREE.Vector3() } },
+        floorStrength: { value: 1 }, floorScale: { value: 25 },
+        gGamma: { value: 1 }, gContrast: { value: 1 }, gSaturation: { value: 1 }, gVibrance: { value: 0 }, gBurn: { value: 0 },
+        gWB: { value: new THREE.Vector3(1, 1, 1) }, gHighlights: { value: 0 }, gShadows: { value: 0 }, invProjView: { value: new THREE.Matrix4() }, camPos: { value: new THREE.Vector3() } },
       fragmentShader: `uniform sampler2D tAcc, tBloom; uniform float bloomStrength; uniform vec3 bg, floorNear, floorFar, camPos;
         uniform float floorStrength, floorScale; uniform mat4 invProjView; varying vec2 vUv;
+        uniform float gGamma, gContrast, gSaturation, gVibrance, gBurn, gHighlights, gShadows; uniform vec3 gWB;
         ${THREE.ShaderChunk.tonemapping_pars_fragment}
         vec3 tm(vec3 c) {
-          #if TM_OP == 0
-          return LinearToneMapping(c);
+          #if TM_OP == 0 || TM_OP == 5
+          return LinearToneMapping(c);   // 5 = Linear + Burn (burn is applied before, see main)
           #elif TM_OP == 1
           return ReinhardToneMapping(c);
           #elif TM_OP == 2
@@ -169,6 +174,37 @@ export class RingViewer extends EventTarget {
         }
         vec3 toLin(vec3 c){ return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(0.04045, c)); }
         vec3 toSRGB(vec3 c){ return mix(c * 12.92, 1.055 * pow(c, vec3(1.0/2.4)) - 0.055, step(0.0031308, c)); }
+        // Burn (highlight compression like FStorm / Corona): on the brightest channel so hue is kept.
+        // 0 = none; 1 = strong. Shadows / mids untouched; above a knee (lower for more burn) values roll off
+        // smoothly toward white instead of clipping.
+        vec3 burn(vec3 c, float b) {
+          float m = max(c.r, max(c.g, c.b));
+          if (b <= 0.0 || m <= 0.0) return c;
+          float t = 1.0 - 0.75 * clamp(b, 0.0, 1.0);
+          if (m <= t) return c;
+          float r = 1.0 - t;
+          return c * ((t + r * (1.0 - exp(-(m - t) / r))) / m);
+        }
+        float luma(vec3 c){ return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
+        // Colour grade after tone mapping (display-referred, linear light in / out). Neutral values = identity.
+        vec3 grade(vec3 c) {
+          float l = luma(c);
+          // highlights / shadows: push luminance up or down in the top / bottom range only
+          float hl = gHighlights * smoothstep(0.35, 1.0, l) * 0.35, sw = 1.0 - smoothstep(0.0, 0.45, l);
+          c *= max(0.0, l + hl) / max(l, 1e-5);
+          // shadows: + lifts dark areas with neutral light (no saturation boost), - crushes them
+          c = gShadows >= 0.0 ? c + vec3(gShadows * sw * 0.08) : c * max(0.0, 1.0 + gShadows * 0.7 * sw);
+          l = luma(c);
+          c = max(vec3(0.0), mix(vec3(l), c, gSaturation));
+          float mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b));
+          float sat = mx > 1e-5 ? (mx - mn) / mx : 0.0;
+          c = max(vec3(0.0), mix(vec3(luma(c)), c, 1.0 + gVibrance * (1.0 - sat)));
+          // contrast (around mid grey) and gamma act on the sRGB-encoded value, like an image editor
+          vec3 e = toSRGB(clamp(c, 0.0, 1.0));
+          e = clamp((e - 0.5) * gContrast + 0.5, 0.0, 1.0);
+          e = pow(e, vec3(1.0 / gGamma));
+          return toLin(e);
+        }
         void main(){
           // Floor plane y = 0 seen through this pixel: light grey near the ring fading to white far away / at the horizon.
           vec4 pf = invProjView * vec4(vUv * 2.0 - 1.0, 1.0, 1.0);
@@ -181,7 +217,12 @@ export class RingViewer extends EventTarget {
             back = mix(bg, f, floorStrength * smoothstep(0.0, 0.08, -rd.y));
           }
           vec4 a = texture2D(tAcc, vUv);
-          vec3 c = a.a > 1e-4 ? tm(a.rgb / a.a) : vec3(0.0);
+          vec3 c = vec3(0.0);
+          if (a.a > 1e-4) {
+            vec3 h = a.rgb / a.a * gWB;                 // white balance in scene light
+            h = burn(h * toneMappingExposure, gBurn) / toneMappingExposure;
+            c = grade(tm(h));
+          }
           c = c * a.a + toLin(back) * (1.0 - a.a);
           vec3 b = texture2D(tBloom, vUv).rgb * bloomStrength * toneMappingExposure;
           c += 1.0 - exp(-b);
@@ -192,11 +233,17 @@ export class RingViewer extends EventTarget {
 
   setLook(patch) {
     Object.assign(this.look, patch);
-    const ops = { linear: 0, reinhard: 1, aces: 2, agx: 3, neutral: 4 };
+    const ops = { linear: 0, reinhard: 1, aces: 2, agx: 3, neutral: 4, linburn: 5 };
     const op = ops[this.look.toneMapping] ?? 4;
     if (this.outMat.defines.TM_OP !== op) { this.outMat.defines.TM_OP = op; this.outMat.needsUpdate = true; }
     this.outMat.uniforms.toneMappingExposure.value = this.look.exposure;
     this.outMat.uniforms.floorStrength.value = this.look.floor;
+    const u = this.outMat.uniforms, L = this.look;
+    u.gGamma.value = L.gamma; u.gContrast.value = L.contrast; u.gSaturation.value = L.saturation; u.gVibrance.value = L.vibrance;
+    u.gBurn.value = L.burn; u.gHighlights.value = L.highlights; u.gShadows.value = L.shadows;
+    // temperature (-1 cool .. +1 warm) and tint (-1 green .. +1 magenta) as RGB gains, luminance kept
+    const t = L.temperature, g = L.tint, wb = new THREE.Vector3(1 + 0.18 * t, 1 - 0.12 * g, 1 - 0.18 * t);
+    wb.multiplyScalar(1 / (0.2126 * wb.x + 0.7152 * wb.y + 0.0722 * wb.z)); u.gWB.value.copy(wb);
     this.present();
   }
 
@@ -248,7 +295,7 @@ export class RingViewer extends EventTarget {
     const half = Math.max(ringR * 3.2, 30);
     this.bakeHalf = half;
     for (const m of [this.bakeCatcher, this.ground]) { m.scale.set(half * 2, 1, half * 2); m.position.set(0, 0, 0); }
-    this.ground.position.y = 0.002;
+    this.ground.position.y = 0.0005;
     Object.assign(this.bakeCam, { left: -half, right: half, top: half, bottom: -half });
     this.bakeCam.position.set(0, 100, 0); this.bakeCam.up.set(0, 0, -1); this.bakeCam.lookAt(0, 0, 0);
     this.bakeCam.updateProjectionMatrix();
@@ -441,12 +488,17 @@ export class RingViewer extends EventTarget {
     h.matrixAutoUpdate = false;
     h.matrix.copy(pose === 'flat' ? this.restMatrix : new THREE.Matrix4());
     h.position.set(0, 0, 0);
-    h.updateMatrixWorld(true);
-    const box = new THREE.Box3().setFromObject(h);
-    const c = box.getCenter(new THREE.Vector3());
-    this.ringRoot.position.set(-c.x, -box.min.y, -c.z);
+    // Measure with the ring root at the origin: the previous ring / pose offset must not leak into the new one
+    // (it did before: the old offset was added to the new bounds, so each ring floated or sank by the last one's offset).
+    this.ringRoot.position.set(0, 0, 0);
     this.ringRoot.updateMatrixWorld(true);
-    this.bounds = new THREE.Box3().setFromObject(this.ringRoot);
+    // Exact bounds from every vertex after the pose rotation. (Box3.setFromObject without `precise` rotates
+    // each mesh's local bounding box, whose corners reach below the real ring: the ring floated ~3-5 mm.)
+    const box = exactBounds(h);
+    const c = box.getCenter(new THREE.Vector3());
+    this.ringRoot.position.set(-c.x, -box.min.y, -c.z);   // lowest real vertex sits exactly on the floor (y = 0)
+    this.ringRoot.updateMatrixWorld(true);
+    this.bounds = exactBounds(this.ringRoot);
     if (this.gemMesh) this.diamond.syncObject(this.gemMesh);
     this.bakeShadow();
     this.cubeDirty = true;
@@ -552,6 +604,17 @@ export class RingViewer extends EventTarget {
     };
     tick();
   }
+}
+
+function exactBounds(root) {
+  root.updateMatrixWorld(true);
+  const box = new THREE.Box3(), v = new THREE.Vector3();
+  root.traverse(o => {
+    if (!o.isMesh) return;
+    const a = o.geometry.attributes.position;
+    for (let i = 0; i < a.count; i++) box.expandByPoint(v.fromBufferAttribute(a, i).applyMatrix4(o.matrixWorld));
+  });
+  return box;
 }
 
 function deinterleave(attr) {
