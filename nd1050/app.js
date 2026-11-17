@@ -11,7 +11,7 @@ import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnima
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'B5YJQLheQaGZeUGi1fsecQ';
+const PROJECT_ID = 'BhhCVwYxQ5-UWABxFP0hPQ';
 // Redone (v2) files: head/shank metal layers (checked from the GLBs by geometry).
 const LAYER_ROLES = {"4Ct Old Cut Cushion": {"ringGold": "Metal 03"}, "4Ct Pear": {"ringGold": "Metal 03"}};
 const DEFAULT_LAYERS = {"headGold": "Metal 01", "ringGold": "Metal 02"};
