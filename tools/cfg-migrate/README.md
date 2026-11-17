@@ -20,7 +20,7 @@ node tools/cfg-migrate/verify.mjs http://127.0.0.1:8800 <configuratorId> /tmp/v 
 
 # 3. before declaring old ids safe to delete, grep the repo (incl. configurators.json thumbnails):
 git grep -n -e <oldFolderId> -e <oldFileId> ; node tests/<slug>.check.mjs
-# 4. commit, push, run verify.mjs against https://amikob.ijewel3d.../github.io base once Pages is live.
+# 4. commit, push, then run verify.mjs with base https://amikob.github.io/ring-configurators once Pages is live.
 ```
 Note: tools/snapshots/<slug>-public.json and tools/build-<slug>-project.mjs are old build inputs; they still name the old
 files (builder is marked SUPERSEDED for Lacey: do not re-run it).
