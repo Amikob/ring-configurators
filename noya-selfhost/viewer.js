@@ -536,7 +536,11 @@ export class RingViewer extends EventTarget {
       requestAnimationFrame(tick);
       const moved = this.controls.update();
       const now = performance.now();
-      if (moved) { this.lastMove = now; if (!this.moving) { this.moving = true; } this.reset(); }
+      // Ignore the last, invisible part of the damping tail (it can last seconds on slow GPUs).
+      const cp = this.camera.position, lp = this._lastCam || (this._lastCam = cp.clone());
+      const visible = moved && cp.distanceTo(lp) > cp.distanceTo(this.controls.target) * 4e-4;
+      lp.copy(cp);
+      if (visible) { this.lastMove = now; if (!this.moving) { this.moving = true; } this.reset(); }
       else if (this.moving && now - this.lastMove > 140) { this.moving = false; this.reset(); }
       if (!this.holder || !this.envHDR) return;
       if (this.bake && this.bake.done < this.bake.total) this.bakeStep(this.opts.bakePerFrame || 32);
