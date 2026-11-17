@@ -1,4 +1,4 @@
-import { RingViewer } from './viewer.js?v=sh5';
+import { RingViewer } from './viewer.js?v=sh6';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -169,11 +169,19 @@ for (const kind of Object.keys(envKinds)) {
     setEnv(kind, list[(i + Number(b.dataset.dir) + list.length) % list.length].id);
   }));
 }
-$('env-toggle').addEventListener('click', () => {
-  const open = $('env-panel').hidden;
+// The lighting / tone panel is docked in the options column (on phones it temporarily replaces the
+// shape / carat / gold options), so the ring stays fully visible while adjusting. If the 3D view changes
+// size because of it, the ring is re-framed to fit.
+function setEnvPanel(open) {
+  const before = $('viewer').clientHeight;
   $('env-panel').hidden = !open; $('env-toggle').setAttribute('aria-expanded', String(open));
-});
-if (params.has('hdri')) { $('env-panel').hidden = false; $('env-toggle').setAttribute('aria-expanded', 'true'); }
+  document.querySelector('.panel').classList.toggle('look-open', open);
+  if (open) $('env-panel').scrollIntoView({ block: 'nearest' });
+  requestAnimationFrame(() => requestAnimationFrame(() => { if (Math.abs($('viewer').clientHeight - before) > 8 && viewer.bounds) { viewer.resize(); viewer.frontView(viewParams()); } }));
+}
+$('env-toggle').addEventListener('click', () => setEnvPanel($('env-panel').hidden));
+$('env-close').addEventListener('click', () => setEnvPanel(false));
+if (params.has('hdri')) setEnvPanel(true);
 // Old pilot params still work: ?env=<file> (diamond) and ?menv=<file> (metal) load a raw file from env/.
 if (params.get('env')) await viewer.loadEnvironment(`./env/${params.get('env')}.hdr`, { saturation: 0, exposure: Number(params.get('exp')) || 1.6, target: 'gem' });
 else await setEnv('diamond', params.get('diamondenv'), { sync: false });
