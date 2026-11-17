@@ -1,3 +1,5 @@
+// SUPERSEDED (2026-11-17): the live Lacey pages now load their 40 rings from the new iJewel configurator EiSEtivuSsmgccThjvV6sw
+// (see tools/cfg-migrate/repoint.mjs). Re-running this builder would point lacey/project.json back at the old "Lacey Ring" folder files.
 // Builds lacey/project.json from the ND336 baseline (scene, metals, try-on defaults)
 // plus the live Lacey iJewel configurator saved at tools/snapshots/lacey-public.json.
 //
