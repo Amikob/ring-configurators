@@ -1,4 +1,5 @@
-import { RingViewer, GRADE_DEFAULTS, GOLDS } from './viewer.js?v=e2';
+import { RingViewer, GOLDS } from './viewer.js?v=sh11';
+import { createStudio } from './studio.js?v=sh11';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -32,16 +33,11 @@ const mobile = params.has('mobile') ? params.get('mobile') !== '0' : (matchMedia
 // Defaults copied from the iJewel Noya scene (Tonemap: ACESFilmic, exposure 1; Bloom intensity 0.2).
 // Test override: ?mcolor=<gold>:<r>,<g>,<b> (linear) to try a metal colour without editing the code.
 if (params.has('mcolor')) { const [g, v] = params.get('mcolor').split(':'); if (GOLDS[g]) GOLDS[g] = v.split(',').map(Number); }
-// Erica: tuned against the live Erica page (metal mean-Lab dE00 5.3 -> 1.4): the Erica GLBs are larger and more
-// reflective than Noya's, so iJewel's bloom 0.2 / threshold 2 haloed every metal edge and exposure 1 washed the gold.
-const LOOK_DEFAULTS = { toneMapping: 'aces', exposure: 0.7, bloom: 0.05, floor: 1.0 };
-const GRADE_PARAMS = { gamma: 'gamma', contrast: 'contrast', saturation: 'sat', vibrance: 'vib', burn: 'burn', temperature: 'temp', tint: 'tint', highlights: 'hl', shadows: 'sh' };
-const look = {
-  ...Object.fromEntries(Object.entries(GRADE_PARAMS).map(([k, p]) => [k, params.has(p) ? Number(params.get(p)) : GRADE_DEFAULTS[k]])),
-  toneMapping: params.get('tm') || LOOK_DEFAULTS.toneMapping,
-  exposure: params.has('exposure') ? Number(params.get('exposure')) : LOOK_DEFAULTS.exposure,
-  bloom: params.has('bloom') ? Number(params.get('bloom')) : LOOK_DEFAULTS.bloom,
-  floor: params.has('floor') ? Number(params.get('floor')) : LOOK_DEFAULTS.floor,
+// Erica look: the iJewel saved config (ACES, exposure 1, contrast 1.1, env_metal_002 + env-gem-001 at rotation 0,
+// ground-shadow-backleft) with our engine fixes (see README "Look"). Everything is editable in the Studio panel.
+const STUDIO_PAGE_DEFAULTS = {
+  env: { metalRotation: 0, diamondRotation: 0, metalIntensity: 0.7 },   // Erica: same model frame and env rotation 0 as on iJewel; larger, more reflective GLBs
+  render: { frames: mobile ? 32 : 48 },
 };
 const viewer = new RingViewer($('viewer'), {
   pixelRatio: Math.min((window.devicePixelRatio || 1), mobile ? 1.5 : 2) * (quality / 1.5),
@@ -51,14 +47,11 @@ const viewer = new RingViewer($('viewer'), {
   // so it visibly jumped when the drag ended. (?mbounces= still allows a test override.)
   motionBounces: Number(params.get('mbounces')) || Number(params.get('bounces')) || 5,
   cubeSize: mobile ? 128 : 256,
-  metalInStone: params.has('metalstone') ? Number(params.get('metalstone')) : 0.35,
   // iJewel ground-shadow-backleft light, in the Erica model frame (we load the same GLB frame as iJewel): az 45, el 34
   shadow: { samples: mobile ? 96 : 128, keyAzimuth: 45, keyElevation: 34, ...(params.has('keyaz') ? { keyAzimuth: Number(params.get('keyaz')) } : {}) },
   bakePerFrame: mobile ? 16 : 32,
   preserveDrawingBuffer: params.has('capture'),
-  look,
   metalRotationRef: 0,   // shadow direction below is tuned for this metal HDRI rotation
-  gem: Object.fromEntries([['ior', 'ior'], ['dispersion', 'disp']].filter(([, q]) => params.has(q)).map(([k, q]) => [k, Number(params.get(q))])),
 });
 window.noyaViewer = window.ericaViewer = viewer;
 viewer.pose = state.pose;
@@ -124,131 +117,23 @@ function viewParams() {
 $('pose-toggle').addEventListener('click', () => { state.pose = state.pose === 'flat' ? 'upright' : 'flat'; viewer.applyPose(state.pose); viewer.ijewelView(viewParams()); render(); });
 $('center-view').addEventListener('click', () => viewer.ijewelView(viewParams()));
 
-// Optional live tuning panel for diamond look: add ?tune=1
-if (params.has('tune')) {
-  const t = $('tuning'); t.classList.add('on');
-  const slider = (name, min, max, step, get, set) => {
-    const l = document.createElement('label'); l.innerHTML = `<span>${name}</span>`; const i = document.createElement('input');
-    Object.assign(i, { type: 'range', min, max, step, value: get() }); i.oninput = () => set(Number(i.value)); l.appendChild(i); t.appendChild(l);
-  };
-  slider('Dispersion', 0, 0.15, 0.005, () => viewer.gemTuning.dispersion, v => viewer.setGem({ dispersion: v }));
-  slider('Env intensity', 0.3, 3, 0.05, () => viewer.gemTuning.envIntensity, v => viewer.setGem({ envIntensity: v }));
-  slider('Env contrast', 0.6, 2.5, 0.05, () => viewer.gemTuning.envContrast, v => viewer.setGem({ envContrast: v }));
-  slider('Env rotation', 0, 6.283, 0.01, () => viewer.envRotation || 0, v => viewer.setEnvRotation(v));
-  slider('Metal roughness', 0, 0.4, 0.01, () => viewer.metalMaterial.roughness, v => { viewer.metalMaterial.roughness = v; viewer.reset(); });
-}
-
-// Look controls (tone mapping / exposure / bloom / floor) live in the HDRI panel; kept in the URL (?tm=&exposure=&bloom=&floor=).
-const lookInputs = { exposure: $('exposure'), bloom: $('bloom'), floor: $('floor'), ...Object.fromEntries(Object.keys(GRADE_PARAMS).map(k => [k, $(`g-${k}`)])) };
-const valId = k => (k in GRADE_PARAMS ? `g-${k}-val` : `${k}-val`);
-function renderLook() {
-  $('tm-select').value = look.toneMapping;
-  for (const [k, el] of Object.entries(lookInputs)) { el.value = look[k]; $(valId(k)).textContent = Number(look[k]).toFixed(2); }
-  if (Object.keys(GRADE_PARAMS).some(k => look[k] !== GRADE_DEFAULTS[k])) $('advanced').open = true;
-}
-function setLook(patch) {
-  Object.assign(look, patch);
-  viewer.setLook(look);
-  renderLook();
-  const u = new URL(location.href);
-  const keys = { toneMapping: 'tm', exposure: 'exposure', bloom: 'bloom', floor: 'floor', ...GRADE_PARAMS };
-  const defs = { ...LOOK_DEFAULTS, ...GRADE_DEFAULTS };
-  for (const [k, p] of Object.entries(keys)) { if (look[k] === defs[k]) u.searchParams.delete(p); else u.searchParams.set(p, look[k]); }
-  history.replaceState(null, '', u);
-}
-$('tm-select').addEventListener('change', e => setLook({ toneMapping: e.target.value, ...(e.target.value === 'linburn' && !look.burn ? { burn: 0.5 } : {}) }));
-$('grade-reset').addEventListener('click', () => setLook({ ...GRADE_DEFAULTS }));
-for (const [k, el] of Object.entries(lookInputs)) el.addEventListener('input', () => setLook({ [k]: Number(el.value) }));
-$('look-reset').addEventListener('click', () => setLook({ ...LOOK_DEFAULTS, ...GRADE_DEFAULTS }));
-
-// HDRI rotation (degrees): metal and diamond separately, or locked together. ?metalrot= / ?diamondrot= .
-// Defaults turn our maps to face the camera the way iJewel's do (their camera looks from -Z, ours from +Z).
-// Erica loads the very GLB frame iJewel uses and iJewel keeps both env maps at rotation 0, so 0 / 0 reproduces
-// its lighting direction relative to the ring (Noya's pilot needed 120 because its ring is turned 180 deg).
-const ROT_DEFAULTS = { metal: 0, diamond: 0 };   // Erica: same model frame and env rotation 0 as on iJewel
-const rot = { metal: params.has('metalrot') ? Number(params.get('metalrot')) : ROT_DEFAULTS.metal, diamond: params.has('diamondrot') ? Number(params.get('diamondrot')) : ROT_DEFAULTS.diamond };
-function applyRot(kind, deg, { sync = true } = {}) {
-  rot[kind] = ((Math.round(deg) % 360) + 360) % 360;
-  const rad = THREE_DEG * rot[kind];
-  if (kind === 'metal') viewer.setMetalRotation(rad); else viewer.setDiamondRotation(rad);
-  $(`rot-${kind}`).value = rot[kind]; $(`rot-${kind}-val`).textContent = `${rot[kind]}°`;
-  if (sync) { const u = new URL(location.href); const p = kind === 'metal' ? 'metalrot' : 'diamondrot';
-    if (rot[kind] === ROT_DEFAULTS[kind]) u.searchParams.delete(p); else u.searchParams.set(p, rot[kind]); history.replaceState(null, '', u); }
-}
-const THREE_DEG = Math.PI / 180;
-for (const kind of ['metal', 'diamond']) $(`rot-${kind}`).addEventListener('input', e => {
-  const v = Number(e.target.value), d = v - rot[kind];
-  applyRot(kind, v);
-  if ($('rot-lock').checked) { const other = kind === 'metal' ? 'diamond' : 'metal'; applyRot(other, rot[other] + d); }
-});
-applyRot('metal', rot.metal, { sync: false }); applyRot('diamond', rot.diamond, { sync: false });
-viewer.setLook(look);
-renderLook();
-
 viewer.applyPose(state.pose);
 render();
-// Environment maps: separate lists for metal (gold) and diamond lighting, see env/envs.json.
-// ?metalenv=mNN / ?diamondenv=dNN pick one; the on-page HDRI picker keeps those params in sync.
-const envs = await (await fetch('./env/envs.json?v=' + Date.now().toString(36).slice(0, -3))).json();
-const envKinds = { metal: { param: 'metalenv', target: 'metal' }, diamond: { param: 'diamondenv', target: 'gem' } };
-const envState = {};
-const envSeq = { metal: 0, diamond: 0 };
-async function setEnv(kind, id, { sync = true } = {}) {
-  const list = envs[kind];
-  const entry = list.find(e => e.id === id) || list.find(e => e.id === envs.defaults[kind]) || list[0];
-  envState[kind] = entry.id;
-  const seq = ++envSeq[kind];
-  renderEnvUI();
-  $('env-status').textContent = `Loading ${entry.id}...`;
-  try {
-    const opts = kind === 'metal'
-      ? { saturation: params.has('sat') ? Number(params.get('sat')) : (entry.saturation ?? 1), exposure: (Number(params.get('mexp')) || 1) * (entry.exposure ?? 1), lift: entry.lift ?? 0, target: 'metal' }
-      : { saturation: params.has('sat') ? Number(params.get('sat')) : (entry.saturation ?? 0), exposure: (Number(params.get('exp')) || 1) * (entry.exposure ?? 1.6), target: 'gem' };
-    await viewer.loadEnvironment(`./env/${entry.file}`, { ...opts, isCurrent: () => seq === envSeq[kind] });
-    if (seq === envSeq[kind]) $('env-status').textContent = entry.name || '';
-  } catch (e) { console.error(e); $('env-status').textContent = `Could not load ${entry.id}`; }
-  if (sync) {
-    const u = new URL(location.href);
-    if (entry.id === envs.defaults[kind]) u.searchParams.delete(envKinds[kind].param); else u.searchParams.set(envKinds[kind].param, entry.id);
-    history.replaceState(null, '', u);
-  }
-}
-function renderEnvUI() {
-  for (const kind of Object.keys(envKinds)) {
-    const row = document.querySelector(`.env-row[data-kind="${kind}"]`), sel = row.querySelector('select');
-    if (!sel.options.length) for (const e of envs[kind]) sel.add(new Option(e.name ? `${e.id} - ${e.name}` : e.id, e.id));
-    sel.value = envState[kind] || envs.defaults[kind];
-    sel.disabled = envs[kind].length < 2;
-    row.querySelectorAll('.env-step').forEach(b => { b.disabled = envs[kind].length < 2; });
-  }
-  $('env-current').textContent = envState.metal || '';
-}
-for (const kind of Object.keys(envKinds)) {
-  const row = document.querySelector(`.env-row[data-kind="${kind}"]`), sel = row.querySelector('select');
-  sel.addEventListener('change', () => setEnv(kind, sel.value));
-  row.querySelectorAll('.env-step').forEach(b => b.addEventListener('click', () => {
-    const list = envs[kind], i = list.findIndex(e => e.id === envState[kind]);
-    setEnv(kind, list[(i + Number(b.dataset.dir) + list.length) % list.length].id);
-  }));
-}
-// The lighting / tone panel is docked in the options column (on phones it temporarily replaces the
-// shape / carat / gold options), so the ring stays fully visible while adjusting. If the 3D view changes
-// size because of it, the ring is re-framed to fit.
-function setEnvPanel(open) {
+// Studio panel (HDRI, tone mapping, bloom, ground, metal, diamond, presets): the "Studio" tab of the options column
+// (on phones it temporarily replaces the ring options), so the ring stays fully visible while adjusting.
+const studio = await createStudio({ viewer, root: $('studio'), page: 'erica', defaults: STUDIO_PAGE_DEFAULTS, params });
+window.ericaStudio = studio;
+function setStudio(open) {
   const before = $('viewer').clientHeight;
-  $('env-panel').hidden = !open; $('env-toggle').setAttribute('aria-expanded', String(open));
-  document.querySelector('.panel').classList.toggle('look-open', open);
-  if (open) $('env-panel').scrollIntoView({ block: 'nearest' });
+  $('studio').hidden = !open; $('env-toggle').setAttribute('aria-expanded', String(open));
+  $('tab-studio').setAttribute('aria-selected', String(open)); $('tab-ring').setAttribute('aria-selected', String(!open));
+  document.querySelector('.panel').classList.toggle('studio-open', open);
   requestAnimationFrame(() => requestAnimationFrame(() => { if (Math.abs($('viewer').clientHeight - before) > 8 && viewer.bounds) { viewer.resize(); viewer.ijewelView(viewParams()); } }));
 }
-$('env-toggle').addEventListener('click', () => setEnvPanel($('env-panel').hidden));
-$('env-close').addEventListener('click', () => setEnvPanel(false));
-if (params.has('hdri')) setEnvPanel(true);
-// Old pilot params still work: ?env=<file> (diamond) and ?menv=<file> (metal) load a raw file from env/.
-if (params.get('env')) await viewer.loadEnvironment(`./env/${params.get('env')}.hdr`, { saturation: 0, exposure: Number(params.get('exp')) || 1.6, target: 'gem' });
-else await setEnv('diamond', params.get('diamondenv'), { sync: false });
-if (params.get('menv')) await viewer.loadEnvironment(`./env/${params.get('menv')}.hdr`, { saturation: 0, exposure: Number(params.get('mexp')) || 1.3, lift: 0.05, target: 'metal' });
-else await setEnv('metal', params.get('metalenv'), { sync: false });
+$('env-toggle').addEventListener('click', () => setStudio($('studio').hidden));
+$('tab-studio').addEventListener('click', () => setStudio(true));
+$('tab-ring').addEventListener('click', () => setStudio(false));
+if (params.has('hdri') || params.has('studio')) setStudio(true);
 if (params.has('rot')) viewer.setEnvRotation(Number(params.get('rot')));   // old pilot param (radians, both)
 viewer.setGold(state.gold); viewer.setBandGold(state.bandGold);
 await choose({ init: true });

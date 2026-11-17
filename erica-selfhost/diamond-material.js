@@ -1,34 +1,56 @@
 // Self-hosted diamond shader (MIT-licensed building blocks only: three.js + three-mesh-bvh).
-// Per pixel: front-face Fresnel reflection, refraction into the stone, then up to N internal
-// bounces traced against the stone's own BVH. At every internal hit the light that leaves the
-// stone is added with exact dielectric Fresnel, per colour channel (R/G/B use different IORs,
-// so the exit rays split = dispersion / "fire"); the rest reflects (total internal reflection
-// when the angle is past critical). The environment is sampled from the raw equirect HDR (no blur)
-// so softbox reflections stay razor sharp like a jewellery studio photo.
-import { ShaderMaterial, Matrix4, Vector3, Vector2 } from 'three';
+// Shared engine file: identical copy in noya-selfhost/ and erica-selfhost/ (source: tools/selfhost/engine/).
+//
+// Per pixel: front-face Fresnel reflection, refraction into the stone, then up to N internal bounces traced
+// against the stone's own BVH. The environment is the raw full-resolution equirect HDR (linear half float,
+// no PMREM blur, no clamping), so softbox reflections stay razor sharp.
+//
+// Two ways to let light out of the stone:
+//  - "studio" (default, like iJewel / WebGi): each pixel follows ONE path and leaves at the first face it can
+//    refract through, with full weight. Every facet maps to one spot of the studio HDRI, so a facet is either
+//    a bright softbox (white) or the dark studio (black): high local contrast, crisp facets.
+//  - "physical" (exitMix = 1): exact energy split, at every internal hit a Fresnel fraction leaves and the rest
+//    reflects. Correct on average, but each pixel becomes the mean of many HDRI directions = mid grey, which is
+//    what made our stones look milky / washed out next to iJewel.
+// exitMix blends the two (0 = studio, 1 = physical).
+// Dispersion: R/G/B leave with their own IOR (fire). Grade: colour = pow(colour, gamma) * boost (WebGi's
+// gammaFactor / boostFactors), absorption tints by path length.
+import { ShaderMaterial, Matrix4, Vector3 } from 'three';
 import { MeshBVHUniformStruct, BVHShaderGLSL } from 'three-mesh-bvh';
 
+export const DIAMOND_DEFAULTS = {
+  ior: 2.6, dispersion: 0.012, envIntensity: 1.5, envContrast: 1.15, gamma: 1.0, boost: 1.0, reflectivity: 1.0,
+  exitMix: 0.0, absorption: 0.0, metalMix: 0.0,
+};
+
 export class DiamondMaterial extends ShaderMaterial {
-  constructor({ bvh, envMap, bounces = 7, ior = 2.418, dispersion = 0.035, envIntensity = 1.0, color = new Vector3(1, 1, 1) } = {}) {
+  constructor({ bvh, envMap, bounces = 7, color = new Vector3(1, 1, 1), ...rest } = {}) {
+    const P = { ...DIAMOND_DEFAULTS, ...rest };
     const bvhUniform = new MeshBVHUniformStruct();
     bvhUniform.updateFrom(bvh);
     super({
-      defines: { BOUNCES: bounces },
+      defines: { BOUNCES: Math.max(1, bounces | 0) },
       uniforms: {
         bvh: { value: bvhUniform },
         envMap: { value: envMap },
         envRotation: { value: 0 },
-        envIntensity: { value: envIntensity },
-        envContrast: { value: 1.0 },
-        ior: { value: ior },
-        dispersion: { value: dispersion },
+        envIntensity: { value: P.envIntensity },
+        envContrast: { value: P.envContrast },
+        ior: { value: P.ior },
+        dispersion: { value: P.dispersion },
+        gamma: { value: P.gamma },
+        boost: { value: P.boost },
+        reflectivity: { value: P.reflectivity },
+        exitMix: { value: P.exitMix },
+        absorption: { value: P.absorption },
         tint: { value: color },
         objToWorld: { value: new Matrix4() },
         worldToObj: { value: new Matrix4() },
         rayEps: { value: 1e-3 },
+        stoneSize: { value: 1 },
         bounceLimit: { value: bounces },
         metalCube: { value: null },
-        metalMix: { value: 0 },
+        metalMix: { value: P.metalMix },
       },
       vertexShader: /* glsl */`
         varying vec3 vWorldPos;
@@ -50,7 +72,7 @@ export class DiamondMaterial extends ShaderMaterial {
         varying vec3 vWorldNormal;
         uniform BVH bvh;
         uniform sampler2D envMap;
-        uniform float envRotation, envIntensity, envContrast, ior, dispersion, rayEps;
+        uniform float envRotation, envIntensity, envContrast, ior, dispersion, rayEps, gamma, boost, reflectivity, exitMix, absorption, stoneSize;
         uniform vec3 tint;
         uniform int bounceLimit;
         uniform samplerCube metalCube;
@@ -61,10 +83,13 @@ export class DiamondMaterial extends ShaderMaterial {
         vec3 env(vec3 d) {
           float u = atan(d.z, d.x) / (2.0 * PI_) + 0.5 + envRotation;
           float v = asin(clamp(d.y, -1.0, 1.0)) / PI_ + 0.5;
-          vec3 c = pow(textureLod(envMap, vec2(fract(u), v), 0.0).rgb, vec3(envContrast)) * envIntensity;
-          // Metal (prongs / band) seen from inside the stone, from the cube map captured at the stone centre.
-          vec4 m = textureLod(metalCube, d, 0.0);
-          return mix(c, m.rgb, clamp(m.a, 0.0, 1.0) * metalMix);
+          vec3 c = textureLod(envMap, vec2(fract(u), v), 0.0).rgb;
+          c = pow(max(c, vec3(0.0)), vec3(envContrast)) * envIntensity;
+          if (metalMix > 0.0) {   // metal (prongs / band) seen from inside the stone
+            vec4 m = textureLod(metalCube, d, 0.0);
+            c = mix(c, m.rgb, clamp(m.a, 0.0, 1.0) * metalMix);
+          }
+          return c;
         }
         // Exact unpolarised Fresnel reflectance. cosi = cos of incident angle, eta = n_from / n_to.
         float fresnel(float cosi, float eta) {
@@ -75,20 +100,21 @@ export class DiamondMaterial extends ShaderMaterial {
           float rp = (cosi - eta * cost) / (cosi + eta * cost);
           return 0.5 * (rs * rs + rp * rp);
         }
+        vec3 toWorld(vec3 d) { return normalize(mat3(objToWorld) * d); }
         void main() {
           vec3 V = normalize(vWorldPos - cameraPosition);
           vec3 N = normalize(vWorldNormal);
           if (dot(N, V) > 0.0) N = -N;
           float cosi = clamp(-dot(V, N), 0.0, 1.0);
-          float Fr = fresnel(cosi, 1.0 / ior);
+          float Fr = clamp(fresnel(cosi, 1.0 / ior) * reflectivity, 0.0, 1.0);
           vec3 col = Fr * env(reflect(V, N));
 
           vec3 iorRGB = vec3(ior - dispersion * 0.5, ior, ior + dispersion * 0.5);
-          // Refract in (green IOR), continue in object space.
           vec3 d = normalize(mat3(worldToObj) * refract(V, N, 1.0 / ior));
           vec3 o = (worldToObj * vec4(vWorldPos, 1.0)).xyz + d * rayEps;
-          vec3 inside = vec3(0.0);
-          float thr = 1.0;
+          vec3 studio = vec3(0.0), phys = vec3(0.0);
+          float thr = 1.0, path = 0.0;
+          bool out_ = false;
           for (int i = 0; i < BOUNCES; i++) {
             if (i >= bounceLimit) break;
             uvec4 faceIndices = uvec4(0u);
@@ -96,27 +122,37 @@ export class DiamondMaterial extends ShaderMaterial {
             vec3 bary = vec3(0.0);
             float side = 1.0, dist = 0.0;
             bool hit = bvhIntersectFirstHit(bvh, o, d, faceIndices, faceNormal, bary, side, dist);
-            if (!hit) { inside += thr * env(normalize(mat3(objToWorld) * d)); thr = 0.0; break; }
+            if (!hit) { vec3 e = env(toWorld(d)); studio = e; phys += thr * e; thr = 0.0; out_ = true; break; }
+            path += dist;
             vec3 n = normalize(faceNormal);
             if (dot(n, d) < 0.0) n = -n;          // outward w.r.t. travel direction
             vec3 p = o + d * dist;
             float c = dot(d, n);
-            // Light leaving the stone here, per channel (dispersion).
-            for (int k = 0; k < 3; k++) {
-              float e = iorRGB[k];
-              float Fk = fresnel(c, e);
-              if (Fk < 1.0) {
-                vec3 t = refract(d, -n, e);
-                vec3 w = normalize(mat3(objToWorld) * t);
-                inside[k] += thr * (1.0 - Fk) * env(w)[k];
+            float Fg = fresnel(c, ior);
+            if (Fg < 1.0) {
+              // Light leaving here, per channel (dispersion). A channel past its own critical angle takes the
+              // mirror direction instead, so fire never turns into black holes.
+              vec3 ex = vec3(0.0);
+              for (int k = 0; k < 3; k++) {
+                vec3 t = refract(d, -n, iorRGB[k]);
+                if (dot(t, t) < 1e-6) t = reflect(d, -n);
+                ex[k] = env(toWorld(t))[k];
               }
+              if (!out_) { studio = ex; out_ = true; }
+              phys += thr * (1.0 - Fg) * ex;
+              if (exitMix <= 0.0) { thr = 0.0; break; }
             }
-            thr *= fresnel(c, ior);
+            thr *= Fg;
             d = reflect(d, -n);
             o = p + d * rayEps;
             if (thr < 0.01) break;
           }
-          inside += thr * env(normalize(mat3(objToWorld) * d));
+          vec3 tail = env(toWorld(d));
+          if (!out_) studio = tail;
+          phys += thr * tail;
+          vec3 inside = mix(studio, phys, clamp(exitMix, 0.0, 1.0));
+          inside *= exp(-absorption * path / max(stoneSize, 1e-4) * (vec3(1.0) - tint));
+          inside = pow(max(inside, vec3(0.0)), vec3(gamma)) * boost;
           col += (1.0 - Fr) * inside * tint;
           gl_FragColor = vec4(col, 1.0);
         }`,

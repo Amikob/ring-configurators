@@ -1,22 +1,25 @@
 // Self-hosted ring viewer: three.js + own diamond shader + progressive anti-aliasing.
+// Shared engine file: identical copy in noya-selfhost/ and erica-selfhost/ (source: tools/selfhost/engine/,
+// copy with tools/selfhost/sync-engine.sh). Page-specific defaults come in through the constructor options.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { MeshBVH, SAH } from 'three-mesh-bvh';
-import { DiamondMaterial } from './diamond-material.js?v=sh5';
+import { DiamondMaterial, DIAMOND_DEFAULTS } from './diamond-material.js?v=sh6';
+export { DIAMOND_DEFAULTS };
 
 // Linear-sRGB metal reflectance (F0) for 18k alloys.
-// Metal colours = the iJewel Noya page's materials (packs.ijewel3d.com 1_metal_*_polished.pmat, read from the live
-// viewer): sRGB #e5b377 / #f2af83 / #c2c2c3, roughness 0, metalness 1, envMapIntensity 1. Stored as linear sRGB.
+// Start: the iJewel metal presets (packs.ijewel3d.com 1_metal_*_polished.pmat): sRGB #e5b377 / #f2af83 / #c2c2c3,
+// roughness 0, metalness 1, envMapIntensity 1, converted sRGB -> linear exactly (yellow = [0.784, 0.451, 0.185]).
+// Earlier versions pushed yellow redder ([0.72, 0.37, 0.155]) to win a mean-colour deltaE; that made every
+// mid-tone reflection orange (hue angle 3-4 deg below iJewel in each lightness band). Yellow / rose here are
+// chosen by hue angle per lightness band against live iJewel (see README "Gold"), not by mean colour.
 export const GOLDS = {
   white: [0.5395, 0.5395, 0.5457],
-  // Yellow / rose start from the iJewel colours (in the comments) made deeper and redder. iJewel's screen-space
-  // reflections let the gold reflect itself, which deepens it on screen; a pure env reflection cannot, so the base
-  // colour carries part of that. Values picked by mean Lab deltaE on the band against live iJewel (white: no change).
-  yellow: [0.72, 0.37, 0.155],   // iJewel #e5b377 = [0.7835, 0.4508, 0.1845]
-  rose: [0.84, 0.32, 0.20],      // iJewel #f2af83 = [0.8879, 0.4287, 0.227]
+  yellow: [0.784, 0.4508, 0.1845],
+  rose: [0.8879, 0.4287, 0.227],
 };
 export const IJEWEL = { metalRoughness: 0, metalEnvIntensity: 1 };
 
@@ -34,7 +37,8 @@ export class RingViewer extends EventTarget {
   constructor(container, opts = {}) {
     super();
     this.container = container;
-    this.opts = { maxFrames: 48, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), bounces: 5, motionBounces: 5, ...opts };
+    this.opts = { maxFrames: 48, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), bounces: 5, motionBounces: 5, maxBounces: 8, headToward: '-z', ...opts };
+    this.golds = { ...GOLDS, ...(opts.golds || {}) };
     this.stats = { frames: 0 };
     const r = this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'high-performance', preserveDrawingBuffer: !!opts.preserveDrawingBuffer });
     r.setPixelRatio(this.opts.pixelRatio);
@@ -98,8 +102,11 @@ export class RingViewer extends EventTarget {
     this.scene.add(this.ringRoot);
     this.gold = 'yellow';
     this.metalMaterial = new THREE.MeshPhysicalMaterial({ metalness: 1, roughness: IJEWEL.metalRoughness, envMapIntensity: IJEWEL.metalEnvIntensity });
-    this.metalMaterial.color.setRGB(...GOLDS.yellow, THREE.LinearSRGBColorSpace);
-    this.gemTuning = { ior: 2.6, dispersion: 0.02, envIntensity: 1.0, envContrast: 1.0, ...(this.opts.gem || {}) };
+    this.metalMaterial.color.setRGB(...this.golds.yellow, THREE.LinearSRGBColorSpace);
+    // Erica: the matching band has its own gold (independent of the ring's), same metal otherwise.
+    this.bandMaterial = this.metalMaterial.clone();
+    this.bandGold = 'yellow';
+    this.gemTuning = { ...DIAMOND_DEFAULTS, bounces: this.opts.bounces, ...(this.opts.gem || {}) };
 
     this.loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
     this.frame = 0; this.pose = 'flat'; this.needsFrame = true;
@@ -111,19 +118,27 @@ export class RingViewer extends EventTarget {
 
   #setupPipeline() {
     const opts = { type: THREE.HalfFloatType, depthBuffer: true };
-    this.rtFrame = new THREE.WebGLRenderTarget(1, 1, { ...opts, samples: 4 });
+    // Converging frames render WITHOUT hardware MSAA: an MSAA resolve averages linear HDR values, so a 1-pixel
+    // dark facet line next to a facet at 30x white comes out as 15x = white (the dark lines between diamond
+    // facets vanished, = milky stones). Anti-aliasing comes from the jittered accumulation instead, which
+    // averages in a tone-mapped space (below). Only frames while dragging use MSAA (no accumulation then).
+    this.rtFrame = new THREE.WebGLRenderTarget(1, 1, { ...opts });
+    this.rtFrameMS = new THREE.WebGLRenderTarget(1, 1, { ...opts, samples: 4 });
     this.rtAcc = [new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, depthBuffer: false }), new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, depthBuffer: false })];
     this.quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const quad = g => new THREE.Mesh(new THREE.PlaneGeometry(2, 2), g);
     this.accMat = new THREE.ShaderMaterial({ vertexShader: fsVert, depthTest: false, depthWrite: false,
       uniforms: { tFrame: { value: null }, tPrev: { value: null }, weight: { value: 1 } },
+      // Accumulate in a reversible tone-mapped space (Karis: c / (1 + max(c))), un-mapped on read. Averaging raw HDR
+      // lets a few very bright samples dominate a pixel (facet edges bloom into their dark neighbours).
       fragmentShader: `uniform sampler2D tFrame, tPrev; uniform float weight; varying vec2 vUv;
-        void main(){ gl_FragColor = mix(texture2D(tPrev, vUv), texture2D(tFrame, vUv), weight); }` });
+        void main(){ vec4 c = texture2D(tFrame, vUv); c.rgb = max(c.rgb, vec3(0.0)); c.rgb /= 1.0 + max(c.r, max(c.g, c.b));
+          gl_FragColor = mix(texture2D(tPrev, vUv), c, weight); }` });
 
     // Bloom (glow around highlights): soft-threshold bright pass, then a down/up mip chain (dual filter).
     // Defaults = the iJewel Noya scene (ss-001.vjson): Tonemap ACESFilmic, exposure 1, contrast 1.1, saturation 1;
     // Bloom threshold 2, softThreshold 0.5, intensity 0.2, 4 iterations.
-    this.look = { toneMapping: 'aces', exposure: 1.0, bloom: 0.2, bloomThreshold: 2.0, floor: 1.0, ...GRADE_DEFAULTS, ...(this.opts.look || {}) };
+    this.look = { toneMapping: 'aces', exposure: 1.0, bloom: 0.05, bloomThreshold: 4.0, floor: 1.0, ...GRADE_DEFAULTS, ...(this.opts.look || {}) };
     this.bloomLevels = 4;
     const brt = () => new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, depthBuffer: false });
     this.rtDown = Array.from({ length: this.bloomLevels }, brt);
@@ -131,7 +146,7 @@ export class RingViewer extends EventTarget {
     this.brightMat = new THREE.ShaderMaterial({ vertexShader: fsVert, depthTest: false, depthWrite: false,
       uniforms: { tSrc: { value: null }, texel: { value: new THREE.Vector2() }, threshold: { value: 1.6 }, exposure: { value: 1 } },
       fragmentShader: `uniform sampler2D tSrc; uniform vec2 texel; uniform float threshold, exposure; varying vec2 vUv;
-        vec3 s(vec2 o){ vec4 a = texture2D(tSrc, vUv + o * texel); return a.rgb * exposure; }
+        vec3 s(vec2 o){ vec4 a = texture2D(tSrc, vUv + o * texel); vec3 c = a.rgb / max(1.0 - max(a.r, max(a.g, a.b)), 1e-3); return c * exposure; }
         void main(){
           vec3 c = (s(vec2(-1.,-1.)) + s(vec2(1.,-1.)) + s(vec2(-1.,1.)) + s(vec2(1.,1.))) * 0.25;
           float l = max(c.r, max(c.g, c.b));
@@ -228,7 +243,8 @@ export class RingViewer extends EventTarget {
           vec4 a = texture2D(tAcc, vUv);
           vec3 c = vec3(0.0);
           if (a.a > 1e-4) {
-            vec3 h = a.rgb / a.a * gWB;                 // white balance in scene light
+            vec3 h = a.rgb / max(1.0 - max(a.r, max(a.g, a.b)), 1e-3);   // undo the accumulation mapping
+            h = h / a.a * gWB;                 // white balance in scene light
             h = burn(h * toneMappingExposure, gBurn) / toneMappingExposure;
             c = grade(tm(h));
           }
@@ -371,7 +387,7 @@ export class RingViewer extends EventTarget {
   // The diamond shader mixes it over the sharp HDR wherever metal (prongs / band) is in that direction.
   captureGemCube() {
     this.cubeDirty = false;
-    if (!this.gemMesh || !this.diamond || !this.opts.metalInStone) return;
+    if (!this.gemMesh || !this.diamond || !(this.gemTuning.metalMix > 0)) return;
     if (!this.cubeRT) {
       this.cubeRT = new THREE.WebGLCubeRenderTarget(this.opts.cubeSize || 256, { type: THREE.HalfFloatType, generateMipmaps: false });
       this.cubeCam = new THREE.CubeCamera(0.05, 500, this.cubeRT);
@@ -387,7 +403,7 @@ export class RingViewer extends EventTarget {
     r.setClearColor(prevClear, prevAlpha);
     vis.forEach(o => o.visible = true);
     this.diamond.uniforms.metalCube.value = this.cubeRT.texture;
-    this.diamond.uniforms.metalMix.value = this.opts.metalInStone ?? 0.35;
+    this.diamond.uniforms.metalMix.value = this.gemTuning.metalMix;
   }
 
   async loadEnvironment(url, { saturation = 0.15, exposure = 1.0, target = 'both', lift = 0, isCurrent = () => true } = {}) {
@@ -444,56 +460,121 @@ export class RingViewer extends EventTarget {
     this.reset();
   }
 
-  setGold(name) {
-    this.gold = name;
-    this.metalMaterial.color.setRGB(...GOLDS[name], THREE.LinearSRGBColorSpace);
+  setBandGold(name) {
+    this.bandGold = name;
+    this.bandMaterial.color.setRGB(...this.golds[name], THREE.LinearSRGBColorSpace);
     this.cubeDirty = true;
     this.reset();
   }
 
-  setGem(patch) {
-    Object.assign(this.gemTuning, patch);
-    if (this.diamond) for (const [k, v] of Object.entries(patch)) if (this.diamond.uniforms[k]) this.diamond.uniforms[k].value = v;
+  setGold(name) {
+    this.gold = name;
+    this.metalMaterial.color.setRGB(...this.golds[name], THREE.LinearSRGBColorSpace);
+    this.cubeDirty = true;
     this.reset();
   }
 
+  // Studio controls ------------------------------------------------------------------------------------------
+  setGoldColor(name, rgb) {   // linear sRGB F0
+    this.golds[name] = rgb.slice(0, 3);
+    if (this.gold === name) this.metalMaterial.color.setRGB(...this.golds[name], THREE.LinearSRGBColorSpace);
+    if (this.bandMaterial && this.bandGold === name) this.bandMaterial.color.setRGB(...this.golds[name], THREE.LinearSRGBColorSpace);
+    this.cubeDirty = true; this.reset();
+  }
+  // Metal: roughness, and HDRI intensity (scene.environmentIntensity; material.envMapIntensity is ignored when the
+  // material uses scene.environment).
+  setMetal({ roughness, envIntensity } = {}) {
+    for (const m of [this.metalMaterial, this.bandMaterial]) if (m && roughness !== undefined) { m.roughness = roughness; m.needsUpdate = true; }
+    if (envIntensity !== undefined) this.scene.environmentIntensity = envIntensity;
+    this.metalTuning = { roughness: this.metalMaterial.roughness, envIntensity: this.scene.environmentIntensity };
+    this.cubeDirty = true; this.reset();
+  }
+  setBackground(hex) {
+    const c = new THREE.Color(hex);   // sRGB colour
+    this.outMat.uniforms.bg.value.copy(c);
+    const near = c.clone().multiplyScalar(0.995), far = c.clone().multiplyScalar(0.945);
+    this.outMat.uniforms.floorNear.value.copy(near); this.outMat.uniforms.floorFar.value.copy(far);
+    this.background = '#' + c.getHexString();
+    this.present();
+  }
+  setShadow({ strength, softness } = {}) {
+    if (strength !== undefined) { this.shadowOpts.key = 0.72 * strength; this.shadowOpts.ao = 0.75 * strength; this.shadowStrength = strength; }
+    if (softness !== undefined) this.shadowOpts.keySoftness = softness;
+    clearTimeout(this._rebake); this._rebake = setTimeout(() => this.bakeShadow(), 80);
+  }
+  setFrames(n) { this.opts.maxFrames = Math.max(1, n | 0); this.reset(); }
+
+  setGem(patch) {
+    if ('bounces' in patch) patch = { ...patch, bounces: Math.max(1, Math.min(this.opts.maxBounces, patch.bounces | 0)) };
+    Object.assign(this.gemTuning, patch);
+    if (this.diamond) for (const [k, v] of Object.entries(patch)) if (this.diamond.uniforms[k] && k !== 'metalCube') this.diamond.uniforms[k].value = v;
+    if ('metalMix' in patch) this.cubeDirty = true;
+    this.reset();
+  }
+
+  // Erica: a ring and (optionally) its matching band. Both GLBs are modelled in the same frame (the band sits
+  // behind the ring along the finger axis), so they are loaded in place. All stones (centre + side stones of the
+  // ring, pave of a half-eternity band) are merged into one geometry traced by one diamond material.
+  // rest / setRest: 4x4 resting poses (row-major) computed offline (ring alone / ring + band).
+  async loadSet(ringUrl, bandUrl = null, { rest = null, setRest = null } = {}) {
+    const token = (this.loadToken = (this.loadToken || 0) + 1);
+    const [ring, band] = await Promise.all([this.loader.loadAsync(ringUrl), bandUrl ? this.loader.loadAsync(bandUrl) : null]);
+    if (token !== this.loadToken) return false;
+    return this.#assemble(ring, band, band ? setRest : rest);
+  }
+
+  // Noya: one GLB per ring; its resting pose is stored in the GLB's scene extras by the converter.
   async loadRing(url) {
     const token = (this.loadToken = (this.loadToken || 0) + 1);
     const gltf = await this.loader.loadAsync(url);
     if (token !== this.loadToken) return false;
     const extras = gltf.scene.userData?.extras || gltf.scene.userData || {};
+    return this.#assemble(gltf, null, extras.rest || null);
+  }
+
+  #assemble(ring, band, restPose) {
     const holder = new THREE.Group();
-    gltf.scene.updateMatrixWorld(true);
-    let gemGeo = null; const metalGeos = [];
-    gltf.scene.traverse(o => {
-      if (!o.isMesh) return;
-      const g = o.geometry.clone();
-      for (const k of Object.keys(g.attributes)) if (g.attributes[k].isInterleavedBufferAttribute || g.attributes[k].normalized || !(g.attributes[k].array instanceof Float32Array)) g.setAttribute(k, deinterleave(g.attributes[k]));
-      g.applyMatrix4(o.matrixWorld);
-      if (/gem/i.test(o.material?.name || o.name)) gemGeo = g; else metalGeos.push(g);
-    });
-    for (const g of metalGeos) {
-      const m = new THREE.Mesh(g, this.metalMaterial);
-      m.castShadow = true; holder.add(m);
+    const gems = []; let ringGemBox = new THREE.Box3();
+    for (const [gltf, mat, isRing] of [[ring, this.metalMaterial, true], [band, this.bandMaterial, false]]) {
+      if (!gltf) continue;
+      gltf.scene.updateMatrixWorld(true);
+      gltf.scene.traverse(o => {
+        if (!o.isMesh) return;
+        let g = o.geometry.clone();
+        for (const k of Object.keys(g.attributes)) if (g.attributes[k].isInterleavedBufferAttribute || g.attributes[k].normalized || !(g.attributes[k].array instanceof Float32Array)) g.setAttribute(k, deinterleave(g.attributes[k]));
+        g.applyMatrix4(o.matrixWorld);
+        if (/gem/i.test(o.material?.name || o.name)) {
+          for (const k of Object.keys(g.attributes)) if (k !== 'position') g.deleteAttribute(k);
+          g = g.index ? g.toNonIndexed() : g;
+          gems.push(g);
+          if (isRing) { g.computeBoundingBox(); ringGemBox.union(g.boundingBox); }
+        } else {
+          if (!g.attributes.normal) g.computeVertexNormals();
+          const m = new THREE.Mesh(g, mat); m.castShadow = true; m.userData.part = isRing ? 'ring' : 'band'; holder.add(m);
+        }
+      });
     }
-    if (gemGeo) {
-      // Faceted stones: flat normals from the triangle itself.
-      gemGeo.deleteAttribute('normal');
-      gemGeo = gemGeo.index ? gemGeo.toNonIndexed() : gemGeo;
-      gemGeo.computeVertexNormals();
+    this.gemMesh = null;
+    if (gems.length) {
+      const n = gems.reduce((a, g) => a + g.attributes.position.count, 0), arr = new Float32Array(n * 3);
+      let off = 0; for (const g of gems) { arr.set(g.attributes.position.array, off); off += g.attributes.position.array.length; g.dispose(); }
+      const gemGeo = new THREE.BufferGeometry(); gemGeo.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+      gemGeo.computeVertexNormals();   // non-indexed: flat facet normals
       const bvh = new MeshBVH(gemGeo, { strategy: SAH, targetLeafSize: 4 });
       const size = new THREE.Box3().setFromBufferAttribute(gemGeo.attributes.position).getSize(new THREE.Vector3()).length();
       if (!this.diamond) {
-        this.diamond = new DiamondMaterial({ bvh, envMap: this.envHDR, bounces: this.opts.bounces, ...this.gemTuning });
-        this.diamond.uniforms.envContrast.value = this.gemTuning.envContrast;
+        this.diamond = new DiamondMaterial({ bvh, envMap: this.envHDR, ...this.gemTuning, bounces: this.opts.maxBounces });
         this.diamond.uniforms.envRotation.value = -(this.envRotation || 0) / (2 * Math.PI);
       } else this.diamond.bvhUniform.updateFrom(bvh);
       this.diamond.uniforms.rayEps.value = size * 2e-5;
+      this.diamond.uniforms.stoneSize.value = size;
       const gm = new THREE.Mesh(gemGeo, this.diamond);
       gm.castShadow = true; holder.add(gm); this.gemMesh = gm;
     }
-    // Upright (as modelled) and resting (most stable pose, computed offline in the converter).
-    this.restMatrix = extras.rest ? new THREE.Matrix4().fromArray(extras.rest.flat()).transpose() : new THREE.Matrix4();
+    this.ringGemCenter = ringGemBox.isEmpty() ? null : ringGemBox.getCenter(new THREE.Vector3());
+    const toM = r => r ? new THREE.Matrix4().fromArray(r.flat()).transpose() : new THREE.Matrix4();
+    this.restMatrix = toM(restPose);
+    this.hasBand = !!band;
     for (const c of [...this.ringRoot.children]) { this.ringRoot.remove(c); c.traverse(o => o.geometry?.dispose()); }
     this.ringRoot.add(holder);
     this.holder = holder;
@@ -508,13 +589,13 @@ export class RingViewer extends EventTarget {
     h.matrixAutoUpdate = false;
     h.matrix.copy(pose === 'flat' ? this.restMatrix : new THREE.Matrix4());
     h.position.set(0, 0, 0);
-    if (pose === 'flat' && this.gemMesh) {
-      // Turn the resting ring about the vertical so the stone faces the camera (+Z), for every ring.
-      // (The converter's rest pose leaves the yaw arbitrary: round 2 ct lay with its head turned away.)
+    if (pose === 'flat' && this.ringGemCenter) {
+      // Turn the resting ring / set about the vertical so the centre stone points to -Z, like erica/ring-pose.js.
       h.updateMatrixWorld(true);
-      const all = exactBounds(h).getCenter(new THREE.Vector3()), gem = exactBounds(this.gemMesh).getCenter(new THREE.Vector3());
+      const all = exactBounds(h).getCenter(new THREE.Vector3()), gem = this.ringGemCenter.clone().applyMatrix4(h.matrixWorld);
       const yaw = Math.atan2(gem.x - all.x, gem.z - all.z);
-      if (Math.hypot(gem.x - all.x, gem.z - all.z) > 1e-4) h.matrix.premultiply(new THREE.Matrix4().makeRotationY(-yaw));
+      // Erica: head toward -Z (erica/ring-pose.js forward). Noya: toward +Z (the stone faces the default camera).
+      if (Math.hypot(gem.x - all.x, gem.z - all.z) > 1e-4) h.matrix.premultiply(new THREE.Matrix4().makeRotationY(this.opts.headToward === '+z' ? -yaw : Math.PI - yaw));
     }
     // Measure with the ring root at the origin: the previous ring / pose offset must not leak into the new one
     // (it did before: the old offset was added to the new bounds, so each ring floated or sank by the last one's offset).
@@ -530,6 +611,21 @@ export class RingViewer extends EventTarget {
     if (this.gemMesh) this.diamond.syncObject(this.gemMesh);
     this.bakeShadow();
     this.cubeDirty = true;
+    this.reset();
+  }
+
+  // Erica: the live page's framing (erica/view-controls.js centerView): look at the centre of the model bounds from
+  // the saved camera direction, at size * 0.5 / sin(limiting half-FOV) * 1.12, FOV 25.
+  ijewelView({ elevation = 57.2, azimuth = 150, fov = 25 } = {}) {
+    if (!this.bounds) return;
+    const el = THREE.MathUtils.degToRad(elevation), az = THREE.MathUtils.degToRad(azimuth);
+    const dir = new THREE.Vector3(Math.cos(el) * Math.sin(az), Math.sin(el), Math.cos(el) * Math.cos(az));
+    const cam = this.camera; cam.fov = fov; cam.updateProjectionMatrix();
+    const center = this.bounds.getCenter(new THREE.Vector3()), size = this.bounds.getSize(new THREE.Vector3()).length();
+    const half = THREE.MathUtils.degToRad(fov / 2), limiting = Math.min(half, Math.atan(Math.tan(half) * cam.aspect));
+    const dist = size * 0.5 / Math.sin(limiting) * 1.12;   // same factor as erica/view-controls.js centerView
+    cam.position.copy(center).addScaledVector(dir, dist);
+    this.controls.target.copy(center); cam.lookAt(center); this.controls.update();
     this.reset();
   }
 
@@ -580,7 +676,7 @@ export class RingViewer extends EventTarget {
     this.renderer.setSize(w, h, false);
     this.renderer.domElement.style.width = '100%'; this.renderer.domElement.style.height = '100%';
     const pw = Math.floor(w * this.renderer.getPixelRatio()), ph = Math.floor(h * this.renderer.getPixelRatio());
-    this.rtFrame.setSize(pw, ph); this.rtAcc.forEach(t => t.setSize(pw, ph));
+    this.rtFrame.setSize(pw, ph); this.rtFrameMS.setSize(pw, ph); this.rtAcc.forEach(t => t.setSize(pw, ph));
     for (let i = 0; i < this.bloomLevels; i++) { const d = 2 ** (i + 1); this.rtDown[i].setSize(Math.max(1, pw / d | 0), Math.max(1, ph / d | 0)); this.rtUp[i].setSize(Math.max(1, pw / d | 0), Math.max(1, ph / d | 0)); }
     this.lastAcc = null;
     this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
@@ -592,16 +688,17 @@ export class RingViewer extends EventTarget {
     const r = this.renderer, cam = this.camera, [w, h] = this.size;
     if (this.gemMesh) this.diamond.syncObject(this.gemMesh);
     if (this.cubeDirty) this.captureGemCube();
-    if (this.diamond) this.diamond.uniforms.bounceLimit.value = this.moving ? this.opts.motionBounces : this.opts.bounces;
+    if (this.diamond) this.diamond.uniforms.bounceLimit.value = Math.min(this.opts.maxBounces, this.moving ? Math.min(this.opts.motionBounces, this.gemTuning.bounces) : this.gemTuning.bounces);
     const n = this.frame;
     if (n > 0) { const [jx, jy] = HALTON[n % HALTON.length]; cam.setViewOffset(w, h, jx, jy, w, h); }
     else cam.clearViewOffset();
-    r.setRenderTarget(this.rtFrame);
+    const frameRT = this.moving || this.opts.msaa === 'always' ? this.rtFrameMS : this.rtFrame;
+    r.setRenderTarget(frameRT);
     r.setClearColor(0x000000, 0); r.clear();
     r.render(this.scene, cam);
     cam.clearViewOffset();
     const src = this.rtAcc[n % 2], dst = this.rtAcc[(n + 1) % 2];
-    this.accMat.uniforms.tFrame.value = this.rtFrame.texture;
+    this.accMat.uniforms.tFrame.value = frameRT.texture;
     this.accMat.uniforms.tPrev.value = src.texture;
     this.accMat.uniforms.weight.value = 1 / (n + 1);
     r.setRenderTarget(dst); r.render(this.accQuad, this.quadCam);

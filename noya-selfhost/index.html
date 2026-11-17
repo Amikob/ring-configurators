@@ -7,6 +7,7 @@
   <title>Noya (self-hosted pilot) | Next Diamonds</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./style.css?v=sh6">
+  <link rel="stylesheet" href="./studio.css?v=sh11">
   <style>
     #viewer canvas { display:block; touch-action:none; }
     .pilot-badge { position:absolute; left:28px; top:44px; font-size:11px; color:#7b7b7b; z-index:2; }
@@ -58,7 +59,7 @@
         <div class="viewer-tools" role="group" aria-label="Viewer controls">
           <button id="pose-toggle" class="icon-tool labeled-tool" type="button" title="Stand ring up" aria-pressed="true"><img src="./assets/icons/rotate-3d.svg" alt=""><span id="pose-label">Stand</span></button>
           <button id="center-view" class="icon-tool" type="button" title="Center view" aria-label="Center view"><img src="./assets/icons/focus.svg" alt=""></button>
-          <button id="env-toggle" class="icon-tool labeled-tool" type="button" title="Lighting (HDRI)" aria-expanded="false" aria-controls="env-panel" style="width:auto;padding:0 8px"><span>HDRI</span>&nbsp;<span id="env-current" class="env-current"></span></button>
+          <button id="env-toggle" class="icon-tool labeled-tool" type="button" title="Studio settings (HDRI, tone, bloom, materials, presets)" aria-expanded="false" aria-controls="studio" style="width:auto;padding:0 10px"><span>Studio</span></button>
           <div class="quality-control"><div id="quality" class="quality-buttons" role="group" aria-label="Render quality">
             <button type="button" data-quality="1" aria-pressed="false">Med</button><button type="button" data-quality="1.5" aria-pressed="false">High</button><button type="button" data-quality="2" aria-pressed="false">Ultra</button>
           </div></div>
@@ -66,43 +67,17 @@
       </div>
     </main>
     <aside class="panel" aria-label="Customize Noya">
+      <div class="panel-tabs" role="tablist"><button type="button" role="tab" id="tab-ring" aria-selected="true">Ring</button><button type="button" role="tab" id="tab-studio" aria-selected="false">Studio</button></div>
       <header><h1>Noya</h1></header>
       <fieldset><legend>Diamond shape <span id="shape-label">Oval</span></legend><div id="shapes" class="shape-grid"></div></fieldset>
       <fieldset><legend>Center stone <span id="carat-label">3 ct</span></legend><div id="carats" class="segments"></div></fieldset>
       <div class="metal-fields" style="grid-template-columns:1fr">
         <fieldset><legend>Gold</legend><div id="ring-gold" class="gold-options" style="max-width:220px"></div></fieldset>
       </div>
-      <section id="env-panel" class="env-panel" hidden aria-label="Lighting and tone mapping">
-        <div class="env-head"><span>Lighting &amp; tone</span><button type="button" id="env-close" class="env-close" aria-label="Close lighting panel">&times;</button></div>
-        <div class="env-row" data-kind="metal"><span class="env-kind">Metal</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous metal HDRI">&#8249;</button><select aria-label="Metal HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next metal HDRI">&#8250;</button></div>
-        <div class="env-row" data-kind="diamond"><span class="env-kind">Diamond</span><button type="button" class="env-step" data-dir="-1" aria-label="Previous diamond HDRI">&#8249;</button><select aria-label="Diamond HDRI"></select><button type="button" class="env-step" data-dir="1" aria-label="Next diamond HDRI">&#8250;</button></div>
-        <div class="env-status" id="env-status" aria-live="polite"></div>
-        <label class="look-slider"><span class="env-kind">Metal rot.</span><input id="rot-metal" type="range" min="0" max="359" step="1"><output id="rot-metal-val"></output></label>
-        <label class="look-slider"><span class="env-kind">Diam. rot.</span><input id="rot-diamond" type="range" min="0" max="359" step="1"><output id="rot-diamond-val"></output></label>
-        <label class="look-slider" style="justify-content:flex-end;font-size:12px"><input id="rot-lock" type="checkbox" style="flex:none;width:auto;margin:0"> Lock rotations together</label>
-        <div class="env-row look-row"><span class="env-kind">Tone</span><select id="tm-select" aria-label="Tone mapping">
-          <option value="neutral">Neutral (Khronos PBR)</option><option value="aces">ACES Filmic</option><option value="agx">AgX</option><option value="reinhard">Reinhard</option><option value="linear">Linear (clip)</option><option value="linburn">Linear + Burn (FStorm-style)</option></select></div>
-        <label class="look-slider"><span class="env-kind">Exposure</span><input id="exposure" type="range" min="0.4" max="2.5" step="0.05"><output id="exposure-val"></output></label>
-        <label class="look-slider"><span class="env-kind">Bloom</span><input id="bloom" type="range" min="0" max="0.6" step="0.01"><output id="bloom-val"></output></label>
-        <label class="look-slider"><span class="env-kind">Floor</span><input id="floor" type="range" min="0" max="1.5" step="0.05"><output id="floor-val"></output></label>
-        <button type="button" id="look-reset" class="look-reset">Reset look</button>
-        <details id="advanced" class="advanced"><summary>Advanced colour</summary>
-          <label class="look-slider"><span class="env-kind">Gamma</span><input id="g-gamma" type="range" min="0.6" max="1.8" step="0.01"><output id="g-gamma-val"></output></label>
-          <label class="look-slider"><span class="env-kind">Contrast</span><input id="g-contrast" type="range" min="0.6" max="1.6" step="0.01"><output id="g-contrast-val"></output></label>
-          <label class="look-slider"><span class="env-kind">Saturation</span><input id="g-saturation" type="range" min="0" max="2" step="0.01"><output id="g-saturation-val"></output></label>
-          <label class="look-slider"><span class="env-kind">Vibrance</span><input id="g-vibrance" type="range" min="-1" max="1" step="0.01"><output id="g-vibrance-val"></output></label>
-          <label class="look-slider"><span class="env-kind">Burn</span><input id="g-burn" type="range" min="0" max="1" step="0.01"><output id="g-burn-val"></output></label>
-          <label class="look-slider"><span class="env-kind">Temp</span><input id="g-temperature" type="range" min="-1" max="1" step="0.01"><output id="g-temperature-val"></output></label>
-          <label class="look-slider"><span class="env-kind">Tint</span><input id="g-tint" type="range" min="-1" max="1" step="0.01"><output id="g-tint-val"></output></label>
-          <label class="look-slider"><span class="env-kind">Highlights</span><input id="g-highlights" type="range" min="-1" max="1" step="0.01"><output id="g-highlights-val"></output></label>
-          <label class="look-slider"><span class="env-kind">Shadows</span><input id="g-shadows" type="range" min="-1" max="1" step="0.01"><output id="g-shadows-val"></output></label>
-          <button type="button" id="grade-reset" class="look-reset">Reset advanced</button>
-        </details>
-      </section>
+      <section id="studio" class="studio" hidden aria-label="Studio settings"></section>
       <p id="error" class="error" role="alert" hidden></p>
-      <div id="tuning"></div>
     </aside>
   </div>
-  <script type="module" src="./app.js?v=sh9"></script>
+  <script type="module" src="./app.js?v=sh11"></script>
 </body>
 </html>
