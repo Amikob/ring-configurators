@@ -1,4 +1,4 @@
-import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing, bandAvailable } from './catalog.js?v=alana-bands1';
+import { SHAPES, CARATS, available, EAST_WEST, COLORS, label, createCatalog, resolveSelection, parseRing, bandAvailable, BAND_STYLES, BAND_LABELS } from './catalog.js?v=alana-bands2';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=alana-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=alana-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -41,7 +41,7 @@ for (const shape of SHAPES) {
 }
 for (const ct of CARATS) makeChoice('carats', `${ct} ct`, ct, 'carat', '');
 for (const [value, text] of [['ns', 'North-South'], ['ew', 'East-West']]) makeChoice('orientations', text, value, 'orientation', '');
-for (const [value, text] of [['none', 'No band'], ['band', 'Band']]) makeChoice('bands', text, value, 'band', '');
+for (const value of ['none', ...BAND_STYLES]) makeChoice('bands', BAND_LABELS[value], value, 'band', '');
 $('pose-toggle').addEventListener('click', () => choose({pose:desired.pose === 'flat' ? 'upright' : 'flat'}));
 $('center-view').addEventListener('click', () => {
   if (ready && !busy && tryonSession?.phase === 'idle') centerView(viewer);
@@ -53,14 +53,15 @@ for (const key of ['headGold','ringGold']) for (const color of COLORS) {
 function render() {
   for (const {button,key,value} of controls) {
     button.setAttribute('aria-pressed', String(desired[key] === value));
-    button.disabled = !ready || tryonLoading || tryonSession?.phase === 'starting' || (key === 'orientation' && value === 'ew' && !EAST_WEST.has(desired.shape)) || (key === 'carat' && !available(desired.shape, value)) || (key === 'band' && value === 'band' && !bandAvailable(desired.shape, desired.carat));
+    button.disabled = !ready || tryonLoading || tryonSession?.phase === 'starting' || (key === 'orientation' && value === 'ew' && !EAST_WEST.has(desired.shape)) || (key === 'carat' && !available(desired.shape, value)) || (key === 'band' && value !== 'none' && !bandAvailable(desired.shape, desired.carat, value));
   }
   $('orientation-field').hidden = !EAST_WEST.has(desired.shape);
-  $('band-note').textContent = bandAvailable(desired.shape, desired.carat) ? '' : '(not available for this ring)';
+  $('band-field').hidden = !bandAvailable(desired.shape, desired.carat); // no band file for this ring: no band option at all
+  $('band-note').textContent = '';
   $('carat-label').textContent = `${desired.carat} ct`;
   $('shape-label').textContent = label(desired.shape);
   $('update-status').textContent = busy ? 'Updating...' : '';
-  if (applied) $('selection-summary').textContent = `${label(applied.shape)} / ${applied.carat} ct${EAST_WEST.has(applied.shape) ? ` / ${applied.orientation.toUpperCase()}` : ''}${applied.band === 'band' ? ' / with band' : ''}`;
+  if (applied) $('selection-summary').textContent = `${label(applied.shape)} / ${applied.carat} ct${EAST_WEST.has(applied.shape) ? ` / ${applied.orientation.toUpperCase()}` : ''}${applied.band !== 'none' ? ` / ${BAND_LABELS[applied.band]}` : ''}`;
   document.body.dataset.ready = String(ready);
   document.body.dataset.busy = String(busy);
   $('viewer').setAttribute('aria-busy', String(busy));
@@ -118,7 +119,7 @@ async function choose(patch) {
   { const shape = patch.shape || desired.shape, carat = patch.carat ?? desired.carat;
     if (!available(shape, carat)) patch.carat = CARATS.filter(ct => available(shape, ct)).sort((x, y) => Math.abs(x - carat) - Math.abs(y - carat) || y - x)[0]; }
   { const shape = patch.shape || desired.shape, carat = patch.carat ?? desired.carat;
-    patch.band = bandWish === 'band' && bandAvailable(shape, carat) ? 'band' : 'none'; } // no band file for this ring: show none, never an error
+    patch.band = bandWish !== 'none' && bandAvailable(shape, carat, bandWish) ? bandWish : 'none'; } // no band file for this ring: show none, never an error
   desired = normalizePose({ ...desired, ...patch }); render(); await drain();
 }
 let liveSwapOk = true;
@@ -424,10 +425,14 @@ async function start() {
     const response = await fetch('./project.json?v=2', {cache:'no-store'});
     if (!response.ok) throw new Error('Alana scene could not be loaded.');
     const baseline = await response.json();
-    const savedResponse = await fetch('./saved-config.json?v=20261028bands', {cache:'no-store'})   /* local corrected config: the iJewel copy is stale (old-style configurator, cannot re-sync) */;
+    const savedResponse = await fetch('./saved-config.json?v=20261118bands2', {cache:'no-store'})   /* local corrected config: the iJewel copy is stale (old-style configurator, cannot re-sync) */;
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=scene-1');
     const project = applySavedScene(baseline, await savedResponse.json());
+    // Band GLBs are served from this repo (assets/bands/); resolve them against this module so the private wrapper page works too.
+    for (const variation of project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Band')?.variations || []) {
+      if (variation.modelUrl && !/^https?:/i.test(variation.modelUrl)) variation.modelUrl = new URL(variation.modelUrl, import.meta.url).href;
+    }
     portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });
     preselectRing(project);
@@ -453,7 +458,7 @@ if (document.modelContext?.registerTool) {
   const definitions = [
     { name:'get_alana_diagnostics',title:'Read viewer diagnostics',description:'Read resource counts and view transforms for diagnosing repeated model changes. Does not alter the viewer.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>viewerDiagnostics(viewer,window.Cache) },
     { name:'get_alana_configuration',title:'Read Alana selection',description:'Read the current Alana ring selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
-    { name:'configure_alana',title:'Configure Alana',description:'Choose a ring shape, carat, optional matching band (only some shape/carat combinations have one), gold color, and upright or resting pose. Head and shank are one piece, so headGold always follows ringGold, and the band follows the ring gold.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'number',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},band:{type:'string',enum:['none','band']},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
+    { name:'configure_alana',title:'Configure Alana',description:'Choose a ring shape, carat, optional matching band: none, plain or half_eternity (only some shape/carat combinations have one), gold color, and upright or resting pose. Head and shank are one piece, so headGold always follows ringGold, and the band follows the ring gold.',inputSchema:{type:'object',properties:{shape:{type:'string',enum:SHAPES},carat:{type:'number',enum:CARATS},orientation:{type:'string',enum:['ns','ew']},band:{type:'string',enum:['none',...BAND_STYLES]},headGold:{type:'string',enum:COLORS},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
       if (!ready) throw new Error('Alana is not ready.');
       if (busy) throw new Error('A selection is still loading. Please wait.');
       if (tryonLoading || tryonSession?.phase === 'starting') throw new Error('Try-On is still starting. Please wait.');

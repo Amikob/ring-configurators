@@ -1193,9 +1193,10 @@
       ],
       "rings": 40,
       "bands": {
-        "files": 3,
+        "files": 6,
         "styles": [
-          "Matching band"
+          "Plain band",
+          "Half Eternity band"
         ]
       },
       "eastWest": false,

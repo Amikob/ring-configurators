@@ -10,20 +10,23 @@ const saved0 = JSON.parse(JSON.parse(fs.readFileSync(new URL('../alana/saved-con
 const comps = saved0.plugins.RingConfigurator.components;
 assert.equal(comps.find(item => item.name === 'Ring').variations.length, 40);
 const bandVars = comps.find(item => item.name === 'Band').variations;
-assert.deepEqual(bandVars.map(item => item.name).sort(), ['Alana Band Elongated 3-5ct', 'Alana Band Elongated 6-8ct', 'Alana Band Round Pear Asscher 3-5ct']);
-for (const item of bandVars) assert(item.modelUrl.startsWith('https://amikob.ijewel3d.com/files/') && item.modelUrl.endsWith('.glb'));
+assert.deepEqual(bandVars.map(item => item.name).sort(), ['Alana Band Elongated 3-5ct Half Eternity', 'Alana Band Elongated 3-5ct Plain', 'Alana Band Elongated 6-8ct Half Eternity', 'Alana Band Elongated 6-8ct Plain', 'Alana Band Round Asscher 3-5ct Half Eternity', 'Alana Band Round Asscher 3-5ct Plain']);
+for (const item of bandVars) { assert(item.modelUrl.startsWith('assets/bands/') && item.modelUrl.endsWith('.glb')); assert(fs.existsSync(new URL(`../alana/${item.modelUrl}`, import.meta.url)), item.modelUrl); }
 const catalog = createCatalog(comps.find(item => item.name === 'Ring').variations, bandVars);
 let bandCombos = 0;
 for (const shape of SHAPES) for (const carat of CARATS) {
   if (!available(shape, carat)) continue;
   const elongated = ['oval','elongated_cushion','elongated_radiant','emerald'].includes(shape);
-  const expected = elongated ? (carat <= 5 ? 'alana band elongated 3-5ct' : 'alana band elongated 6-8ct') : (['round','pear','asscher'].includes(shape) && carat <= 5 ? 'alana band round pear asscher 3-5ct' : null);
-  assert.equal(bandAvailable(shape, carat), !!expected, `${shape} ${carat}`);
-  const {band} = resolveSelection(catalog, {shape, carat, orientation: 'ns', band: 'band', headGold: 'white', ringGold: 'white', bandGold: 'white'});
-  if (expected) { assert.equal(band.variation.name.toLowerCase(), expected); bandCombos++; } else assert.equal(band, null);
+  const base = elongated ? (carat <= 5 ? 'alana band elongated 3-5ct' : 'alana band elongated 6-8ct') : (['round','asscher'].includes(shape) && carat <= 5 ? 'alana band round asscher 3-5ct' : null);
+  assert.equal(bandAvailable(shape, carat), !!base, `${shape} ${carat}`);
+  for (const [style, suffix] of [['plain', 'plain'], ['half_eternity', 'half eternity']]) {
+    assert.equal(bandAvailable(shape, carat, style), !!base, `${shape} ${carat} ${style}`);
+    const {band} = resolveSelection(catalog, {shape, carat, orientation: 'ns', band: style, headGold: 'white', ringGold: 'white', bandGold: 'white'});
+    if (base) { assert.equal(band.variation.name.toLowerCase(), `${base} ${suffix}`); bandCombos++; } else assert.equal(band, null);
+  }
   assert.equal(resolveSelection(catalog, {shape, carat, orientation: 'ns', band: 'none', headGold: 'white', ringGold: 'white', bandGold: 'white'}).band, null);
 }
-assert.equal(bandCombos, 29);
+assert.equal(bandCombos, 52);
 let combinations = 0;
 for (const shape of SHAPES) for (const carat of CARATS) {
   if (!available(shape, carat)) { assert.throws(() => resolveSelection(catalog, {shape, carat, orientation: 'ns', band: 'none', headGold: 'white', ringGold: 'white', bandGold: 'white'})); continue; }
@@ -49,4 +52,4 @@ assert.deepEqual(merged.materialConfig, project.materialConfig);
 const html = fs.readFileSync(new URL('../alana/index.html', import.meta.url), 'utf8');
 assert(html.includes("Alana"));
 for (const shape of SHAPES) assert(fs.existsSync(new URL(`../alana/assets/shapes/${shape}.png`, import.meta.url)));
-console.log('Alana: 40 models, 29 ring-with-band pairings, 360 valid shape/carat/gold selections, 16 diamond layers mapped.');
+console.log('Alana: 40 models, 52 ring-with-band pairings (26 combos x Plain/Half Eternity), 360 valid shape/carat/gold selections, 16 diamond layers mapped.');
