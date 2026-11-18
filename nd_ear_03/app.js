@@ -39,7 +39,7 @@ function frontView(viewer) {
   camera.cameraObject.position.copy(camera.target).add(camera.target.clone().set(0, Math.sin(e), Math.cos(e)));
   centerView(viewer);
 }
-const PROJECT_ID = 'fYv356twSX2KaT_6OTNsgA';
+const PROJECT_ID = 'HAkbym-NQVyw4v9YJKygHA';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
