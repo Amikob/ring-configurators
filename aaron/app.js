@@ -11,7 +11,7 @@ import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnima
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'JKIOiv7VQVa4Prqa7LE8fQ';
+const PROJECT_ID = 'cwSKXD91QaSAPvY1vy9t2Q';
 // Redone (v2) files, one-tone: the single metal layer of each ring (read from the GLBs).
 const LAYER_ROLES = {"2Ct Elongated Cushion": {"ringGold": "Metal 02"}, "2Ct Elongated Radiant": {"ringGold": "Metal 02"}, "3Ct Elongated Cushion": {"ringGold": "Metal 02"}, "3Ct Elongated Radiant": {"ringGold": "Metal 02"}, "4Ct Elongated Cushion": {"ringGold": "Metal 02"}, "4Ct Elongated Radiant": {"ringGold": "Metal 02"}, "5Ct Elongated Cushion": {"ringGold": "Metal 02"}, "6Ct Elongated Cushion": {"ringGold": "Metal 02"}};
 const DEFAULT_LAYERS = {"ringGold": "Metal 01", "headGold": "Metal 01"};
