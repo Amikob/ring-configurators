@@ -11,7 +11,7 @@ import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnima
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'JdXeNqwRQESS9oPko--UtA';
+const PROJECT_ID = 'B5d7cjAITNG6jtiYvJKMBg';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, bandComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
@@ -412,13 +412,17 @@ function preselectRing(project) {
 async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
-    const response = await fetch('./project.json');
+    const response = await fetch('./project.json?v=20261118cfg');
     if (!response.ok) throw new Error('Ariella scene could not be loaded.');
     const baseline = await response.json();
-    const savedResponse = await fetch('./saved-config.json?v=20261028', {cache:'no-store'}); /* local config: the plain Drive folder has no iJewel project config */
+    const savedResponse = await fetch('./saved-config.json?v=20261118cfg', {cache:'no-store'}); /* local config: the plain Drive folder has no iJewel project config */
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const {applySavedScene} = await import('./saved-project.js?v=scene-1');
     const project = applySavedScene(baseline, await savedResponse.json());
+    // The pave band GLB is served from this repo (assets/bands/); resolve it against this module so the private wrapper page works too.
+    for (const variation of project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Band')?.variations || []) {
+      for (const key of ['modelUrl', 'icon']) if (variation[key] && !/^https?:/i.test(variation[key])) variation[key] = new URL(variation[key], import.meta.url).href;
+    }
     portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });
     preselectRing(project);

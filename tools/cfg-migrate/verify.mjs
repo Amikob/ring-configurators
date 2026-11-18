@@ -48,7 +48,7 @@ for (const p of pages) {
     await page.waitForTimeout(3000);
     await page.screenshot({ path: `${outDir}/${tag}-default.png` });
     const schema = await page.evaluate(t => window.__tools[t].inputSchema.properties, setTool);
-    const shapes = schema.shape.enum, carats = schema.carat.enum; let tried = 0;
+    const shapes = schema.shape.enum, carats = schema.carat.enum || Array.from({ length: schema.carat.maximum - schema.carat.minimum + 1 }, (_, k) => schema.carat.minimum + k); let tried = 0; // integer carat schema (Ariella)
     const combos = all ? shapes.flatMap(sh => carats.map(c => ({ shape: sh, carat: c }))) : null;
     for (let i = 0; combos ? i < combos.length : (tried < n && i < shapes.length * carats.length * 3); i++) {
       const sel = combos ? combos[i] : { shape: shapes[(i * 3 + 1) % shapes.length], carat: carats[(i * 2 + 1) % carats.length] };
