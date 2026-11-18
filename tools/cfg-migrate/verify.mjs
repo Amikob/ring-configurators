@@ -3,7 +3,7 @@
 // configure_<slug> model-context tool, records every .glb request and asserts they all belong to the new
 // configurator's files; screenshots each state; fails on page/console errors or HTTP >= 400.
 //
-//   node tools/cfg-migrate/verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath> [<pagePath>...] [--switches 5 | --all]
+//   node tools/cfg-migrate/verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath> [<pagePath>...] [--switches 5 | --all] [--allow-repo-glb alana/assets/bands/]
 //   e.g. node tools/cfg-migrate/verify.mjs http://127.0.0.1:8800 EiSEtivuSsmgccThjvV6sw /tmp/v lacey/ lacey-2jjz4se99k/
 //
 // Needs playwright-core (PW_DIR, default /workspace/pw) and Chrome (CHROME, default /usr/bin/google-chrome).
@@ -13,8 +13,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(`${process.env.PW_DIR || '/workspace/pw'}/`);
 const { chromium } = require('playwright-core');
 const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36';
-const a = process.argv.slice(2); let n = 5, all = false; const pos = [];
-for (let i = 0; i < a.length; i++) { if (a[i] === '--switches') n = +a[++i]; else if (a[i] === '--all') all = true; else pos.push(a[i]); }
+const a = process.argv.slice(2); let n = 5, all = false, allowRepo = []; const pos = [];
+for (let i = 0; i < a.length; i++) { if (a[i] === '--switches') n = +a[++i]; else if (a[i] === '--all') all = true; else if (a[i] === '--allow-repo-glb') allowRepo.push(a[++i]); else pos.push(a[i]); }
 const [base, cfgId, outDir, ...pages] = pos;
 if (!pages.length) { console.error('usage: verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath>... [--switches N]'); process.exit(2); }
 fs.mkdirSync(outDir, { recursive: true });
@@ -61,7 +61,8 @@ for (const p of pages) {
     }
   }
   const uniq = [...new Set(glbs)];
-  res.glbRequests = uniq.length; res.glbOutsideNewConfigurator = uniq.filter(u => !allowed.has(path.basename(u.split('?')[0])));
+  res.glbRequests = uniq.length; res.glbOutsideNewConfigurator = uniq.filter(u => !allowed.has(path.basename(u.split('?')[0])) && !allowRepo.some(prefix => u.startsWith(new URL(prefix, base.replace(/\/?$/, '/')).href)));
+  // --allow-repo-glb <path>: GLBs the page serves from this repo on purpose (e.g. Alana bands in alana/assets/bands/).
   res.errors = errs; res.httpErrors = bad;
   if (res.glbOutsideNewConfigurator.length || errs.length || bad.length || !uniq.length) fail++;
   report.push(res); await ctx.close();
