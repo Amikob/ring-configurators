@@ -3,7 +3,7 @@
 // configure_<slug> model-context tool, records every .glb request and asserts they all belong to the new
 // configurator's files; screenshots each state; fails on page/console errors or HTTP >= 400.
 //
-//   node tools/cfg-migrate/verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath> [<pagePath>...] [--switches 5 | --all] [--allow-repo-glb alana/assets/bands/]
+//   node tools/cfg-migrate/verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath> [<pagePath>...] [--switches 5 | --all] [--allow-repo-glb alana/assets/bands/] [--config saved.json]
 //   e.g. node tools/cfg-migrate/verify.mjs http://127.0.0.1:8800 EiSEtivuSsmgccThjvV6sw /tmp/v lacey/ lacey-2jjz4se99k/
 //
 // Needs playwright-core (PW_DIR, default /workspace/pw) and Chrome (CHROME, default /usr/bin/google-chrome).
@@ -13,13 +13,16 @@ import { createRequire } from 'node:module';
 const require = createRequire(`${process.env.PW_DIR || '/workspace/pw'}/`);
 const { chromium } = require('playwright-core');
 const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36';
-const a = process.argv.slice(2); let n = 5, all = false, allowRepo = []; const pos = [];
-for (let i = 0; i < a.length; i++) { if (a[i] === '--switches') n = +a[++i]; else if (a[i] === '--all') all = true; else if (a[i] === '--allow-repo-glb') allowRepo.push(a[++i]); else pos.push(a[i]); }
+const a = process.argv.slice(2); let n = 5, all = false, allowRepo = [], configFile = null; const pos = [];
+for (let i = 0; i < a.length; i++) { if (a[i] === '--switches') n = +a[++i]; else if (a[i] === '--all') all = true; else if (a[i] === '--allow-repo-glb') allowRepo.push(a[++i]); else if (a[i] === '--config') configFile = a[++i]; else pos.push(a[i]); }
 const [base, cfgId, outDir, ...pages] = pos;
 if (!pages.length) { console.error('usage: verify.mjs <baseUrl> <configuratorId> <outDir> <pagePath>... [--switches N]'); process.exit(2); }
 fs.mkdirSync(outDir, { recursive: true });
-const doc = await (await fetch(`https://amikob.ijewel3d.com/api/raw/v1/files/view/${cfgId}?select=config`, { headers: { 'User-Agent': UA } })).json();
-const vars = JSON.parse(doc.config).plugins.RingConfigurator.components.flatMap(c => c.variations);
+// --config <file>: take the allowed files from a saved copy instead of fetching <configuratorId>. Accepts a configurator
+// JSON ({config: "..."}) or a page's own saved-config.json / project.json, e.g. to baseline a page that is not migrated yet.
+const doc = configFile ? JSON.parse(fs.readFileSync(configFile, 'utf8')) : await (await fetch(`https://amikob.ijewel3d.com/api/raw/v1/files/view/${cfgId}?select=config`, { headers: { 'User-Agent': UA } })).json();
+const cfgObj = doc.config ? (typeof doc.config === 'string' ? JSON.parse(doc.config) : doc.config) : doc;
+const vars = cfgObj.plugins.RingConfigurator.components.flatMap(c => c.variations);
 const allowed = new Set(vars.flatMap(v => [path.basename(v.modelUrl), path.basename(v.icon.split('?')[0])]));
 const browser = await chromium.launch({ executablePath: process.env.CHROME || '/usr/bin/google-chrome', args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
 let fail = 0; const report = [];
@@ -49,15 +52,20 @@ for (const p of pages) {
     await page.screenshot({ path: `${outDir}/${tag}-default.png` });
     const schema = await page.evaluate(t => window.__tools[t].inputSchema.properties, setTool);
     const shapes = schema.shape.enum, carats = schema.carat.enum || Array.from({ length: schema.carat.maximum - schema.carat.minimum + 1 }, (_, k) => schema.carat.minimum + k); let tried = 0; // integer carat schema (Ariella)
-    const combos = all ? shapes.flatMap(sh => carats.map(c => ({ shape: sh, carat: c }))) : null;
+    // --all: every shape x carat; pages with an orientation field also get an 'ew' pass (shapes without East-West/Regular
+    // reject it as Invalid and are skipped), and every check names its orientation so the result is compared explicitly.
+    const orient = schema.orientation?.enum?.includes('ew');
+    const combos = all ? shapes.flatMap(sh => carats.flatMap(c => orient ? [{ shape: sh, carat: c, orientation: 'ns' }, { shape: sh, carat: c, orientation: 'ew' }] : [{ shape: sh, carat: c }])) : null;
     for (let i = 0; combos ? i < combos.length : (tried < n && i < shapes.length * carats.length * 3); i++) {
       const sel = combos ? combos[i] : { shape: shapes[(i * 3 + 1) % shapes.length], carat: carats[(i * 2 + 1) % carats.length] };
       try {
         const r = await page.evaluate(([t, s]) => window.__tools[t].execute(s), [setTool, sel]);
         await page.waitForTimeout(1500);
-        await page.locator('#viewer').screenshot({ path: `${outDir}/${tag}-${sel.shape}-${sel.carat}.png` });
-        res.switches.push({ ...sel, ringFile: r.ringFile, displayed: r.displayed }); tried++;
-      } catch (e) { if (!/not available|Unknown|Invalid|No ring/i.test(e.message)) { res.switches.push({ ...sel, error: e.message }); tried++; fail++; } }
+        await page.locator('#viewer').screenshot({ path: `${outDir}/${tag}-${sel.shape}-${sel.carat}${sel.orientation ? '-' + sel.orientation : ''}.png` });
+        const mismatch = r.displayed && Object.keys(sel).filter(k => r.displayed[k] !== undefined && r.displayed[k] !== sel[k]);
+        res.switches.push({ ...sel, ringFile: r.ringFile, displayed: r.displayed, ...(mismatch?.length ? { error: `displayed ${mismatch.map(k => `${k}=${r.displayed[k]}`).join(', ')}` } : {}) }); tried++;
+        if (mismatch?.length) fail++;
+      } catch (e) { if (!/not available|Unknown|Invalid|No ring/i.test(e.message)) { res.switches.push({ ...sel, error: e.message }); tried++; fail++; } else res.skipped = (res.skipped || 0) + 1; }
     }
   }
   const uniq = [...new Set(glbs)];

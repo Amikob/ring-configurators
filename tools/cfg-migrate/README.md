@@ -24,3 +24,15 @@ git grep -n -e <oldFolderId> -e <oldFileId> ; node tests/<slug>.check.mjs
 ```
 Note: tools/snapshots/<slug>-public.json and tools/build-<slug>-project.mjs are old build inputs; they still name the old
 files (builder is marked SUPERSEDED for Lacey: do not re-run it).
+
+## Pre-push slot check (new-editor configurators)
+```bash
+python3 tools/cfg-migrate/slotcheck.py <configuratorId> /workspace/cfg-migrate/<set> --geometry [--ignore <band>.glb ...]
+```
+Every Shape x Carat slot must hold `<carat>_ct_<option>.glb` (option label slugged: "Oval North-South" -> oval_north_south,
+"Oval Regular" -> oval_regular; carat "0.5" -> 0_5). --geometry downloads the new files and compares them to the staged ones
+(materials, bbox, area, only zero-area triangles dropped, cross-match). Needs GT_DIR (default /workspace/gt) with
+@gltf-transform/core, @gltf-transform/extensions, draco3dgltf (used by glb-dump.mjs).
+Layout for orientation sets (ND1060, ND_EAR_01/02): one Shape option per orientation, Carat list inside; see
+/workspace/cfg-migrate/<set>/layout-plan.md. verify.mjs --all also tests orientation 'ew' where the page has it, and
+--config <saved-config.json> baselines a page that is not migrated yet.
