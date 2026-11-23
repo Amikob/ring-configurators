@@ -8,3 +8,5 @@ Root cause, as far as reproduced on the box: iJewel web-vto 0.3.3 (CDN) tracking
        off the finger, oversized, and its finger-occlusion mask cut through it -> fragments. Cause = bad hand landmarks from MediaPipe
        on low-confidence detections (vendor code). NOT fixed: ring GLBs are one rigid unit (single root, no per-node transforms),
        same size/axis as working sets; fixing placement needs vendor-level changes (not done).
+ Update 14:30 ET: (c) also seen on live after d56ea42 with a full-frame hand clip (shots/live-orianna-100.png); same clip on nd1060/valeria/dior/aaron/noya rendered correctly.
+ Orianna GLBs match all other sets (same pivot, bbox, axis, node tree), so it is intermittent vendor landmark/depth placement, not Orianna data. Still open.
