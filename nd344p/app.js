@@ -10,6 +10,7 @@ import { manageModelResources } from './model-resources.js?v=15.1';
 import { captureView, centerView } from './view-controls.js?v=15.1';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
+import { applySavedScene, coerceTryonConfig } from './saved-project.js?v=nd344p-fit1';
 const $ = id => document.getElementById(id);
 const PROJECT_ID = 'XE0n9hw5RjWMfkqA07oA4Q';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
@@ -367,7 +368,8 @@ window.addEventListener('ijewel-file-data', ({ detail }) => {
   try {
     const file = detail.iJewelFileData;
     const config = parse(file?.config);
-    savedTryonConfig = (Object.keys(config).length ? config : parse(file?.defaultConfig)).tryonConfig;
+    const raw = (Object.keys(config).length ? config : parse(file?.defaultConfig)).tryonConfig;
+    savedTryonConfig = raw?.enabled ? coerceTryonConfig(raw) : savedTryonConfig;
     render();
   } catch (error) { console.warn('ND344P Try-On configuration could not be read', error); }
 }, { once: true });
@@ -411,7 +413,6 @@ async function start() {
     const baseline = await response.json();
     const savedResponse = await fetch(`https://amikob.ijewel3d.com/api/raw/v1/files/view/${PROJECT_ID}?select=id,name,file,config`, {cache:'no-store'});
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
-    const {applySavedScene} = await import('./saved-project.js?v=2');
     const project = applySavedScene(baseline, await savedResponse.json());
     portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Ring')?.variations, parseRing });

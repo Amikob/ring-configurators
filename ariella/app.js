@@ -10,6 +10,7 @@ import { manageModelResources } from './model-resources.js?v=15.1';
 import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-3';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
+import { applySavedScene, coerceTryonConfig } from './saved-project.js?v=ariella-fit1';
 const $ = id => document.getElementById(id);
 const PROJECT_ID = 'B5d7cjAITNG6jtiYvJKMBg';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
@@ -374,7 +375,8 @@ window.addEventListener('ijewel-file-data', ({ detail }) => {
   try {
     const file = detail.iJewelFileData;
     const config = parse(file?.config);
-    savedTryonConfig = (Object.keys(config).length ? config : parse(file?.defaultConfig)).tryonConfig;
+    const raw = (Object.keys(config).length ? config : parse(file?.defaultConfig)).tryonConfig;
+    savedTryonConfig = raw?.enabled ? coerceTryonConfig(raw) : savedTryonConfig;
     render();
   } catch (error) { console.warn('Ariella Try-On configuration could not be read', error); }
 }, { once: true });
@@ -418,7 +420,6 @@ async function start() {
     const baseline = await response.json();
     const savedResponse = await fetch('./saved-config.json?v=20261118cfg', {cache:'no-store'}); /* local config: the plain Drive folder has no iJewel project config */
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
-    const {applySavedScene} = await import('./saved-project.js?v=scene-1');
     const project = applySavedScene(baseline, await savedResponse.json());
     // The pave band GLB is served from this repo (assets/bands/); resolve it against this module so the private wrapper page works too.
     for (const variation of project.plugins?.RingConfigurator?.components?.find(component => component.name === 'Band')?.variations || []) {
