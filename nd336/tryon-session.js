@@ -29,6 +29,29 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
     const reported = plugin?.running && trackFacing();
     if (reported) lastFacing = reported;
   }
+  // Tracking tolerance (web-vto 0.3.3 defaults hide the ring too eagerly):
+  // - tracking.minHandDistance (default 10) hides the ring whenever the estimated hand distance is below it,
+  //   so a hand held close to the camera loses the ring. 0 turns that gate off.
+  // - any single frame without a detected hand hides the ring at once (_hideAll(true)). Hold the last pose
+  //   for a short moment instead, then fade, so brief dropouts (motion blur, farther hand, low light) do not blink it away.
+  const HOLD_MS = 600;
+  function steadyTracking(tryon) {
+    if (!tryon || tryon.__steadyTracking) return;
+    tryon.__steadyTracking = true;
+    try { if (tryon.tracking) tryon.tracking.minHandDistance = 0; } catch {}
+    let lastPlaced = 0;
+    const place = tryon.updateJewelryAndEffects;
+    if (typeof place === 'function') {
+      tryon.updateJewelryAndEffects = function (...args) { lastPlaced = performance.now(); return place.apply(this, args); };
+    }
+    const hide = tryon._hideAll;
+    if (typeof hide === 'function') {
+      tryon._hideAll = function (immediate) {
+        if (this.running && !this.isImageMode && phase === 'running' && !stopping && lastPlaced && performance.now() - lastPlaced < HOLD_MS) return;
+        return hide.call(this, this.running && phase === 'running' && !stopping ? false : immediate);
+      };
+    }
+  }
   // Called after the Flip button switched cameras.
   function rememberCamera() {
     if (!plugin?.running) return;
@@ -39,6 +62,7 @@ export function manageTryonSession(viewer, { touchDevice = false, onChange = () 
   // Before tryon.start(): open directly on the remembered camera (no second camera switch after start).
   // The plugin builds mediaSettings in a getter on every start, so wrap that getter on this instance.
   function prepareStart(tryon = plugin) {
+    steadyTracking(tryon);
     if (!tryon || Object.prototype.hasOwnProperty.call(tryon, 'mediaSettings')) return;
     let proto = Object.getPrototypeOf(tryon), descriptor;
     while (proto && !(descriptor = Object.getOwnPropertyDescriptor(proto, 'mediaSettings'))) proto = Object.getPrototypeOf(proto);
