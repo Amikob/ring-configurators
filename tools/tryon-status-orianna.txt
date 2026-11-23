@@ -1,12 +1,9 @@
-2026-11-23 Orianna try-on status
-Fix 45b642b (Orianna public+private), rolled to 47 other ring pages in the next commit (tryon-session.js?v=steady1).
-Root cause, as far as reproduced on the box: iJewel web-vto 0.3.3 (CDN) tracking behaviour, not our ring files or the cfg-migrate repoint:
- (a/b) every frame without a confident hand hides the ring instantly (_hideAll(true)), and tracking.minHandDistance=10 hides it for close hands
-       -> ring blinks/vanishes at the edges of the distance range. FIXED in our tryon-session.js: gate off (0) + 600 ms pose hold then fade.
-       Measured with a hand clip with 250 ms blank gaps: ring visible 4/10 samples before, 10/10 after (Orianna 7/11 -> 13/13).
- (c) broken-apart / oversized ring: reproduced once on the LIVE (pre-fix) code with a small, off-centre hand: web-vto placed the ring
-       off the finger, oversized, and its finger-occlusion mask cut through it -> fragments. Cause = bad hand landmarks from MediaPipe
-       on low-confidence detections (vendor code). NOT fixed: ring GLBs are one rigid unit (single root, no per-node transforms),
-       same size/axis as working sets; fixing placement needs vendor-level changes (not done).
- Update 14:30 ET: (c) also seen on live after d56ea42 with a full-frame hand clip (shots/live-orianna-100.png); same clip on nd1060/valeria/dior/aaron/noya rendered correctly.
- Orianna GLBs match all other sets (same pivot, bbox, axis, node tree), so it is intermittent vendor landmark/depth placement, not Orianna data. Still open.
+2026-11-23 14:50 ET - Orianna/Serenity try-on FIXED.
+Root cause: our own first-load camera guard (view-controls.js holdFrontView, used by the 42 'rest on floor' ring pages).
+For 20 s after the page loads it re-applies the product camera every frame (and re-centers on the head). Tapping Try on did not end it,
+so the guard kept moving the AR camera: the ring rendered off the finger, oversized, face-on, and the finger mask cut it into band/head pieces.
+Headless tests that waited >20 s before tapping never saw it; real phones/PCs load fast, so it hit every quick tap.
+Fix: end the guard when Try-On starts and skip it while AR runs (2eaf8da Orianna, 6bca62b 41 more pages). Earlier 45b642b/d56ea42 (gate off + 600 ms hold) stay.
+Measured (Oval 3ct, same hand clip, tap as soon as enabled, AR camera != plugin camera = broken frame):
+ Orianna before 220/220 broken (6 runs); after 0/217 (6 runs) + private 0/83. Serenity before 110/110 (3 runs incl. private); after 0/109.
+ nd1060, valeria, aaron, noya, nd750 after: 0 broken.
