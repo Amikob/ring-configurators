@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 // Every configurator page except the PRESERVED ones must carry the three page fixes first made on nd1046:
 //  1. swap hold + first-load gem shading + lying default   2. lying front view from the head side   3. camera kept on Stand/Rest.
 // Roll out with: python3 tools/apply-page-fixes.py [--only <slug>]   (see SWAPHOLD notes). No per-slug list: new pages must carry them too.
-const PRESERVED = ['erica', 'arlet', 'arlet-test', 'dior', 'nd1061', 'nd336', 'nd344p']; // live before this work: must stay byte-identical
+const PRESERVED = ['erica', 'arlet', 'dior', 'nd1061', 'nd336', 'nd344p']; // live before this work: must stay byte-identical. arlet-test was removed 2026-11-23.
 // Earring pages have no rest/stand pose: they open on a fixed front view of the stone and skip the ring pose checks.
 const EARRINGS = ['nd_ear_01', 'nd_ear_02'];
 const BASELINE = '764f696'; // origin/main before the page-fix work

@@ -2,6 +2,11 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-23 - Removed Arlet TEST pages
+
+- Removed the unlisted test pages `arlet-test/` and `arlet-hand-nbfl9unjcq/` after Koby asked to take them down and remove their iJewel files. Live `arlet/` and its private page `arlet-kfmjuoxume/` are unchanged.
+- `arlet-test` pointed at iJewel project `DqnBsNzCTB2Wd2geOWbcYw` (historically ARLET-TEST / arlet-test, 70% metal-reduced rings). That project already 404s on the public API and was not in the 11 Nov 2026 drive root. `arlet-hand-nbfl9unjcq` used the live Arlet project `fjrrx7obS2afI0O-XSxDlg` (`NDB568 Arlet`) plus a local `assets/hand.glb`; that live iJewel project is not removed.
+
 ## 2026-11-16 - Noya self-hosted pilot: Koby's HDRI maps for metal and diamonds
 
 - `noya-selfhost/` only. Added 21 metal maps (`env/metal/m01..m21`, iJewel `env_metal_001..019, 004_a, 004_b, 061` from Koby's IJEWEL folder) and 3 diamond maps (`env/diamond/d01` Diamond, `d02` Enviroment, `d03` env-gem-1 from GrownBrilliance Assets). Sources listed in `env/*/SOURCES.tsv`.
