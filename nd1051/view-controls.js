@@ -110,6 +110,10 @@ export function holdFrontView(viewer, { remeasure = true, maxMs = 20000 } = {}) 
   };
   const onFrame = () => {
     if (busy) return;
+    // Try-On owns the camera while it starts/runs. Re-applying the product view here moved the AR camera,
+    // so the ring was drawn off the finger, oversized and face-on, and the finger mask cut it into pieces.
+    const ar = viewer.getPluginByType?.('RingTryonPlugin');
+    if (ar && (ar.running || ar._starting)) { endFrontHold(); return; }
     const now = performance.now();
     if (now - started > maxMs) { endFrontHold(); return; }
     if (now - lastCheck < 150) return;

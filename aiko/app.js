@@ -7,7 +7,7 @@ import { manageTryonSession } from './tryon-session.js?v=steady1';
 import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=aiko-1';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=aiko-1';
 import { manageModelResources } from './model-resources.js?v=aiko-1';
-import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-2';
+import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-3';
 
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 const $ = id => document.getElementById(id);
@@ -299,6 +299,7 @@ function downloadTryon() {
 async function openTryon({ generation = ++tryonGeneration, resumeView = null } = {}) {
   const cancelled = () => generation !== tryonGeneration || document.hidden;
   let prepared;
+  endFrontHold(); // the first-load camera guard must not fight the AR camera
   tryonLoading = true; clearError(); render();
   try {
     await downloadTryon();
