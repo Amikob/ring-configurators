@@ -1,0 +1,12 @@
+2026-11-23 Orianna try-on: NOT reproduced on the box; NO code changed, no commit.
+Hypothesis (unconfirmed): the break is device/GPU/camera-specific, not a repo or migration regression.
+Tested (Chromium desktop + mobile emulation, fake camera + real hand clip, live URLs, no-cache):
+ - public orianna/ and private orianna-gxq0f4a3wr/: try-on starts, ring renders as ONE piece on the ring finger, correct size,
+   stays visible with the hand at 100%/60%/40%/25%/15% of frame, live swap of shape/carat/gold OK, zero console errors/404s.
+ - Orianna GLBs have the same node structure as migrated sets (one root node with the Z-up->Y-up rotation, unnamed mesh children, no per-node transforms);
+   bbox ~21x12x27 mm, same as nd1060/valeria/aaron/dior/nd336/nd1047 -> scale/axis not Orianna-specific.
+ - tryon-session.js is byte-identical to nd1060/dior/valeria/nd1043/aaron; orianna files untouched since 9c10192 (Nov 10), before cfg-migrate (Nov 18).
+ - All 51 pages share the same generic tryonConfig (modelScaleFactor 0.0577, rotation x=pi/2); Orianna's iJewel file has no tryonConfig so it uses that default.
+Hand tracking lives in iJewel's web-vto 0.3.3 CDN bundle (MediaPipe hand_landmarker float16 full, numHands 1, detection/tracking/presence confidence fixed 0.5).
+Not exposed by our code; changing them means self-hosting/patching the vendor bundle (pilot only). Plugin 'tracking' block (minHandDistance 10, snappiness 0.9, zOffset -3.25) is tunable via tryonConfig but I did not change it blind.
+Not tested: real iOS Safari (WebKit install needs root deps) and real Android GPU. Need Koby's phone model/browser + a screen recording to go further.
