@@ -1535,6 +1535,36 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_57803559f3.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "ndw200",
+      "name": "NDW200",
+      "sku": "NDW200",
+      "path": "ndw200/",
+      "ijewelProjectId": "c5uGqTrFQXabBQW4LX9Zng",
+      "shapes": [
+        "Round",
+        "Princess",
+        "Oval",
+        "Cushion",
+        "Asscher",
+        "Radiant",
+        "Emerald"
+      ],
+      "carats": null,
+      "rings": 0,
+      "bands": {
+        "files": 21,
+        "styles": [
+          "Full Eternity"
+        ]
+      },
+      "eastWest": false,
+      "metalZones": [
+        "Band"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/ndw201_medium_61ee91326c.png?h=ijewel3d.com",
+      "status": "draft"
     }
   ]
 }

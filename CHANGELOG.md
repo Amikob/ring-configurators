@@ -2,6 +2,11 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-24 - NDW200 full-eternity wedding bands
+
+- New band-only page `ndw200/` (Model NDW201–207 × Size Small/Medium/Large, one Metal 01 gold zone). It does not change any existing ring page.
+- iJewel configurator `c5uGqTrFQXabBQW4LX9Zng` (21 public GLBs). Stones on `Gem 01`, metal on `Metal 01`. Try-on uses the fit saved on that project.
+
 ## 2026-11-23 - Removed Arlet TEST pages
 
 - Removed the unlisted test pages `arlet-test/` and `arlet-hand-nbfl9unjcq/` after Koby asked to take them down and remove their iJewel files. Live `arlet/` and its private page `arlet-kfmjuoxume/` are unchanged.
