@@ -12,7 +12,7 @@ import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnima
 import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
 import { applySavedScene, coerceTryonConfig } from './saved-project.js?v=nicolette-fit1';
 const $ = id => document.getElementById(id);
-const PROJECT_ID = 'Z4wxrZSJSKuH9vAUOnDviQ';
+const PROJECT_ID = 'WFZUoScmTU6Y6UnumZZJ6A';
 // Redone (v2) files: head/shank metal layers (checked from the GLBs by geometry).
 const LAYER_ROLES = {"1Ct Elongated Cushion": {"ringGold": "Metal 02"}};
 const DEFAULT_LAYERS = {"headGold": "Metal 04", "ringGold": "Metal 01"};
