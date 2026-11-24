@@ -15,7 +15,7 @@ const config = typeof native.config === 'string' ? JSON.parse(native.config) : n
 const source = config?.plugins?.RingConfigurator;
 const band = source?.components?.find(component => component.name === 'model' || component.name === 'Model' || component.name === 'Band' || component.name === 'Ring')
   || source?.components?.[0];
-if (!band || band.variations.length !== 21) throw new Error(`Expected 21 NDW200 band variations, found ${band?.variations.length}`);
+if (!band || band.variations.length !== 27) throw new Error(`Expected 27 NDW200 band variations, found ${band?.variations.length}`);
 
 band.visible = true;
 band.selectedIndex = band.variations.findIndex(item => String(item.name || '').replace(/\.(3dm|glb)$/i, '') === 'NDW201_Medium');

@@ -2,6 +2,11 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-24 - NDW200 adds NDW208 Elongated Radiant and NDW209 Marquise
+
+- Same iJewel configurator `c5uGqTrFQXabBQW4LX9Zng`, now 27 bands (NDW201–209 × Small/Medium/Large). Try-on fit unchanged.
+- Page Model list and `configurators.json` `ndw200` entry updated in place (no new entry, no other pages changed).
+
 ## 2026-11-24 - NDW200 full-eternity wedding bands
 
 - New band-only page `ndw200/` (Model NDW201–207 × Size Small/Medium/Large, one Metal 01 gold zone). It does not change any existing ring page.

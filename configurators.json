@@ -1549,12 +1549,14 @@
         "Cushion",
         "Asscher",
         "Radiant",
-        "Emerald"
+        "Emerald",
+        "Elongated Radiant",
+        "Marquise"
       ],
       "carats": null,
       "rings": 0,
       "bands": {
-        "files": 21,
+        "files": 27,
         "styles": [
           "Full Eternity"
         ]

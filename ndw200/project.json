@@ -190,6 +190,54 @@
               "icon": "https://amikob.ijewel3d.com/files/ndw206_small_2ddd897c63.png?h=ijewel3d.com",
               "fileId": "a8ZUeQrVSQ242MRJHVcCRg",
               "tags": []
+            },
+            {
+              "name": "NDW208_Small.glb",
+              "title": "NDW208_Small.glb",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw208_small_7755dabbf8.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw208_small_ac333490fd.png?h=ijewel3d.com",
+              "fileId": "e23UMI4NSiKIHY5BJGDLfA",
+              "tags": []
+            },
+            {
+              "name": "NDW208_Medium.glb",
+              "title": "NDW208_Medium.glb",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw208_medium_e331631410.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw208_medium_85a6f185b3.png?h=ijewel3d.com",
+              "fileId": "GbwdsnwdRkCP81pLn6_ZUw",
+              "tags": []
+            },
+            {
+              "name": "NDW208_Large.glb",
+              "title": "NDW208_Large.glb",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw208_large_5073a69fca.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw208_large_362397da88.png?h=ijewel3d.com",
+              "fileId": "NG7BVZhSSIuLXwAAZDhzHw",
+              "tags": []
+            },
+            {
+              "name": "NDW209_Small.glb",
+              "title": "NDW209_Small.glb",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw209_small_38c485baf5.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw209_small_31a1661b90.png?h=ijewel3d.com",
+              "fileId": "VvYxyKHCQWKnxx6OEetUsQ",
+              "tags": []
+            },
+            {
+              "name": "NDW209_Medium.glb",
+              "title": "NDW209_Medium.glb",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw209_medium_9c4436cec2.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw209_medium_fd1c842e8f.png?h=ijewel3d.com",
+              "fileId": "UH0Nroi9Tr262UJSIH1c3w",
+              "tags": []
+            },
+            {
+              "name": "NDW209_Large.glb",
+              "title": "NDW209_Large.glb",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw209_large_e0e8a1a4ab.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw209_large_b6ed65b7dd.png?h=ijewel3d.com",
+              "fileId": "AC2zsAh6R3qpnJyjoYZlLg",
+              "tags": []
             }
           ],
           "fileId": -1,
@@ -203,14 +251,14 @@
       "groupsMark": "ec9f3cf2-53b3-cc63-6a59-28e06daf6c19",
       "v2": {
         "format": "ijewel.configurator.interim/1",
-        "revision": 1,
-        "compiledAt": "2026-11-24T19:32:32.932Z",
+        "revision": 2,
+        "compiledAt": "2026-11-24T20:33:13.229Z",
         "compiler": "0.1.0",
         "manifest": {
           "schema": "ijewel.configurator.public/2.1",
           "configurator": "c5uGqTrFQXabBQW4LX9Zng",
-          "revision": 1,
-          "publishedAt": "2026-11-24T19:32:32.932Z",
+          "revision": 2,
+          "publishedAt": "2026-11-24T20:33:13.229Z",
           "compiler": "0.1.0",
           "kind": "ring",
           "title": "NDW200",
@@ -249,6 +297,14 @@
                 {
                   "key": "ndw207",
                   "label": "NDW207"
+                },
+                {
+                  "key": "ndw208",
+                  "label": "NDW208"
+                },
+                {
+                  "key": "ndw209",
+                  "label": "NDW209"
                 }
               ]
             },
@@ -386,6 +442,36 @@
                   "sha256": "8f1dd82a6773d259bfcd83b7890a2592acad1483cc90d6f69f95576c3f7fd2aa",
                   "bytes": 1561600,
                   "name": "NDW206_Small.glb"
+                },
+                "ndw208.small": {
+                  "sha256": "eef72f16924e51cfae82f75d667f840d73131de78098e4cf7802cfef836e6b5e",
+                  "bytes": 1469440,
+                  "name": "NDW208_Small.glb"
+                },
+                "ndw208.medium": {
+                  "sha256": "79d13e8f9c594a4a74733c3994a447ddcc896b90bbf0a7efc55f3a3668175dc4",
+                  "bytes": 742400,
+                  "name": "NDW208_Medium.glb"
+                },
+                "ndw208.large": {
+                  "sha256": "48de7cfe5d53d816dca57d82729c748317a2d5721e0ce40ef670ebee8184a2ac",
+                  "bytes": 906240,
+                  "name": "NDW208_Large.glb"
+                },
+                "ndw209.small": {
+                  "sha256": "55aa8a292effe2bc7079f82c5c098c829bfa08136fca8b0148df5d0952d5afa7",
+                  "bytes": 1664000,
+                  "name": "NDW209_Small.glb"
+                },
+                "ndw209.medium": {
+                  "sha256": "957f7864fd246036c6a19157f243184a03afdc24d6ba091b31db36dabc186fa6",
+                  "bytes": 1282048,
+                  "name": "NDW209_Medium.glb"
+                },
+                "ndw209.large": {
+                  "sha256": "e294d7424304d120469d7017e476d2b326233dbe6cac32594a600f5dfee538b7",
+                  "bytes": 1270784,
+                  "name": "NDW209_Large.glb"
                 }
               }
             }
@@ -427,12 +513,12 @@
                   "model",
                   "size"
                 ],
-                "size": 21,
+                "size": 27,
                 "structure": {
                   "kind": "bits",
                   "bits": {
                     "offset": 0,
-                    "length": 3
+                    "length": 4
                   }
                 },
                 "everAllowed": {
@@ -457,7 +543,7 @@
             "sku": true
           },
           "bin": {
-            "sha256": "f6a6312f77a785ab68b609bb82fa0411530c5692f22d480c862d3659f91c19cf",
+            "sha256": "6eaf5994714f7e8a84e91de14a235abb5fed881cce187431b6d3f07e626a4037",
             "bytes": 18
           },
           "blobs": {
@@ -544,11 +630,35 @@
             "8f1dd82a6773d259bfcd83b7890a2592acad1483cc90d6f69f95576c3f7fd2aa": {
               "bytes": 1561600,
               "type": "model/gltf-binary"
+            },
+            "eef72f16924e51cfae82f75d667f840d73131de78098e4cf7802cfef836e6b5e": {
+              "bytes": 1469440,
+              "type": "model/gltf-binary"
+            },
+            "79d13e8f9c594a4a74733c3994a447ddcc896b90bbf0a7efc55f3a3668175dc4": {
+              "bytes": 742400,
+              "type": "model/gltf-binary"
+            },
+            "48de7cfe5d53d816dca57d82729c748317a2d5721e0ce40ef670ebee8184a2ac": {
+              "bytes": 906240,
+              "type": "model/gltf-binary"
+            },
+            "55aa8a292effe2bc7079f82c5c098c829bfa08136fca8b0148df5d0952d5afa7": {
+              "bytes": 1664000,
+              "type": "model/gltf-binary"
+            },
+            "957f7864fd246036c6a19157f243184a03afdc24d6ba091b31db36dabc186fa6": {
+              "bytes": 1282048,
+              "type": "model/gltf-binary"
+            },
+            "e294d7424304d120469d7017e476d2b326233dbe6cac32594a600f5dfee538b7": {
+              "bytes": 1270784,
+              "type": "model/gltf-binary"
             }
           },
           "blobPath": "../blobs/"
         },
-        "bin": "//8fAAAAAAD/AwAAAAAAAP8D",
+        "bin": "////BwAAAAD/DwAAAAAAAP8P",
         "assets": {
           "d72c028ff3178f849d19393e73cfa6b254ecb4358869b71a25b5468c6d1d05cf": {
             "url": "https://amikob.ijewel3d.com/files/ndw201_small_5e8b96e68d.glb",
@@ -695,6 +805,48 @@
             "type": "model/gltf-binary",
             "name": "NDW206_Small.glb",
             "file": "a8ZUeQrVSQ242MRJHVcCRg",
+            "source": "upload"
+          },
+          "eef72f16924e51cfae82f75d667f840d73131de78098e4cf7802cfef836e6b5e": {
+            "url": "https://amikob.ijewel3d.com/files/ndw208_small_7755dabbf8.glb",
+            "type": "model/gltf-binary",
+            "name": "NDW208_Small.glb",
+            "file": "e23UMI4NSiKIHY5BJGDLfA",
+            "source": "upload"
+          },
+          "79d13e8f9c594a4a74733c3994a447ddcc896b90bbf0a7efc55f3a3668175dc4": {
+            "url": "https://amikob.ijewel3d.com/files/ndw208_medium_e331631410.glb",
+            "type": "model/gltf-binary",
+            "name": "NDW208_Medium.glb",
+            "file": "GbwdsnwdRkCP81pLn6_ZUw",
+            "source": "upload"
+          },
+          "48de7cfe5d53d816dca57d82729c748317a2d5721e0ce40ef670ebee8184a2ac": {
+            "url": "https://amikob.ijewel3d.com/files/ndw208_large_5073a69fca.glb",
+            "type": "model/gltf-binary",
+            "name": "NDW208_Large.glb",
+            "file": "NG7BVZhSSIuLXwAAZDhzHw",
+            "source": "upload"
+          },
+          "55aa8a292effe2bc7079f82c5c098c829bfa08136fca8b0148df5d0952d5afa7": {
+            "url": "https://amikob.ijewel3d.com/files/ndw209_small_38c485baf5.glb",
+            "type": "model/gltf-binary",
+            "name": "NDW209_Small.glb",
+            "file": "VvYxyKHCQWKnxx6OEetUsQ",
+            "source": "upload"
+          },
+          "957f7864fd246036c6a19157f243184a03afdc24d6ba091b31db36dabc186fa6": {
+            "url": "https://amikob.ijewel3d.com/files/ndw209_medium_9c4436cec2.glb",
+            "type": "model/gltf-binary",
+            "name": "NDW209_Medium.glb",
+            "file": "UH0Nroi9Tr262UJSIH1c3w",
+            "source": "upload"
+          },
+          "e294d7424304d120469d7017e476d2b326233dbe6cac32594a600f5dfee538b7": {
+            "url": "https://amikob.ijewel3d.com/files/ndw209_large_e0e8a1a4ab.glb",
+            "type": "model/gltf-binary",
+            "name": "NDW209_Large.glb",
+            "file": "AC2zsAh6R3qpnJyjoYZlLg",
             "source": "upload"
           }
         },
@@ -2173,15 +2325,15 @@
     },
     "modelScaleFactor": 0.06052425738648934,
     "modelPosition": {
-      "x": 0.00026985503100443036,
-      "y": 0.004328014233446543,
-      "z": 0.024372302010319553,
+      "x": "0",
+      "y": "0",
+      "z": "0",
       "isVector3": true
     },
     "modelRotation": {
-      "x": -1.6090597124891222,
-      "y": 0.00002336939755076896,
-      "z": -3.141568388385906,
+      "x": 1.570796326794897,
+      "y": 8.958063364507194e-7,
+      "z": 0.000024265203887219637,
       "isVector3": true
     }
   },
