@@ -7,7 +7,7 @@ const project = JSON.parse(fs.readFileSync(new URL('../ndw200/project.json', imp
 const component = project.plugins.RingConfigurator.components.find(item => item.name === 'model')
   || project.plugins.RingConfigurator.components[0];
 const variations = component.variations;
-assert.equal(variations.length, 27);
+assert.equal(variations.length, 30);
 const catalog = createCatalog(variations);
 let combinations = 0;
 for (const model of MODEL_IDS) for (const size of SIZES) for (const ringGold of COLORS) {
@@ -16,8 +16,10 @@ for (const model of MODEL_IDS) for (const size of SIZES) for (const ringGold of 
   assert.equal(band.size, size);
   combinations++;
 }
-assert.equal(combinations, 81);
+assert.equal(combinations, 90);
 assert.equal(parseBand({name: 'NDW201_Large.glb'}).size, 'Large');
+assert.equal(parseBand({name: 'NDW210_Small.glb'}).model, 'NDW210');
+assert(variations.some(item => String(item.modelUrl || '').includes('ndw201_large_8a28179050')));
 assert.equal(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid).join(), 'Metal 01');
 assert.deepEqual(project.materialConfig.mapping.map(item => item.name).sort(), ['Gem 01', 'Metal 01']);
 assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
@@ -27,7 +29,7 @@ assert.notEqual(project.tryonConfig.modelScaleFactor, 0.0591748834393557);
 const savedFile = JSON.parse(fs.readFileSync(new URL('../ndw200/saved-config.json', import.meta.url)));
 assert.equal(savedFile.id, 'c5uGqTrFQXabBQW4LX9Zng');
 const merged = applySavedScene(project, savedFile);
-assert.equal(merged.plugins.RingConfigurator.components[0].variations.length, 27);
+assert.equal(merged.plugins.RingConfigurator.components[0].variations.length, 30);
 assert.deepEqual(merged.materialConfig, project.materialConfig);
 const playground = {
   plugins: {
@@ -58,4 +60,4 @@ assert(html.includes('data-slug="ndw200"'));
 const app = fs.readFileSync(new URL('../ndw200/app.js', import.meta.url), 'utf8');
 assert(app.includes("PROJECT_ID = 'c5uGqTrFQXabBQW4LX9Zng'"));
 assert(app.includes('shared/portal-settings.js'));
-console.log('NDW200: 27 bands, 81 valid model/size/gold selections, Gem 01 + Metal 01 mapped.');
+console.log('NDW200: 30 bands, 90 valid model/size/gold selections, Gem 01 + Metal 01 mapped.');

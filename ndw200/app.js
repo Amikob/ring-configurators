@@ -1,4 +1,4 @@
-import { MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-2';
+import { MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-3';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=ndw200-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=ndw200-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -404,10 +404,10 @@ function preselectRing(project) {
 async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
-    const response = await fetch('./project.json?v=ndw200-2', {cache:'no-store'});
+    const response = await fetch('./project.json?v=ndw200-3', {cache:'no-store'});
     if (!response.ok) throw new Error('NDW200 scene could not be loaded.');
     const baseline = await response.json();
-    const savedResponse = await fetch('./saved-config.json?v=ndw200-2', {cache:'no-store'});
+    const savedResponse = await fetch('./saved-config.json?v=ndw200-3', {cache:'no-store'});
     if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
     const project = applySavedScene(baseline, await savedResponse.json());
     portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });

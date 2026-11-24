@@ -2,6 +2,12 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-24 - NDW200 adds NDW210 Pear; NDW201 Large metal fix
+
+- Added NDW210 (Pear) Small/Medium/Large to the existing `ndw200/` page (10 models × 3 sizes, 30 bands).
+- Rebuilt `project.json` / `saved-config.json` from the published iJewel config so NDW201 Large points at the replacement file (leftover Medium baskets removed).
+- Page Model list and `configurators.json` `ndw200` entry updated in place (no new entry, no other pages changed). Cache query bumped to `?v=ndw200-3`.
+
 ## 2026-11-24 - NDW200 adds NDW208 Elongated Radiant and NDW209 Marquise
 
 - Same iJewel configurator `c5uGqTrFQXabBQW4LX9Zng`, now 27 bands (NDW201–209 × Small/Medium/Large). Try-on fit unchanged.

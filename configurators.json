@@ -1551,12 +1551,13 @@
         "Radiant",
         "Emerald",
         "Elongated Radiant",
-        "Marquise"
+        "Marquise",
+        "Pear"
       ],
       "carats": null,
       "rings": 0,
       "bands": {
-        "files": 27,
+        "files": 30,
         "styles": [
           "Full Eternity"
         ]
