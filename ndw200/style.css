@@ -33,8 +33,10 @@ fieldset { padding: 0; border: 0; margin: 0; min-width: 0; }
 legend { width: 100%; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 10px; padding: 0; font-size: 14px; line-height: 18px; font-weight: 600; }
 legend span { font-size: 12px; font-weight: 400; color: var(--muted); text-align: right; }
 .shape-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 6px 4px; }
-.shape { position: relative; min-width: 0; height: 80px; padding: 6px 1px; display: flex; align-items: center; flex-direction: column; justify-content: flex-start; gap: 4px; border: 1px solid transparent; border-radius: 6px; background: transparent; font-size: 12px; line-height: 14px; }
+.shape { position: relative; min-width: 0; min-height: 80px; height: auto; padding: 6px 1px 8px; display: flex; align-items: center; flex-direction: column; justify-content: flex-start; gap: 3px; border: 1px solid transparent; border-radius: 6px; background: transparent; font-size: 12px; line-height: 14px; }
 .shape img { width: 34px; height: 34px; object-fit: contain; mix-blend-mode: multiply; flex-shrink: 0; }
+.shape .shape-name { text-align: center; max-width: 100%; }
+.shape .shape-sku { font-size: 10px; line-height: 12px; color: var(--muted); }
 .shape[aria-pressed=true] { background: #eff4f2; border-color: #bccfca; color: #274e43; }
 .segments { display: flex; gap: 3px; padding: 3px; border-radius: 6px; background: var(--soft); min-height: 42px; }
 .segments button { flex: 1; min-width: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; padding: 7px 2px; font-size: 14px; }

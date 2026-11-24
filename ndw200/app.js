@@ -1,4 +1,4 @@
-import { MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-3';
+import { MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-4';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=ndw200-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=ndw200-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -36,10 +36,20 @@ function makeChoice(parent, text, value, key, className) {
 }
 for (const model of MODELS) {
   const button = makeChoice('models', '', model.id, 'model', 'shape');
-  button.title = modelTitle(model.id);
-  const code = document.createElement('span'); code.textContent = model.label;
-  const text = document.createElement('span'); text.textContent = model.shapeLabel;
-  button.append(code, text); button.setAttribute('aria-label', modelTitle(model.id));
+  button.title = `${model.shapeLabel} (${model.label})`;
+  const icon = document.createElement('img');
+  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-4`;
+  icon.alt = '';
+  icon.width = 38;
+  icon.height = 38;
+  const name = document.createElement('span');
+  name.className = 'shape-name';
+  name.textContent = model.shapeLabel;
+  const code = document.createElement('span');
+  code.className = 'shape-sku';
+  code.textContent = model.label;
+  button.append(icon, name, code);
+  button.setAttribute('aria-label', `${model.shapeLabel}, ${model.label}`);
 }
 for (const size of SIZES) makeChoice('sizes', size, size, 'size', '');
 $('pose-toggle').addEventListener('click', () => choose({pose:desired.pose === 'flat' ? 'upright' : 'flat'}));
