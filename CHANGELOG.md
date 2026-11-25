@@ -2,6 +2,12 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-25 - NDW200 Half v2 (upright smooth metal) and pancake-flipped pears
+
+- Rebuilt `project.json` / `saved-config.json` from `c5uGqTrFQXabBQW4LX9Zng` so Full NDW210 Small/Medium/Large use the pancake-flipped (180° about X) tips-down-right GLBs.
+- Rebuilt `project-half.json` / `saved-config-half.json` from `KsE7dviHTLiPyTH-usxqIg` with all 30 half-v2 bands (smooth high-poly metal, upright like the full bands, NDW210 tips down-right).
+- Bumped NDW200 cache query to `?v=ndw200-8`.
+
 ## 2026-11-24 - NDW200 adds Half Eternity toggle and tips-down pears
 
 - Added an `Eternity` toggle (`Full` | `Half`, default `Full`) to `ndw200/`, backed by `project-half.json` / `saved-config-half.json` from iJewel configurator `KsE7dviHTLiPyTH-usxqIg` (30 half-eternity bands, Metal 01 gold switch, try-on scale `0.06052425738648934`, rot X 90).

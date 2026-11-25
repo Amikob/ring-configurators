@@ -27,8 +27,8 @@ assert.equal(combinations, 180);
 assert.equal(parseBand({name: 'NDW201_Large.glb'}).size, 'Large');
 assert.equal(parseBand({name: 'NDW210_Small.glb'}).model, 'NDW210');
 assert(variations.some(item => String(item.modelUrl || '').includes('ndw201_large_0fa24d2297')));
-assert(variations.some(item => String(item.modelUrl || '').includes('ndw210_large_c1c8736d79')));
-assert(halfVariations.some(item => String(item.modelUrl || '').includes('ndw210_large_9088cbff27')));
+assert(variations.some(item => String(item.modelUrl || '').includes('ndw210_large_bf04f16350')));
+assert(halfVariations.some(item => String(item.modelUrl || '').includes('ndw210_large_0ccb445bf7')));
 
 for (const proj of [project, projectHalf]) {
   assert.equal(proj.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid).join(), 'Metal 01');

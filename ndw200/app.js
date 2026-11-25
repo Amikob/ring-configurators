@@ -1,4 +1,4 @@
-import { ETERNITIES, ETERNITY_LABEL, MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-7';
+import { ETERNITIES, ETERNITY_LABEL, MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-8';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=ndw200-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=ndw200-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -41,7 +41,7 @@ for (const model of MODELS) {
   const button = makeChoice('models', '', model.id, 'model', 'shape');
   button.title = model.shapeLabel;
   const icon = document.createElement('img');
-  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-7`;
+  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-8`;
   icon.alt = '';
   icon.width = 38;
   icon.height = 38;
@@ -420,10 +420,10 @@ async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
     const [response, savedResponse, halfResponse, savedHalfResponse] = await Promise.all([
-      fetch('./project.json?v=ndw200-7', {cache:'no-store'}),
-      fetch('./saved-config.json?v=ndw200-7', {cache:'no-store'}),
-      fetch('./project-half.json?v=ndw200-7', {cache:'no-store'}),
-      fetch('./saved-config-half.json?v=ndw200-7', {cache:'no-store'}),
+      fetch('./project.json?v=ndw200-8', {cache:'no-store'}),
+      fetch('./saved-config.json?v=ndw200-8', {cache:'no-store'}),
+      fetch('./project-half.json?v=ndw200-8', {cache:'no-store'}),
+      fetch('./saved-config-half.json?v=ndw200-8', {cache:'no-store'}),
     ]);
     if (!response.ok || !halfResponse.ok) throw new Error('NDW200 scene could not be loaded.');
     if (!savedResponse.ok || !savedHalfResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
