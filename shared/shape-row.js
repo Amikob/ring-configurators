@@ -9,6 +9,10 @@
     if (row._shapeRowDragging) return;
     const selected = row.querySelector(SELECTED);
     if (!selected) return;
+    // Only when the selection changes (or on first load). Re-running on every
+    // render() would pull the selected icon back and undo a user's drag or swipe.
+    if (row._shapeRowSelected === selected) return;
+    row._shapeRowSelected = selected;
     selected.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'auto' });
   };
 
