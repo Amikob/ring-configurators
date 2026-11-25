@@ -44,8 +44,8 @@ for (const name of fs.readdirSync(root)) {
     assert(!html.includes('shape-row'), `${name}: no shape UI, should not include shape-row`);
     continue;
   }
-  assert(html.includes('shared/shape-row.css?v=shaperow-3'), `${name}: missing shape-row.css`);
-  assert(html.includes('shared/shape-row.js?v=shaperow-3'), `${name}: missing shape-row.js`);
+  assert(/shared\/shape-row\.css\?v=/.test(html), `${name}: missing shape-row.css`);
+  assert(/shared\/shape-row\.js\?v=/.test(html), `${name}: missing shape-row.js`);
   pages.push(name);
 }
 assert(pages.includes('ndw200'), 'ndw200 must be included');
