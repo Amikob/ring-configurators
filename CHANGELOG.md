@@ -2,6 +2,12 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-24 - NDW200 smoother NURBS metal, hidden ND stamp, flipped pears
+
+- Replaced all 30 bands in iJewel configurator `c5uGqTrFQXabBQW4LX9Zng` with NURBS metal, a hidden ND stamp, and 50% mesh reduction. NDW210 pears now sit on their butts (tips up).
+- Rebuilt `project.json` / `saved-config.json` from the published config so every Model×Size points at the new GLBs. Try-on fit, shape-only labels, icons, and the Metal 01 gold switch are unchanged.
+- Cache query bumped to `?v=ndw200-6`. `configurators.json` stays one `ndw200` entry with the same project id; thumbnail updated to the new NDW201 Medium icon.
+
 ## 2026-11-24 - NDW200 adds NDW210 Pear; NDW201 Large metal fix
 
 - Added NDW210 (Pear) Small/Medium/Large to the existing `ndw200/` page (10 models × 3 sizes, 30 bands).

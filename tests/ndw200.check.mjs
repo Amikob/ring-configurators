@@ -19,7 +19,7 @@ for (const model of MODEL_IDS) for (const size of SIZES) for (const ringGold of 
 assert.equal(combinations, 90);
 assert.equal(parseBand({name: 'NDW201_Large.glb'}).size, 'Large');
 assert.equal(parseBand({name: 'NDW210_Small.glb'}).model, 'NDW210');
-assert(variations.some(item => String(item.modelUrl || '').includes('ndw201_large_8a28179050')));
+assert(variations.some(item => String(item.modelUrl || '').includes('ndw201_large_0fa24d2297')));
 assert.equal(project.plugins.materialConfiguratorPlugin.variations.map(item => item.uuid).join(), 'Metal 01');
 assert.deepEqual(project.materialConfig.mapping.map(item => item.name).sort(), ['Gem 01', 'Metal 01']);
 assert(project.modelUrl.startsWith('https://amikob.ijewel3d.com/files/'));
