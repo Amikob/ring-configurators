@@ -58,7 +58,7 @@ for (const dir of dirs) {
   assert(app.includes('loadPortalStart'), `${dir}: loads settings at start`);
   const tr = read(`${dir}/viewer-transition.js`);
   assert(!/opacity\s*=\s*['"]?0|setTimeout|requestAnimationFrame|transition\s*=\s*['"]opacity/.test(tr.replace(/\/\/.*$/gm, '')), `${dir}: no fade animation`);
-  assert(/nofade/.test(app), `${dir}: uses the no-fade transition module`);
+  assert(/viewer-transition\.js\?v=/.test(app), `${dir}: imports the no-fade transition module`);
 }
 // The patcher reports nothing left to patch.
 const out = execFileSync('python3', [new URL('../tools/apply-portal-settings.py', import.meta.url).pathname, '--check', new URL('.', root).pathname], { encoding: 'utf8' });
