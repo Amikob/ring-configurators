@@ -1,16 +1,16 @@
-import { ETERNITIES, ETERNITY_LABEL, MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-9';
-import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=ndw200-1';
-import { renderProfile, applyRenderProfile } from './render-profile.js?v=ndw200-1';
-import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
-import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-6';
-import { manageTryonSession } from './tryon-session.js?v=steady1';
-import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=ndw200-9';
-import { viewerDiagnostics } from './viewer-diagnostics.js?v=ndw200-1';
-import { manageModelResources } from './model-resources.js?v=ndw200-1';
-import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=keepcam-3';
+import { ETERNITIES, ETERNITY_LABEL, MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-10';
+import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=ndw200-10';
+import { renderProfile, applyRenderProfile } from './render-profile.js?v=ndw200-10';
+import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=ndw200-10';
+import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=ndw200-10';
+import { manageTryonSession } from './tryon-session.js?v=ndw200-10';
+import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=ndw200-10';
+import { viewerDiagnostics } from './viewer-diagnostics.js?v=ndw200-10';
+import { manageModelResources } from './model-resources.js?v=ndw200-10';
+import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=ndw200-10';
 
-import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=1';
-import { applySavedScene, coerceTryonConfig } from './saved-project.js?v=ndw200-1';
+import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=ndw200-10';
+import { applySavedScene, coerceTryonConfig } from './saved-project.js?v=ndw200-10';
 const $ = id => document.getElementById(id);
 const PROJECT_ID = 'c5uGqTrFQXabBQW4LX9Zng';
 const HALF_PROJECT_ID = 'KsE7dviHTLiPyTH-usxqIg';
@@ -41,7 +41,7 @@ for (const model of MODELS) {
   const button = makeChoice('models', '', model.id, 'model', 'shape');
   button.title = model.shapeLabel;
   const icon = document.createElement('img');
-  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-9`;
+  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-10`;
   icon.alt = '';
   icon.width = 38;
   icon.height = 38;
@@ -420,10 +420,10 @@ async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
     const [response, savedResponse, halfResponse, savedHalfResponse] = await Promise.all([
-      fetch('./project.json?v=ndw200-9', {cache:'no-store'}),
-      fetch('./saved-config.json?v=ndw200-9', {cache:'no-store'}),
-      fetch('./project-half.json?v=ndw200-9', {cache:'no-store'}),
-      fetch('./saved-config-half.json?v=ndw200-9', {cache:'no-store'}),
+      fetch('./project.json?v=ndw200-10', {cache:'no-store'}),
+      fetch('./saved-config.json?v=ndw200-10', {cache:'no-store'}),
+      fetch('./project-half.json?v=ndw200-10', {cache:'no-store'}),
+      fetch('./saved-config-half.json?v=ndw200-10', {cache:'no-store'}),
     ]);
     if (!response.ok || !halfResponse.ok) throw new Error('NDW200 scene could not be loaded.');
     if (!savedResponse.ok || !savedHalfResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');

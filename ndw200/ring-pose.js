@@ -9,15 +9,66 @@ export function normalizePose(selection) {
 export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D, PosePlugin, Box3 }) {
   let saved;
   const rotations = new Map();
-  // NDW210 pear V-tips stick out farther than the butts, so PosePlugin ranks
-  // the tip-down face first (poses[0]) regardless of a rigid .3dm rotation,
-  // and the Half NDW210 poses[0] is also slightly tilted. Pick the untilted
-  // tips-up pose instead: poses[1] on Full NDW210, poses[2] on Half NDW210.
-  function stablePoseIndex(poses, { model, eternity } = {}) {
-    if (model === 'NDW210') {
-      const index = eternity === 'half' ? 2 : 1;
-      if (poses[index]) return index;
+  // Convert a PosePlugin entry to the same Y-up resting quaternion used by
+  // PosePlugin.setMostStablePose.
+  function poseQuaternion(pose) {
+    return new Quaternion().setFromRotationMatrix(
+      new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
+        .multiply(pose.xform.clone().invert())
+    );
+  }
+  // World AABB after a candidate resting rotation, sampled from the displayed proxy.
+  function measurePose(pose, proxy) {
+    const q = poseQuaternion(pose);
+    const box = new Box3();
+    const v = new Vector3();
+    for (const node of proxy.children) {
+      const position = node.geometry?.attributes?.position;
+      if (!position) continue;
+      const step = Math.max(1, Math.floor(position.count / 8000));
+      for (let i = 0; i < position.count; i += step) {
+        v.fromBufferAttribute(position, i).applyMatrix4(node.matrix).applyQuaternion(q);
+        box.expandByPoint(v);
+      }
     }
+    if (box.isEmpty()) return null;
+    const size = box.getSize(new Vector3());
+    const center = box.getCenter(new Vector3());
+    return { size, center, min: box.min.clone(), max: box.max.clone(), q };
+  }
+  // Half bands: pick a pose that actually lies flat (ring plane horizontal).
+  // Hardcoding poses[2] was only correct for Half NDW210 Large; on Medium and
+  // Small, poses[2] stands the band on its edge (a vertical column of stones).
+  // Among flat poses, NDW210 also prefers the side with more prong extent up,
+  // which is the 1-prong pear tips (they stick out farther than the butts).
+  function selectFlatPose(poses, proxy, preferTipsUp) {
+    const scored = [];
+    for (let i = 0; i < poses.length; i++) {
+      const measured = measurePose(poses[i], proxy);
+      if (!measured) continue;
+      const flatness = measured.size.y / Math.max(measured.size.x, measured.size.z, 1e-6);
+      const tipUp = (measured.max.y - measured.center.y) - (measured.center.y - measured.min.y);
+      // NDW210 pear tips lie along local +Z in the published GLBs.
+      const tipDirY = new Vector3(0, 0, 1).applyQuaternion(measured.q).y;
+      scored.push({ i, flatness, tipUp, tipDirY });
+    }
+    if (!scored.length) return 0;
+    const flat = scored.filter(item => item.flatness < 0.55);
+    const pool = flat.length ? flat : scored;
+    if (preferTipsUp) {
+      const minFlat = Math.min(...pool.map(item => item.flatness));
+      const candidates = pool.filter(item => item.flatness <= minFlat + 0.1);
+      candidates.sort((a, b) => b.tipDirY - a.tipDirY || b.tipUp - a.tipUp || a.flatness - b.flatness);
+      return candidates[0].i;
+    }
+    pool.sort((a, b) => a.flatness - b.flatness);
+    return pool[0].i;
+  }
+  function stablePoseIndex(poses, options, proxy) {
+    // Only Half lying poses are selected geometrically. Full NDW210 keeps
+    // poses[1] (the untilted tips-up face measured on the Full set).
+    if (options.eternity === 'half') return selectFlatPose(poses, proxy, options.model === 'NDW210');
+    if (options.model === 'NDW210' && poses[1]) return 1;
     return 0;
   }
   function stableRotation(root, options = {}) {
@@ -39,9 +90,13 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
       for (const child of node.children) collect(child);
     }
     collect(root);
+    proxy.updateMatrixWorld(true);
     const poses = new PosePlugin().computeStablePoses(proxy);
     if (!poses.length) throw new Error('No stable resting pose was found.');
-    const index = stablePoseIndex(poses, options);
+    const index = stablePoseIndex(poses, options, proxy);
+    if (typeof globalThis !== 'undefined') {
+      globalThis.__ndwPose = { index, count: poses.length, model: options.model || null, eternity: options.eternity || null };
+    }
     const key = `${signature.join(',')}|${options.model || ''}|${options.eternity || ''}|${index}`;
     if (rotations.has(key)) return rotations.get(key).clone();
     // Same Y-up transform used by PosePlugin.setMostStablePose, but on the
