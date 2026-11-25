@@ -95,15 +95,25 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
     if (!poses.length) throw new Error('No stable resting pose was found.');
     const index = stablePoseIndex(poses, options, proxy);
     if (typeof globalThis !== 'undefined') {
-      globalThis.__ndwPose = { index, count: poses.length, model: options.model || null, eternity: options.eternity || null };
+      globalThis.__ndwPose = { index, count: poses.length, model: options.model || null, eternity: options.eternity || null, size: options.size || null };
     }
-    const key = `${signature.join(',')}|${options.model || ''}|${options.eternity || ''}|${index}`;
+    const key = `${signature.join(',')}|${options.model || ''}|${options.eternity || ''}|${options.size || ''}|${index}`;
     if (rotations.has(key)) return rotations.get(key).clone();
     // Same Y-up transform used by PosePlugin.setMostStablePose, but on the
     // selected pose rather than always pose zero.
     const transform = new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
       .multiply(poses[index].xform.clone().invert());
     const rotation = new Quaternion().setFromRotationMatrix(transform);
+    // Half NDW210 Medium has no untilted stable face: poses[1] is the flattest
+    // tips-up pose, but it is pitched ~4.5° (az ≈ [0.05, 0.997, -0.059]), so
+    // the band looks edged/tilted on desktop. Level the pear tips to world +Y
+    // so it lies like Small/Large. Other sizes and shapes are left untouched.
+    if (options.eternity === 'half' && options.model === 'NDW210' && options.size === 'Medium') {
+      const tip = new Vector3(0, 0, 1).applyQuaternion(rotation);
+      if (tip.lengthSq() > 1e-8) {
+        rotation.premultiply(new Quaternion().setFromUnitVectors(tip.normalize(), new Vector3(0, 1, 0)));
+      }
+    }
     if (rotations.size >= 8) rotations.delete(rotations.keys().next().value);
     rotations.set(key, rotation.clone());
     return rotation;

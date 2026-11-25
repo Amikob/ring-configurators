@@ -2,6 +2,11 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-25 - NDW200 Half NDW210 Medium lying pose leveled
+
+- Half NDW210 Medium in the lying (`Stand`) pose had no untilted stable face; `poses[1]` was the flattest tips-up candidate but pitched ~4.5°, so the band looked edged with the stone row tilted up (Small, Large, and Full were already flat). `ring-pose.js` now levels that combo so pear tips point exactly world +Y. Other sizes, shapes, Full, and Rest are unchanged.
+- Bumped NDW200 cache query to `?v=ndw200-11`.
+
 ## 2026-11-25 - NDW200 half lying pose is flat for every size
 
 - Half bands in the lying (`Stand`) pose no longer use a hardcoded `poses[2]` index (that was only the flat tips-up face for NDW210 Large; Medium and Small stood on edge as a vertical stone column). `ring-pose.js` now picks the flattest stable pose for every Half model and size, and the tips-up face for NDW210, then yaws the stone row to face the camera. Full and Rest (standing) behavior is unchanged.
