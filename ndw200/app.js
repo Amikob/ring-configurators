@@ -1,4 +1,4 @@
-import { MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-6';
+import { ETERNITIES, ETERNITY_LABEL, MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-7';
 import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=ndw200-1';
 import { renderProfile, applyRenderProfile } from './render-profile.js?v=ndw200-1';
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
@@ -13,13 +13,16 @@ import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, ap
 import { applySavedScene, coerceTryonConfig } from './saved-project.js?v=ndw200-1';
 const $ = id => document.getElementById(id);
 const PROJECT_ID = 'c5uGqTrFQXabBQW4LX9Zng';
+const HALF_PROJECT_ID = 'KsE7dviHTLiPyTH-usxqIg';
 const profile = renderProfile(window.matchMedia('(pointer: coarse)').matches);
 let viewer, ringComponent, materials, catalog, ready = false, initializing = false, busy = false;
 let sceneReady = false, tryonSession, savedTryonConfig, tryonLoading = false, vtoDownload, tryonGeneration = 0;
 let tryonResuming = false, ringPose;
 let modelResources, selectedQuality, initialCamera;
+let halfVariations = [];
+const tryonConfigs = { full: null, half: null };
 try { selectedQuality = Number(localStorage.getItem('ndw200-render-quality')) || undefined; } catch {}
-let desired = { model: 'NDW201', size: 'Medium', ringGold: 'yellow', pose: 'upright' };
+let desired = { eternity: 'full', model: 'NDW201', size: 'Medium', ringGold: 'yellow', pose: 'upright' };
 let portalStart = null;
 const PAGE_DEFAULTS = { ...desired };
 let applied = null;
@@ -38,7 +41,7 @@ for (const model of MODELS) {
   const button = makeChoice('models', '', model.id, 'model', 'shape');
   button.title = model.shapeLabel;
   const icon = document.createElement('img');
-  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-6`;
+  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-7`;
   icon.alt = '';
   icon.width = 38;
   icon.height = 38;
@@ -49,6 +52,7 @@ for (const model of MODELS) {
   button.setAttribute('aria-label', model.shapeLabel);
 }
 for (const size of SIZES) makeChoice('sizes', size, size, 'size', '');
+for (const eternity of ETERNITIES) makeChoice('eternities', ETERNITY_LABEL[eternity], eternity, 'eternity', '');
 $('pose-toggle').addEventListener('click', () => choose({pose:desired.pose === 'flat' ? 'upright' : 'flat'}));
 $('center-view').addEventListener('click', () => {
   if (ready && !busy && tryonSession?.phase === 'idle') centerView(viewer);
@@ -64,8 +68,9 @@ function render() {
   }
   $('model-label').textContent = modelTitle(desired.model);
   $('size-label').textContent = desired.size;
+  $('eternity-label').textContent = ETERNITY_LABEL[desired.eternity];
   $('update-status').textContent = busy ? 'Updating...' : '';
-  if (applied) $('selection-summary').textContent = `${modelTitle(applied.model)} / ${applied.size}`;
+  if (applied) $('selection-summary').textContent = `${modelTitle(applied.model)} / ${applied.size} / ${ETERNITY_LABEL[applied.eternity]}`;
   document.body.dataset.ready = String(ready);
   document.body.dataset.busy = String(busy);
   $('viewer').setAttribute('aria-busy', String(busy));
@@ -159,6 +164,7 @@ async function drain() {
         await paintViewer();
       }
       const target = { ...desired };
+      savedTryonConfig = tryonConfigs[target.eternity] || savedTryonConfig;
       const restoreView = applied && !resumeView ? captureView(viewer) : () => {};
       const keepRatio = applied && !resumeView ? zoomRatio(viewer) : null;
       const {ring} = resolveSelection(catalog,target);
@@ -258,7 +264,7 @@ async function setup() {
   if (!ringComponent?.variations?.length || !materials?.variations?.length) return;
   initializing = true;
   try {
-    catalog = createCatalog(ringComponent.variations);
+    catalog = createCatalog(ringComponent.variations, halfVariations);
     // One metal zone: Metal 01 (band + settings). Accept a few saved-control titles.
     groups.ringGold = groupFor('band gold','metal01') || groupFor('gold','metal01') || groupFor('ring gold','metal01') || groupFor('metal 01','metal01');
     if (!groups.ringGold) throw new Error('The saved band gold control (Metal 01) is missing.');
@@ -268,7 +274,7 @@ async function setup() {
       presets.mapping = presets.mapping.filter(entry=>!/(?:^|\/)MaterialConfiguratorPlugin:\d+$/.test(entry.path || ''));
     }
     for (const color of COLORS) if (!materialFor(groups.ringGold,color)) throw new Error(`Missing band gold ${color}`);
-    modelResources = manageModelResources(viewer, [ringComponent]);
+    modelResources = manageModelResources(viewer, [ringComponent, { variations: halfVariations }]);
     desired = guardDesired(desired, PAGE_DEFAULTS, value => resolveSelection(catalog, value));
     ready = true; clearTimeout(startupTimeout); render(); await drain(); await whenGemsShaded(viewer); $('startup').hidden = true;
   } catch (error) {
@@ -309,6 +315,7 @@ async function openTryon({ generation = ++tryonGeneration, resumeView = null } =
     const tryon = await viewer.getOrAddPlugin(window.ij_vto.RingTryonPlugin, { preload: false });
     await viewer.getOrAddPlugin(window.ij_vto.TryonUIPlugin);
     if (cancelled()) return;
+    savedTryonConfig = tryonConfigs[desired.eternity] || savedTryonConfig;
     // An automatic continuation retains the current plugin's fit and camera settings.
     if (!resumeView) await tryon.fromJSON({ ...savedTryonConfig, type: window.ij_vto.RingTryonPlugin.PluginType });
     if (cancelled()) return;
@@ -365,7 +372,8 @@ window.addEventListener('ijewel-file-data', ({ detail }) => {
     const file = detail.iJewelFileData;
     const config = parse(file?.config);
     const raw = (Object.keys(config).length ? config : parse(file?.defaultConfig)).tryonConfig;
-    savedTryonConfig = raw?.enabled ? coerceTryonConfig(raw) : savedTryonConfig;
+    if (raw?.enabled) tryonConfigs.full = coerceTryonConfig(raw);
+    savedTryonConfig = tryonConfigs[desired.eternity] || savedTryonConfig;
     render();
   } catch (error) { console.warn('NDW200 Try-On configuration could not be read', error); }
 }, { once: true });
@@ -411,17 +419,27 @@ function preselectRing(project) {
 async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
-    const response = await fetch('./project.json?v=ndw200-6', {cache:'no-store'});
-    if (!response.ok) throw new Error('NDW200 scene could not be loaded.');
-    const baseline = await response.json();
-    const savedResponse = await fetch('./saved-config.json?v=ndw200-6', {cache:'no-store'});
-    if (!savedResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
-    const project = applySavedScene(baseline, await savedResponse.json());
+    const [response, savedResponse, halfResponse, savedHalfResponse] = await Promise.all([
+      fetch('./project.json?v=ndw200-7', {cache:'no-store'}),
+      fetch('./saved-config.json?v=ndw200-7', {cache:'no-store'}),
+      fetch('./project-half.json?v=ndw200-7', {cache:'no-store'}),
+      fetch('./saved-config-half.json?v=ndw200-7', {cache:'no-store'}),
+    ]);
+    if (!response.ok || !halfResponse.ok) throw new Error('NDW200 scene could not be loaded.');
+    if (!savedResponse.ok || !savedHalfResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');
+    const [baseline, savedFull, baselineHalf, savedHalf] = await Promise.all([
+      response.json(), savedResponse.json(), halfResponse.json(), savedHalfResponse.json(),
+    ]);
+    const project = applySavedScene(baseline, savedFull);
+    const projectHalf = applySavedScene(baselineHalf, savedHalf);
+    halfVariations = findBandComponentData(projectHalf)?.variations || [];
+    tryonConfigs.full = project.tryonConfig;
+    tryonConfigs.half = projectHalf.tryonConfig;
     portalStart = await loadPortalStart({ slug: document.documentElement.dataset.slug });
     applyPortalDesired(desired, portalStart, { colors: COLORS, ringVariations: findBandComponentData(project)?.variations, parseRing: parseBand });
     preselectRing(project);
     initialCamera = project.cameraConfig;
-    savedTryonConfig = project.tryonConfig;
+    savedTryonConfig = tryonConfigs[desired.eternity] || project.tryonConfig;
     applyPortalScene(project, portalStart.scene);
     const miniViewer = new ijewelViewer.Viewer($('viewer'),project,{
       showConfigurator:false,showCard:false,transparentBg:false,showUiButtons:false,hideTryOn:true,hideCameraViews:true,
@@ -442,7 +460,7 @@ if (document.modelContext?.registerTool) {
   const definitions = [
     { name:'get_ndw200_diagnostics',title:'Read viewer diagnostics',description:'Read resource counts and view transforms for diagnosing repeated model changes. Does not alter the viewer.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>viewerDiagnostics(viewer,window.Cache) },
     { name:'get_ndw200_configuration',title:'Read NDW200 selection',description:'Read the current NDW200 band selection.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>configuration() },
-    { name:'configure_ndw200',title:'Configure NDW200',description:'Choose a band model, size, gold color, and upright or resting pose.',inputSchema:{type:'object',properties:{model:{type:'string',enum:MODEL_IDS},size:{type:'string',enum:SIZES},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
+    { name:'configure_ndw200',title:'Configure NDW200',description:'Choose a band eternity style, model, size, gold color, and upright or resting pose.',inputSchema:{type:'object',properties:{eternity:{type:'string',enum:ETERNITIES},model:{type:'string',enum:MODEL_IDS},size:{type:'string',enum:SIZES},ringGold:{type:'string',enum:COLORS},pose:{type:'string',enum:POSES}},additionalProperties:false},annotations:{readOnlyHint:false},execute:async input=> {
       if (!ready) throw new Error('NDW200 is not ready.');
       if (busy) throw new Error('A selection is still loading. Please wait.');
       if (tryonLoading || tryonSession?.phase === 'starting') throw new Error('Try-On is still starting. Please wait.');

@@ -1,5 +1,8 @@
-// NDW200 full-eternity wedding bands: 10 models × 3 sizes (Small / Medium / Large).
+// NDW200 eternity wedding bands: Full (c5uGqTrFQXabBQW4LX9Zng) & Half (KsE7dviHTLiPyTH-usxqIg),
+// 10 models × 3 sizes (Small / Medium / Large) each.
 // One metal zone (Metal 01). Gold is switched on this page, not as an iJewel list.
+export const ETERNITIES = ['full', 'half'];
+export const ETERNITY_LABEL = { full: 'Full', half: 'Half' };
 export const MODELS = [
   { id: 'NDW201', shape: 'round', label: 'NDW201', shapeLabel: 'Round' },
   { id: 'NDW202', shape: 'princess', label: 'NDW202', shapeLabel: 'Princess' },
@@ -41,28 +44,35 @@ export function parseBand(variation) {
 // Kept so shared portal-settings can still be called with parseRing.
 export const parseRing = parseBand;
 
-export function createCatalog(rings) {
-  const bandMap = new Map();
+function indexSet(rings, eternity, bandMap) {
+  let count = 0;
   for (const variation of rings) {
     const item = parseBand(variation);
-    if (!item) throw new Error(`Unknown NDW200 band: ${variation.name}`);
-    const key = `${item.model}:${item.size}`;
+    if (!item) throw new Error(`Unknown NDW200 ${eternity} band: ${variation.name}`);
+    const key = `${eternity}:${item.model}:${item.size}`;
     if (bandMap.has(key)) throw new Error(`Duplicate band: ${key}`);
-    bandMap.set(key, item);
+    bandMap.set(key, { ...item, eternity });
+    count++;
   }
   for (const model of MODEL_IDS) for (const size of SIZES) {
-    if (!bandMap.has(`${model}:${size}`)) throw new Error(`Missing band: ${model} ${size}`);
+    if (!bandMap.has(`${eternity}:${model}:${size}`)) throw new Error(`Missing ${eternity} band: ${model} ${size}`);
   }
-  if (bandMap.size !== BAND_COUNT) throw new Error(`Expected ${BAND_COUNT} bands; found ${bandMap.size}`);
+  if (count !== BAND_COUNT) throw new Error(`Expected ${BAND_COUNT} ${eternity} bands; found ${count}`);
+}
+
+export function createCatalog(rings, halfRings = null) {
+  const bandMap = new Map();
+  indexSet(rings, 'full', bandMap);
+  if (halfRings) indexSet(halfRings, 'half', bandMap);
   return bandMap;
 }
 
 export function resolveSelection(catalog, selection) {
-  const { model, size, ringGold } = selection;
-  if (!MODEL_IDS.includes(model) || !SIZES.includes(size) || !COLORS.includes(ringGold)) {
+  const { model, size, ringGold, eternity = 'full' } = selection;
+  if (!ETERNITIES.includes(eternity) || !MODEL_IDS.includes(model) || !SIZES.includes(size) || !COLORS.includes(ringGold)) {
     throw new Error('Invalid NDW200 selection');
   }
-  const band = catalog.get(`${model}:${size}`);
+  const band = catalog.get(`${eternity}:${model}:${size}`);
   if (!band) throw new Error('Unavailable band');
   return { ring: band, band };
 }

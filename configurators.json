@@ -1542,6 +1542,7 @@
       "sku": "NDW200",
       "path": "ndw200/",
       "ijewelProjectId": "c5uGqTrFQXabBQW4LX9Zng",
+      "halfIjewelProjectId": "KsE7dviHTLiPyTH-usxqIg",
       "shapes": [
         "Round",
         "Princess",
@@ -1557,9 +1558,10 @@
       "carats": null,
       "rings": 0,
       "bands": {
-        "files": 30,
+        "files": 60,
         "styles": [
-          "Full Eternity"
+          "Full Eternity",
+          "Half Eternity"
         ]
       },
       "eastWest": false,

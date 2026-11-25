@@ -2,6 +2,13 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-24 - NDW200 adds Half Eternity toggle and tips-down pears
+
+- Added an `Eternity` toggle (`Full` | `Half`, default `Full`) to `ndw200/`, backed by `project-half.json` / `saved-config-half.json` from iJewel configurator `KsE7dviHTLiPyTH-usxqIg` (30 half-eternity bands, Metal 01 gold switch, try-on scale `0.06052425738648934`, rot X 90).
+- Rebuilt `project.json` / `saved-config.json` from `c5uGqTrFQXabBQW4LX9Zng` so Full NDW210 Pear Small/Medium/Large point at the tips-down GLBs.
+- Kept `shared/shape-row.* ?v=shaperow-3` and shape-only model labels. Bumped NDW200 cache query to `?v=ndw200-7`.
+- `configurators.json`: kept the single `ndw200` entry (`sku: "NDW200"`, `ijewelProjectId: "c5uGqTrFQXabBQW4LX9Zng"`), added `"halfIjewelProjectId": "KsE7dviHTLiPyTH-usxqIg"`, and updated `bands` to `60` files (`["Full Eternity", "Half Eternity"]`).
+
 ## 2026-11-24 - Drag the shape row with the mouse
 
 - On a computer, hold a shape icon and drag left or right to scroll the row. After a drag, the click is ignored so the shape does not change; a plain click still selects it. Images cannot be native-dragged.
