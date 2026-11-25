@@ -2,6 +2,12 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-24 - Drag the shape row with the mouse
+
+- On a computer, hold a shape icon and drag left or right to scroll the row. After a drag, the click is ignored so the shape does not change; a plain click still selects it. Images cannot be native-dragged.
+- Touch/iPhone swipe is unchanged (native overflow scrolling). A vertical mouse wheel over a row that can scroll moves it sideways.
+- Cache query bumped to `?v=shaperow-2` on every page that includes the shared assets.
+
 ## 2026-11-24 - Diamond shapes scroll in one line
 
 - The shape selector on every ring page is now a single horizontal row you can swipe or scroll sideways (no wrapping). Selected icons and labels are unchanged.

@@ -13,6 +13,19 @@ assert.match(css, /flex-shrink:\s*0/);
 assert.match(js, /scrollIntoView/);
 assert.match(js, /inline:\s*['"]nearest['"]/);
 assert.doesNotMatch(js, /block:\s*['"]start['"]/);
+assert.match(js, /pointerdown/);
+assert.match(js, /pointerType === 'mouse'/);
+assert.match(js, /pointerType === 'pen'/);
+assert.match(js, /scrollLeft/);
+assert.match(js, /setPointerCapture/);
+assert.match(js, /dragstart/);
+assert.match(js, /draggable = false/);
+assert.match(js, /preventDefault/);
+assert.match(js, /stopPropagation/);
+assert.match(css, /touch-action:\s*pan-x/);
+assert.doesNotMatch(js, /pointerType === 'touch'/);
+assert.doesNotMatch(js, /setPointerCapture\([^)]*touch/);
+
 
 const skip = new Set(['admin', 'noya-morph']);
 const pages = [];
@@ -31,8 +44,8 @@ for (const name of fs.readdirSync(root)) {
     assert(!html.includes('shape-row'), `${name}: no shape UI, should not include shape-row`);
     continue;
   }
-  assert(html.includes('shared/shape-row.css?v=shaperow-1'), `${name}: missing shape-row.css`);
-  assert(html.includes('shared/shape-row.js?v=shaperow-1'), `${name}: missing shape-row.js`);
+  assert(html.includes('shared/shape-row.css?v=shaperow-2'), `${name}: missing shape-row.css`);
+  assert(html.includes('shared/shape-row.js?v=shaperow-2'), `${name}: missing shape-row.js`);
   pages.push(name);
 }
 assert(pages.includes('ndw200'), 'ndw200 must be included');

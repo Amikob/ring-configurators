@@ -48,3 +48,19 @@
 @media (max-width: 1000px) and (orientation: landscape) and (max-height: 550px) {
   .shape-grid > .shape { min-height: 0; }
 }
+
+.shape-grid,
+.shape-grid > *,
+#shapes.shapes,
+#shapes.shapes > button {
+  cursor: grab;
+}
+.shape-grid[data-shape-row-dragging],
+.shape-grid[data-shape-row-dragging] > *,
+#shapes.shapes[data-shape-row-dragging],
+#shapes.shapes[data-shape-row-dragging] > button {
+  cursor: grabbing;
+  user-select: none;
+  -webkit-user-select: none;
+  scroll-snap-type: none;
+}
