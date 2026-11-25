@@ -2,6 +2,13 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-25 - NDW200 lying-pose tips-up pears and half stone-row yaw
+
+- In `ndw200/ring-pose.js` only, the lying (`Stand`) pose now picks the untilted tips-up stable pose for NDW210 (`poses[1]` Full, `poses[2]` Half) so pear tips point up, away from the floor, in both Rest and lying poses.
+- Half bands in the lying pose yaw so the stone row faces the camera as a horizontal front row (no diagonal edge-on view, no tilt). Other pages are unchanged.
+- Rebuilt `project.json` / `saved-config.json` and `project-half.json` / `saved-config-half.json` from the published iJewel projects (`c5uGqTrFQXabBQW4LX9Zng`, `KsE7dviHTLiPyTH-usxqIg`) so NDW210 Small/Medium/Large point at the new tips-up GLBs. Other models are unchanged.
+- Bumped NDW200 cache query to `?v=ndw200-9`.
+
 ## 2026-11-25 - NDW200 Half v2 (upright smooth metal) and pancake-flipped pears
 
 - Rebuilt `project.json` / `saved-config.json` from `c5uGqTrFQXabBQW4LX9Zng` so Full NDW210 Small/Medium/Large use the pancake-flipped (180° about X) tips-down-right GLBs.

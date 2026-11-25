@@ -9,7 +9,18 @@ export function normalizePose(selection) {
 export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D, PosePlugin, Box3 }) {
   let saved;
   const rotations = new Map();
-  function stableRotation(root) {
+  // NDW210 pear V-tips stick out farther than the butts, so PosePlugin ranks
+  // the tip-down face first (poses[0]) regardless of a rigid .3dm rotation,
+  // and the Half NDW210 poses[0] is also slightly tilted. Pick the untilted
+  // tips-up pose instead: poses[1] on Full NDW210, poses[2] on Half NDW210.
+  function stablePoseIndex(poses, { model, eternity } = {}) {
+    if (model === 'NDW210') {
+      const index = eternity === 'half' ? 2 : 1;
+      if (poses[index]) return index;
+    }
+    return 0;
+  }
+  function stableRotation(root, options = {}) {
     // The SDK hull includes hidden geometry. Supply only the displayed ring,
     // borrowing geometry without allocating GPU meshes or changing the scene.
     const proxy = new Object3D();
@@ -28,18 +39,45 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
       for (const child of node.children) collect(child);
     }
     collect(root);
-    const key = signature.join(',');
-    if (rotations.has(key)) return rotations.get(key).clone();
     const poses = new PosePlugin().computeStablePoses(proxy);
     if (!poses.length) throw new Error('No stable resting pose was found.');
-    // Same Y-up transform used by PosePlugin.setMostStablePose (pose zero).
-    // Apply it ourselves to preserve the saved ground and AR configuration.
+    const index = stablePoseIndex(poses, options);
+    const key = `${signature.join(',')}|${options.model || ''}|${options.eternity || ''}|${index}`;
+    if (rotations.has(key)) return rotations.get(key).clone();
+    // Same Y-up transform used by PosePlugin.setMostStablePose, but on the
+    // selected pose rather than always pose zero.
     const transform = new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
-      .multiply(poses[0].xform.clone().invert());
+      .multiply(poses[index].xform.clone().invert());
     const rotation = new Quaternion().setFromRotationMatrix(transform);
     if (rotations.size >= 8) rotations.delete(rotations.keys().next().value);
     rotations.set(key, rotation.clone());
     return rotation;
+  }
+  // World direction from the band centre to the diamond cluster (the stone row).
+  function stoneHead(root) {
+    const bounds = viewer.scene.getModelBounds(true, true, true);
+    if (bounds.isEmpty()) return null;
+    const center = bounds.getCenter(new Vector3());
+    const sum = center.clone().multiplyScalar(0);
+    let count = 0;
+    const point = center.clone();
+    root.updateMatrixWorld(true);
+    root.traverseVisible(node => {
+      if (!node.isMesh || !node.geometry?.attributes?.position) return;
+      if (![node.material].flat().some(material => material?.isDiamondMaterial)) return;
+      if (!node.geometry.boundingBox) node.geometry.computeBoundingBox();
+      node.geometry.boundingBox.getCenter(point).applyMatrix4(node.matrixWorld);
+      sum.add(point); count++;
+    });
+    if (!count) return null;
+    const head = sum.divideScalar(count).sub(center);
+    return Math.hypot(head.x, head.y, head.z) > 1e-4 ? head : null;
+  }
+  function cameraAzimuth() {
+    const camera = viewer.scene.activeCamera;
+    const x = camera.cameraObject.position.x - camera.target.x;
+    const z = camera.cameraObject.position.z - camera.target.z;
+    return Math.hypot(x, z) > 0.001 ? { x, z } : null;
   }
   function refresh() {
     viewer.scene.modelRoot.updateMatrixWorld(true);
@@ -83,15 +121,30 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
           if (!bandBox.isEmpty()) side = bandBox.getCenter(new Vector3()).dot(axis) >= center.dot(axis) ? 1 : -1;
         }
         resting = new Quaternion().setFromUnitVectors(axis.multiplyScalar(side), new Vector3(0, 1, 0));
-      } else resting = stableRotation(root);
+      } else resting = stableRotation(root, options);
       if (root.getWorldQuaternion) {
-        // Use the model's fixed forward direction, never the current camera.
-        // Orbiting then replacing a ring must not turn its head toward us.
-        const head = new Vector3(0, 1, 0).applyQuaternion(root.getWorldQuaternion(new Quaternion())).applyQuaternion(resting);
-        const view = new Vector3(0, 0, -1).applyQuaternion(root.getWorldQuaternion(new Quaternion()));
-        if (Math.hypot(head.x, head.z) > 0.001 && Math.hypot(view.x, view.z) > 0.001) {
-          const yaw = Math.atan2(view.x, view.z) - Math.atan2(head.x, head.z);
-          resting.premultiply(new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), yaw));
+        // Half bands: yaw about world +Y so the stone row faces the camera as a
+        // left-to-right front row (matching how a Full band presents in this view)
+        // and does not run diagonally away. Full bands keep the model's fixed
+        // forward so orbiting then replacing a ring does not turn its head toward us.
+        let yawed = false;
+        if (options.eternity === 'half') {
+          const stones = stoneHead(root);
+          const headed = (stones || new Vector3(0, 1, 0).applyQuaternion(root.getWorldQuaternion(new Quaternion()))).clone().applyQuaternion(resting);
+          const view = cameraAzimuth();
+          if (view && Math.hypot(headed.x, headed.z) > 0.001) {
+            const yaw = Math.atan2(view.x, view.z) - Math.atan2(headed.x, headed.z);
+            resting.premultiply(new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), yaw));
+            yawed = true;
+          }
+        }
+        if (!yawed) {
+          const head = new Vector3(0, 1, 0).applyQuaternion(root.getWorldQuaternion(new Quaternion())).applyQuaternion(resting);
+          const view = new Vector3(0, 0, -1).applyQuaternion(root.getWorldQuaternion(new Quaternion()));
+          if (Math.hypot(head.x, head.z) > 0.001 && Math.hypot(view.x, view.z) > 0.001) {
+            const yaw = Math.atan2(view.x, view.z) - Math.atan2(head.x, head.z);
+            resting.premultiply(new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), yaw));
+          }
         }
       }
       const rotation = parentRotation.clone().invert()

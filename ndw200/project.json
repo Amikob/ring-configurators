@@ -242,24 +242,24 @@
             {
               "name": "NDW210_Small.glb",
               "title": "NDW210_Small.glb",
-              "modelUrl": "https://amikob.ijewel3d.com/files/ndw210_small_8fa43fadea.glb",
-              "icon": "https://amikob.ijewel3d.com/files/ndw210_small_d5f7080919.png?h=ijewel3d.com",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw210_small_df09778e01.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw210_small_bf0fde78ec.png?h=ijewel3d.com",
               "fileId": "BlvYEuKFTICmYRDW8qLwrg",
               "tags": []
             },
             {
               "name": "NDW210_Medium.glb",
               "title": "NDW210_Medium.glb",
-              "modelUrl": "https://amikob.ijewel3d.com/files/ndw210_medium_67d12a5ed8.glb",
-              "icon": "https://amikob.ijewel3d.com/files/ndw210_medium_39a522c536.png?h=ijewel3d.com",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw210_medium_c65e7faa80.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw210_medium_9b889bab4d.png?h=ijewel3d.com",
               "fileId": "MfV0RwEIQTq1B0cU8y3Ewg",
               "tags": []
             },
             {
               "name": "NDW210_Large.glb",
               "title": "NDW210_Large.glb",
-              "modelUrl": "https://amikob.ijewel3d.com/files/ndw210_large_bf04f16350.glb",
-              "icon": "https://amikob.ijewel3d.com/files/ndw210_large_1fb037c871.png?h=ijewel3d.com",
+              "modelUrl": "https://amikob.ijewel3d.com/files/ndw210_large_8880577ae5.glb",
+              "icon": "https://amikob.ijewel3d.com/files/ndw210_large_43fbaf3ebb.png?h=ijewel3d.com",
               "fileId": "BXtYlN8nTeOJOt9xXVk1bw",
               "tags": []
             }
@@ -275,14 +275,14 @@
       "groupsMark": "ec9f3cf2-53b3-cc63-6a59-28e06daf6c19",
       "v2": {
         "format": "ijewel.configurator.interim/1",
-        "revision": 6,
-        "compiledAt": "2026-11-25T05:16:16.811Z",
+        "revision": 7,
+        "compiledAt": "2026-11-25T06:56:01.991Z",
         "compiler": "0.1.0",
         "manifest": {
           "schema": "ijewel.configurator.public/2.1",
           "configurator": "c5uGqTrFQXabBQW4LX9Zng",
-          "revision": 6,
-          "publishedAt": "2026-11-25T05:16:16.811Z",
+          "revision": 7,
+          "publishedAt": "2026-11-25T06:56:01.991Z",
           "compiler": "0.1.0",
           "kind": "ring",
           "title": "NDW200",
@@ -503,24 +503,24 @@
                 },
                 "ndw210.small": {
                   "sha256": "9b8948305a41515c008b6775496ecfb8042ab39e2b99c5b0be088462e7bd0363",
-                  "bytes": 2709504,
+                  "bytes": 2710528,
                   "name": "NDW210_Small.glb"
                 },
                 "ndw210.medium": {
                   "sha256": "a993007b811665535262079baf2d87b7d06d34f837a5040da5e291b58ff4b0ca",
-                  "bytes": 2141184,
+                  "bytes": 2140160,
                   "name": "NDW210_Medium.glb"
                 },
                 "ndw210.large": {
                   "sha256": "01455ef622af2869cf94b1a4b330aba84b371e3ff8b4ce7a19628bc53899ca22",
-                  "bytes": 1995776,
+                  "bytes": 1994752,
                   "name": "NDW210_Large.glb"
                 }
               }
             }
           ],
           "defaults": {
-            "model": "ndw201",
+            "model": "ndw210",
             "size": "medium"
           },
           "display": {
@@ -699,15 +699,15 @@
               "type": "model/gltf-binary"
             },
             "9b8948305a41515c008b6775496ecfb8042ab39e2b99c5b0be088462e7bd0363": {
-              "bytes": 2709504,
+              "bytes": 2710528,
               "type": "model/gltf-binary"
             },
             "a993007b811665535262079baf2d87b7d06d34f837a5040da5e291b58ff4b0ca": {
-              "bytes": 2141184,
+              "bytes": 2140160,
               "type": "model/gltf-binary"
             },
             "01455ef622af2869cf94b1a4b330aba84b371e3ff8b4ce7a19628bc53899ca22": {
-              "bytes": 1995776,
+              "bytes": 1994752,
               "type": "model/gltf-binary"
             }
           },
@@ -905,21 +905,21 @@
             "source": "upload"
           },
           "9b8948305a41515c008b6775496ecfb8042ab39e2b99c5b0be088462e7bd0363": {
-            "url": "https://amikob.ijewel3d.com/files/ndw210_small_8fa43fadea.glb",
+            "url": "https://amikob.ijewel3d.com/files/ndw210_small_df09778e01.glb",
             "type": "model/gltf-binary",
             "name": "NDW210_Small.glb",
             "file": "BlvYEuKFTICmYRDW8qLwrg",
             "source": "upload"
           },
           "a993007b811665535262079baf2d87b7d06d34f837a5040da5e291b58ff4b0ca": {
-            "url": "https://amikob.ijewel3d.com/files/ndw210_medium_67d12a5ed8.glb",
+            "url": "https://amikob.ijewel3d.com/files/ndw210_medium_c65e7faa80.glb",
             "type": "model/gltf-binary",
             "name": "NDW210_Medium.glb",
             "file": "MfV0RwEIQTq1B0cU8y3Ewg",
             "source": "upload"
           },
           "01455ef622af2869cf94b1a4b330aba84b371e3ff8b4ce7a19628bc53899ca22": {
-            "url": "https://amikob.ijewel3d.com/files/ndw210_large_bf04f16350.glb",
+            "url": "https://amikob.ijewel3d.com/files/ndw210_large_8880577ae5.glb",
             "type": "model/gltf-binary",
             "name": "NDW210_Large.glb",
             "file": "BXtYlN8nTeOJOt9xXVk1bw",
