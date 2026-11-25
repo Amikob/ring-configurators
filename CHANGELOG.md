@@ -2,6 +2,12 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-24 - Diamond shapes scroll in one line
+
+- The shape selector on every ring page is now a single horizontal row you can swipe or scroll sideways (no wrapping). Selected icons and labels are unchanged.
+- Shared `shared/shape-row.css` and `shared/shape-row.js` (`?v=shaperow-1`) are included from each page. If the active shape is off-screen on load, it is scrolled into view without jumping the page.
+- Mercury And Sol is not in this repo and was not touched. `noya-morph/` has no shape selector, so it was skipped. Per-page models, `project.json`, and `configurators.json` are unchanged.
+
 ## 2026-11-24 - NDW200 smoother NURBS metal, hidden ND stamp, flipped pears
 
 - Replaced all 30 bands in iJewel configurator `c5uGqTrFQXabBQW4LX9Zng` with NURBS metal, a hidden ND stamp, and 50% mesh reduction. NDW210 pears now sit on their butts (tips up).

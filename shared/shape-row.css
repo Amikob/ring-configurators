@@ -1,0 +1,50 @@
+/* Single-line, sideways-scrolling diamond shape selector.
+   Overrides the per-page .shape-grid wrap (4/8-column) without changing icons, labels, or selected state. */
+.shape-grid,
+#shapes.shapes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scrollbar-width: thin;
+  scrollbar-color: #c2d0ca transparent;
+}
+.shape-grid::-webkit-scrollbar,
+#shapes.shapes::-webkit-scrollbar {
+  height: 4px;
+}
+.shape-grid::-webkit-scrollbar-track,
+#shapes.shapes::-webkit-scrollbar-track {
+  background: transparent;
+}
+.shape-grid::-webkit-scrollbar-thumb,
+#shapes.shapes::-webkit-scrollbar-thumb {
+  background: #c2d0ca;
+  border-radius: 4px;
+}
+.shape-grid > *,
+#shapes.shapes > button {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  min-width: 52px;
+  max-width: 5.5rem;
+  scroll-snap-align: start;
+}
+/* ndw200 sets min-height: 80px for desktop labels; drop it when labels are hidden so the row stays compact. */
+@media (max-width: 850px) {
+  .shape-grid > .shape { min-height: 0; }
+}
+@media (max-width: 1000px) and (orientation: landscape) and (max-height: 550px) {
+  .shape-grid > .shape { min-height: 0; }
+}
