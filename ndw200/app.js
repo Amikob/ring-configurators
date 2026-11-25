@@ -1,16 +1,16 @@
-import { ETERNITIES, ETERNITY_LABEL, MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-12';
-import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=ndw200-12';
-import { renderProfile, applyRenderProfile } from './render-profile.js?v=ndw200-12';
-import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=ndw200-12';
-import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=ndw200-12';
-import { manageTryonSession } from './tryon-session.js?v=ndw200-12';
-import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=ndw200-12';
-import { viewerDiagnostics } from './viewer-diagnostics.js?v=ndw200-12';
-import { manageModelResources } from './model-resources.js?v=ndw200-12';
-import { captureView, centerView, endFrontHold, holdFrontView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=ndw200-12';
+import { ETERNITIES, ETERNITY_LABEL, MODELS, MODEL_IDS, SIZES, COLORS, label, modelTitle, createCatalog, resolveSelection, parseBand, parseRing } from './catalog.js?v=ndw200-13';
+import { refreshDiamondCuts, releaseDiamondCuts } from './diamond-cuts.js?v=ndw200-13';
+import { renderProfile, applyRenderProfile } from './render-profile.js?v=ndw200-13';
+import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=ndw200-13';
+import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=ndw200-13';
+import { manageTryonSession } from './tryon-session.js?v=ndw200-13';
+import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=ndw200-13';
+import { viewerDiagnostics } from './viewer-diagnostics.js?v=ndw200-13';
+import { manageModelResources } from './model-resources.js?v=ndw200-13';
+import { captureView, centerView, endFrontHold, holdCapturedView, holdFrontView, readView, settleCameraAnimations, zoomRatio } from './view-controls.js?v=ndw200-13';
 
-import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=ndw200-12';
-import { applySavedScene, coerceTryonConfig } from './saved-project.js?v=ndw200-12';
+import { loadPortalStart, applyPortalScene, applyPortalDesired, guardDesired, applyStartAngle, installPortalBridge } from '../shared/portal-settings.js?v=ndw200-13';
+import { applySavedScene, coerceTryonConfig } from './saved-project.js?v=ndw200-13';
 const $ = id => document.getElementById(id);
 const PROJECT_ID = 'c5uGqTrFQXabBQW4LX9Zng';
 const HALF_PROJECT_ID = 'KsE7dviHTLiPyTH-usxqIg';
@@ -41,7 +41,7 @@ for (const model of MODELS) {
   const button = makeChoice('models', '', model.id, 'model', 'shape');
   button.title = model.shapeLabel;
   const icon = document.createElement('img');
-  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-12`;
+  icon.src = `./assets/shapes/${model.shape}.png?v=ndw200-13`;
   icon.alt = '';
   icon.width = 38;
   icon.height = 38;
@@ -55,7 +55,7 @@ for (const size of SIZES) makeChoice('sizes', size, size, 'size', '');
 for (const eternity of ETERNITIES) makeChoice('eternities', ETERNITY_LABEL[eternity], eternity, 'eternity', '');
 $('pose-toggle').addEventListener('click', () => choose({pose:desired.pose === 'flat' ? 'upright' : 'flat'}));
 $('center-view').addEventListener('click', () => {
-  if (ready && !busy && tryonSession?.phase === 'idle') centerView(viewer);
+  if (ready && !busy && tryonSession?.phase === 'idle') { endFrontHold(); centerView(viewer); }
 });
 for (const color of COLORS) {
   const button = makeChoice('gold', label(color), color, 'ringGold', 'gold');
@@ -129,6 +129,7 @@ async function drain() {
   if (busy || !ready) return;
   if (applied && JSON.stringify(applied) === JSON.stringify(desired)) return;
   if (applied) endFrontHold();
+  let keepView = null;
   const resumeView = tryonSession?.captureView();
   // Try-On running: swap the ring inside the live AR session (same camera stream, same front/back camera,
   // tracking continues). No stop/restart, so no white default view and no camera reset.
@@ -169,6 +170,10 @@ async function drain() {
       const keepRatio = applied && !resumeView ? zoomRatio(viewer) : null;
       const {ring} = resolveSelection(catalog,target);
       const ringChanged = loadedRing !== ring.variation;
+      // Keep the lying band's world yaw when only the model changes so a
+      // mid-orbit swap does not turn the new ring back to face the camera.
+      const preserveYaw = (ringChanged && ringPose.current === 'flat' && target.pose === 'flat')
+        ? ringPose.currentYaw() : undefined;
       // Material-only changes must retain the resting transform and view.
       if (ringChanged || target.pose !== ringPose.current) {
         shadowsChanged = ringPose.restore() || shadowsChanged;
@@ -192,7 +197,7 @@ async function drain() {
         refreshDiamondCuts(viewer, profile);
         capturesReleased = false;
       }
-      if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat', { model: target.model, eternity: target.eternity, size: target.size });
+      if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat', { model: target.model, eternity: target.eternity, size: target.size, preserveYaw });
       if (ringChanged) {
         modelResources?.endLoad();
         if (!liveSwap) modelResources?.cleanup();
@@ -205,9 +210,21 @@ async function drain() {
         c.setCameraOptions({position:[initialCamera.position.x,initialCamera.position.y,initialCamera.position.z],target:[initialCamera.target.x,initialCamera.target.y,initialCamera.target.z],fov:initialCamera.camOptions.fov});
         centerView(viewer);
       }
-      // The fixed head-side front view is for the very first load only; later pose toggles keep the user's camera direction and zoom.
+      // The fixed head-side front view is for the very first load only.
+      // Later pose toggles keep the user's camera direction and zoom.
+      // Variant swaps (shape, size, Full/Half, gold) keep the exact camera.
       if (!applied) centerView(viewer, {resting:target.pose === 'flat'});
       else if (target.pose !== applied.pose) centerView(viewer, {keepRatio});
+      // Variant swaps must hold the camera captured at the start of this
+      // drain. Recapturing after restore can freeze a late SDK front view.
+      // Pose toggles have already reframed with centerView; hold that framing.
+      if (applied && !liveSwap && !resumeView) {
+        keepView = (target.pose !== applied.pose) ? captureView(viewer) : restoreView;
+        holdCapturedView(viewer, keepView);
+      }
+      if (typeof globalThis !== 'undefined' && viewer) {
+        globalThis.__ndwView = { ...readView(viewer), pose: ringPose.current };
+      }
       shadowsChanged ||= target.pose !== applied?.pose;
       if (!applied && portalStart?.settings?.angle) applyStartAngle(viewer, portalStart.settings.angle);
       if (!applied && target.pose === 'flat') holdFrontView(viewer, {remeasure:!portalStart?.settings?.angle});
@@ -249,6 +266,12 @@ async function drain() {
       }
     } finally {
       finishSceneUpdate();
+      // Rendering was frozen during the swap; a late fit-to-view can start
+      // the moment it resumes. Re-apply the held camera once more now.
+      if (keepView && applied && !liveSwap && !resumeView) keepView();
+      if (typeof globalThis !== 'undefined' && viewer) {
+        globalThis.__ndwView = { ...readView(viewer), pose: ringPose.current };
+      }
       tryonResuming = false;
       busy = false; render();
     }
@@ -380,6 +403,7 @@ window.addEventListener('ijewel-file-data', ({ detail }) => {
 window.addEventListener('ijewel-scene-ready',()=> { sceneReady = true; setup(); },{once:true});
 window.addEventListener('ijewel-viewer-ready',({detail})=> {
   viewer = detail.viewer;
+  if (typeof globalThis !== 'undefined') globalThis.__viewer = viewer;
   installPortalBridge(viewer, portalStart);
   ringPose = manageRingPose(viewer, window);
   tryonSession = manageTryonSession(viewer, {
@@ -420,10 +444,10 @@ async function start() {
   try {
     if (!window.ijewelViewer) throw new Error('The 3D viewer could not be downloaded.');
     const [response, savedResponse, halfResponse, savedHalfResponse] = await Promise.all([
-      fetch('./project.json?v=ndw200-12', {cache:'no-store'}),
-      fetch('./saved-config.json?v=ndw200-12', {cache:'no-store'}),
-      fetch('./project-half.json?v=ndw200-12', {cache:'no-store'}),
-      fetch('./saved-config-half.json?v=ndw200-12', {cache:'no-store'}),
+      fetch('./project.json?v=ndw200-13', {cache:'no-store'}),
+      fetch('./saved-config.json?v=ndw200-13', {cache:'no-store'}),
+      fetch('./project-half.json?v=ndw200-13', {cache:'no-store'}),
+      fetch('./saved-config-half.json?v=ndw200-13', {cache:'no-store'}),
     ]);
     if (!response.ok || !halfResponse.ok) throw new Error('NDW200 scene could not be loaded.');
     if (!savedResponse.ok || !savedHalfResponse.ok) throw new Error('The saved iJewel scene could not be loaded. Please retry.');

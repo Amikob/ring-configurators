@@ -114,6 +114,13 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
     viewer.getPluginByType('Ground')?.refreshTransform();
     viewer.setDirty();
   }
+  function currentYaw() {
+    const root = viewer.scene.modelRoot;
+    if (!root?.getWorldQuaternion) return null;
+    root.updateMatrixWorld(true);
+    const x = new Vector3(1, 0, 0).applyQuaternion(root.getWorldQuaternion(new Quaternion()));
+    return Math.hypot(x.x, x.z) > 0.001 ? Math.atan2(x.x, x.z) : null;
+  }
   function restore() {
     if (!saved) return false;
     const { root, position, quaternion } = saved;
@@ -152,12 +159,23 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
         resting = new Quaternion().setFromUnitVectors(axis.multiplyScalar(side), new Vector3(0, 1, 0));
       } else resting = axisRotation(root, options);
       if (root.getWorldQuaternion) {
-        // Half bands: yaw about world +Y so the stone row faces the camera as a
-        // left-to-right front row (matching how a Full band presents in this view)
-        // and does not run diagonally away. Full bands keep the model's fixed
-        // forward so orbiting then replacing a ring does not turn its head toward us.
+        // When swapping a model already in the lying pose, keep the previous
+        // ring's world yaw so the new band stays in the orbit the person is
+        // looking at instead of turning back to face the camera (FRONT).
         let yawed = false;
-        if (options.eternity === 'half') {
+        if (Number.isFinite(options.preserveYaw)) {
+          const oldWorld = root.getWorldQuaternion(new Quaternion());
+          const predicted = resting.clone().multiply(oldWorld);
+          const x = new Vector3(1, 0, 0).applyQuaternion(predicted);
+          if (Math.hypot(x.x, x.z) > 0.001) {
+            const yaw = options.preserveYaw - Math.atan2(x.x, x.z);
+            resting.premultiply(new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), yaw));
+            yawed = true;
+          }
+        }
+        // First time lying (the person just clicked Stand): yaw a Half band so
+        // the stone row faces the camera as a left-to-right front row.
+        if (!yawed && options.eternity === 'half') {
           const stones = stoneHead(root);
           const headed = (stones || new Vector3(0, 1, 0).applyQuaternion(root.getWorldQuaternion(new Quaternion()))).clone().applyQuaternion(resting);
           const view = cameraAzimuth();
@@ -253,5 +271,5 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
       refresh();
     } catch (error) { restore(); throw error; }
   }
-  return { apply, restore, get current() { return saved ? 'flat' : 'upright'; } };
+  return { apply, restore, currentYaw, get current() { return saved ? 'flat' : 'upright'; } };
 }
