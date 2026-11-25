@@ -6,6 +6,8 @@ import { execFileSync } from 'node:child_process';
 const PRESERVED = ['erica', 'arlet', 'dior', 'nd1061', 'nd336', 'nd344p']; // live before this work: must stay byte-identical. arlet-test was removed 2026-11-23.
 // Earring pages have no rest/stand pose: they open on a fixed front view of the stone and skip the ring pose checks.
 const EARRINGS = ['nd_ear_01', 'nd_ear_02', 'nd_ear_03', 'nd_ear_04'];
+// ndw200 has its own view-controls.js and camera flow (keeps the camera and pose on every variant swap, 10e62f9); tests/ndw200.check.mjs covers it.
+const OWN_VIEW = ['ndw200'];
 const BASELINE = '764f696'; // origin/main before the page-fix work
 const FIX_VERSION = '20261026zzfront7';
 const fail = msg => { console.error(`page-fixes: ${msg}`); process.exit(1); };
@@ -26,7 +28,7 @@ const TRYON_CAMERA_GUARD = [
 const busyGuard = '    if (busy) return;\n';
 if (!viewTemplate.includes(busyGuard)) fail('shared/view-controls.template.js: onFrame busy-guard missing');
 const ringViewTemplate = viewTemplate.replace(busyGuard, busyGuard + TRYON_CAMERA_GUARD);
-const pages = readdirSync('.', { withFileTypes: true }).filter(d => d.isDirectory() && existsSync(`${d.name}/app.js`) && existsSync(`${d.name}/scene-refresh.js`) && !PRESERVED.includes(d.name)).map(d => d.name);
+const pages = readdirSync('.', { withFileTypes: true }).filter(d => d.isDirectory() && existsSync(`${d.name}/app.js`) && existsSync(`${d.name}/scene-refresh.js`) && !PRESERVED.includes(d.name) && !OWN_VIEW.includes(d.name)).map(d => d.name);
 // 2026-10-26 live clean: only rebuilt (v2) pages that passed verification plus the preserved originals are live; more pages return as they are rebuilt.
 // The page template newpage.py clones now lives outside the repo (/workspace/ijewel/redo/templates/eva-template), so no template page is required here.
 if (pages.length < 8) fail(`only ${pages.length} non-preserved pages found, expected at least the 8 rebuilt pages that are live`);

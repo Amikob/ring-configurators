@@ -2,6 +2,10 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-25 - Test suite green again (ndw200 has its own view controls)
+
+- `tests/page-fixes.check.mjs` now skips `ndw200`, which has its own `view-controls.js` since 10e62f9 (keeps the camera on variant swaps) and is covered by `tests/ndw200.check.mjs`. `npm test` was red only because of this. No page or `configurators.json` change.
+
 ## 2026-11-25 - NDW200 keeps the current camera and pose when swapping variants
 
 - Changing shape, size, Full/Half, or gold no longer snaps the camera back to the default front view. The page restores and holds the current orbit, target, and zoom against the SDK's late fit-to-view animation, and a band already in the lying (`Stand`) pose keeps its world yaw so it does not turn to face the camera. The new ring uses the current pose mode. Rest (standing) and the first-load front framing are unchanged. The `v=ndw200-12` lying-pose axis logic is unchanged.
