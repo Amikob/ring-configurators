@@ -79,9 +79,9 @@ const html = fs.readFileSync(new URL('../ndw200/index.html', import.meta.url), '
 assert(html.includes('NDW200'));
 assert(html.includes('data-slug="ndw200"'));
 assert(html.includes('id="eternities"'));
-assert(html.includes('./app.js?v=ndw200-11'));
-assert(html.includes('../shared/shape-row.css?v=ndw200-11'));
-assert(html.includes('../shared/shape-row.js?v=ndw200-11'));
+assert(html.includes('./app.js?v=ndw200-12'));
+assert(html.includes('../shared/shape-row.css?v=ndw200-12'));
+assert(html.includes('../shared/shape-row.js?v=ndw200-12'));
 const app = fs.readFileSync(new URL('../ndw200/app.js', import.meta.url), 'utf8');
 assert(app.includes("PROJECT_ID = 'c5uGqTrFQXabBQW4LX9Zng'"));
 assert(app.includes("HALF_PROJECT_ID = 'KsE7dviHTLiPyTH-usxqIg'"));

@@ -2,6 +2,11 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-25 - NDW200 lying pose uses the known band axis for every combo
+
+- Elongated shapes (oval, radiant, emerald, elongated radiant, marquise, pear, and elongated cushions) were still slightly tilted in the lying (`Stand`) pose because PosePlugin's "flattest" hull face is not the true ring plane. `ring-pose.js` now lies every Full and Half band from the known imported axis (3dm ring plane X-Z → glTF +Z, which is also NDW210 pear tips) onto world +Y, then yaws the stone row to the camera. Rest (standing) is unchanged.
+- Bumped NDW200 cache query to `?v=ndw200-12`.
+
 ## 2026-11-25 - NDW200 Half NDW210 Medium lying pose leveled
 
 - Half NDW210 Medium in the lying (`Stand`) pose had no untilted stable face; `poses[1]` was the flattest tips-up candidate but pitched ~4.5°, so the band looked edged with the stone row tilted up (Small, Large, and Full were already flat). `ring-pose.js` now levels that combo so pear tips point exactly world +Y. Other sizes, shapes, Full, and Rest are unchanged.

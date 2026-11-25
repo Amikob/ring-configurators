@@ -9,116 +9,80 @@ export function normalizePose(selection) {
 export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D, PosePlugin, Box3 }) {
   let saved;
   const rotations = new Map();
-  // Convert a PosePlugin entry to the same Y-up resting quaternion used by
-  // PosePlugin.setMostStablePose.
-  function poseQuaternion(pose) {
-    return new Quaternion().setFromRotationMatrix(
-      new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
-        .multiply(pose.xform.clone().invert())
-    );
-  }
-  // World AABB after a candidate resting rotation, sampled from the displayed proxy.
-  function measurePose(pose, proxy) {
-    const q = poseQuaternion(pose);
-    const box = new Box3();
-    const v = new Vector3();
-    for (const node of proxy.children) {
-      const position = node.geometry?.attributes?.position;
-      if (!position) continue;
-      const step = Math.max(1, Math.floor(position.count / 8000));
-      for (let i = 0; i < position.count; i += step) {
-        v.fromBufferAttribute(position, i).applyMatrix4(node.matrix).applyQuaternion(q);
-        box.expandByPoint(v);
-      }
-    }
-    if (box.isEmpty()) return null;
-    const size = box.getSize(new Vector3());
-    const center = box.getCenter(new Vector3());
-    return { size, center, min: box.min.clone(), max: box.max.clone(), q };
-  }
-  // Half bands: pick a pose that actually lies flat (ring plane horizontal).
-  // Hardcoding poses[2] was only correct for Half NDW210 Large; on Medium and
-  // Small, poses[2] stands the band on its edge (a vertical column of stones).
-  // Among flat poses, NDW210 also prefers the side with more prong extent up,
-  // which is the 1-prong pear tips (they stick out farther than the butts).
-  function selectFlatPose(poses, proxy, preferTipsUp) {
-    const scored = [];
-    for (let i = 0; i < poses.length; i++) {
-      const measured = measurePose(poses[i], proxy);
-      if (!measured) continue;
-      const flatness = measured.size.y / Math.max(measured.size.x, measured.size.z, 1e-6);
-      const tipUp = (measured.max.y - measured.center.y) - (measured.center.y - measured.min.y);
-      // NDW210 pear tips lie along local +Z in the published GLBs.
-      const tipDirY = new Vector3(0, 0, 1).applyQuaternion(measured.q).y;
-      scored.push({ i, flatness, tipUp, tipDirY });
-    }
-    if (!scored.length) return 0;
-    const flat = scored.filter(item => item.flatness < 0.55);
-    const pool = flat.length ? flat : scored;
-    if (preferTipsUp) {
-      const minFlat = Math.min(...pool.map(item => item.flatness));
-      const candidates = pool.filter(item => item.flatness <= minFlat + 0.1);
-      candidates.sort((a, b) => b.tipDirY - a.tipDirY || b.tipUp - a.tipUp || a.flatness - b.flatness);
-      return candidates[0].i;
-    }
-    pool.sort((a, b) => a.flatness - b.flatness);
-    return pool[0].i;
-  }
-  function stablePoseIndex(poses, options, proxy) {
-    // Only Half lying poses are selected geometrically. Full NDW210 keeps
-    // poses[1] (the untilted tips-up face measured on the Full set).
-    if (options.eternity === 'half') return selectFlatPose(poses, proxy, options.model === 'NDW210');
-    if (options.model === 'NDW210' && poses[1]) return 1;
-    return 0;
-  }
-  function stableRotation(root, options = {}) {
-    // The SDK hull includes hidden geometry. Supply only the displayed ring,
-    // borrowing geometry without allocating GPU meshes or changing the scene.
-    const proxy = new Object3D();
-    const signature = [];
-    function collect(node) {
-      if (!node.visible || node.userData?.bboxVisible === false) return;
-      if (node.geometry?.attributes.position) {
-        const item = new Object3D();
-        item.geometry = node.geometry;
-        item.matrixAutoUpdate = false;
-        item.matrix.copy(node.matrixWorld);
-        proxy.add(item);
-        signature.push(node.geometry.uuid, node.geometry.attributes.position.version,
-          ...node.matrixWorld.elements);
-      }
-      for (const child of node.children) collect(child);
-    }
-    collect(root);
-    proxy.updateMatrixWorld(true);
-    const poses = new PosePlugin().computeStablePoses(proxy);
-    if (!poses.length) throw new Error('No stable resting pose was found.');
-    const index = stablePoseIndex(poses, options, proxy);
+  // Upright NDW200 bands are built with the 3dm ring plane in X-Z, mapped to
+  // glTF as V=[X, Z, -Y]: the imported ring stands in the world X-Y plane and
+  // the band axis (finger / thickness, and NDW210 pear tips) is local +Z.
+  // PosePlugin ranks convex-hull faces, and elongated stones (oval, radiant,
+  // emerald, elongated radiant, marquise, pear, and elongated cushions) tilt
+  // those faces by several degrees. Lie the band by sending that known axis
+  // to world +Y so every size and shape rests identically: ring plane
+  // horizontal, axis vertical, pear tips up.
+  function axisRotation(root, options = {}) {
+    const world = root.getWorldQuaternion
+      ? root.getWorldQuaternion(new Quaternion())
+      : root.quaternion.clone();
+    const axis = new Vector3(0, 0, 1).applyQuaternion(world);
+    if (axis.lengthSq() < 1e-8) axis.set(0, 0, 1);
+    else axis.normalize();
+    const rotation = new Quaternion().setFromUnitVectors(axis, new Vector3(0, 1, 0));
     if (typeof globalThis !== 'undefined') {
-      globalThis.__ndwPose = { index, count: poses.length, model: options.model || null, eternity: options.eternity || null, size: options.size || null };
+      globalThis.__ndwPose = {
+        method: 'axis',
+        model: options.model || null,
+        eternity: options.eternity || null,
+        size: options.size || null,
+        axisBefore: [+axis.x.toFixed(4), +axis.y.toFixed(4), +axis.z.toFixed(4)]
+      };
     }
-    const key = `${signature.join(',')}|${options.model || ''}|${options.eternity || ''}|${options.size || ''}|${index}`;
-    if (rotations.has(key)) return rotations.get(key).clone();
-    // Same Y-up transform used by PosePlugin.setMostStablePose, but on the
-    // selected pose rather than always pose zero.
-    const transform = new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
-      .multiply(poses[index].xform.clone().invert());
-    const rotation = new Quaternion().setFromRotationMatrix(transform);
-    // Half NDW210 Medium has no untilted stable face: poses[1] is the flattest
-    // tips-up pose, but it is pitched ~4.5° (az ≈ [0.05, 0.997, -0.059]), so
-    // the band looks edged/tilted on desktop. Level the pear tips to world +Y
-    // so it lies like Small/Large. Other sizes and shapes are left untouched.
-    if (options.eternity === 'half' && options.model === 'NDW210' && options.size === 'Medium') {
-      const tip = new Vector3(0, 0, 1).applyQuaternion(rotation);
-      if (tip.lengthSq() > 1e-8) {
-        rotation.premultiply(new Quaternion().setFromUnitVectors(tip.normalize(), new Vector3(0, 1, 0)));
-      }
-    }
-    if (rotations.size >= 8) rotations.delete(rotations.keys().next().value);
-    rotations.set(key, rotation.clone());
     return rotation;
   }
-  // World direction from the band centre to the diamond cluster (the stone row).
+  function tiltDegrees(root) {
+    root.updateMatrixWorld(true);
+    const axis = new Vector3(0, 0, 1);
+    if (root.getWorldQuaternion) axis.applyQuaternion(root.getWorldQuaternion(new Quaternion()));
+    else axis.applyQuaternion(root.quaternion);
+    const axisLen = axis.length() || 1;
+    const axisTilt = Math.acos(Math.min(1, Math.abs(axis.y) / axisLen)) * (180 / Math.PI);
+    const points = [];
+    const point = new Vector3();
+    root.traverseVisible(node => {
+      const position = node.geometry?.attributes?.position;
+      if (!position || node.userData?.bboxVisible === false) return;
+      const step = Math.max(1, Math.floor(position.count / 4000));
+      for (let i = 0; i < position.count; i += step) {
+        points.push(point.fromBufferAttribute(position, i).applyMatrix4(node.matrixWorld).clone());
+      }
+    });
+    let geomTilt = null;
+    if (points.length >= 3) {
+      const center = new Vector3();
+      for (const p of points) center.add(p);
+      center.divideScalar(points.length);
+      let xx = 0, yy = 0, zz = 0, xy = 0, xz = 0, yz = 0;
+      for (const p of points) {
+        const x = p.x - center.x, y = p.y - center.y, z = p.z - center.z;
+        xx += x * x; yy += y * y; zz += z * z; xy += x * y; xz += x * z; yz += y * z;
+      }
+      const a = xx, b = xy, c = xz, d = yy, e = yz, f = zz;
+      const A = d * f - e * e, B = c * e - b * f, Cc = b * e - c * d;
+      const D = c * e - b * f, E = a * f - c * c, F = b * c - a * e;
+      const G = b * e - c * d, H = b * c - a * e, I = a * d - b * b;
+      const det = a * A + b * B + c * Cc;
+      let vx = 0, vy = 1, vz = 0;
+      if (Math.abs(det) > 1e-18) {
+        for (let i = 0; i < 16; i++) {
+          const x = (A * vx + D * vy + G * vz) / det;
+          const y = (B * vx + E * vy + H * vz) / det;
+          const z = (Cc * vx + F * vy + I * vz) / det;
+          const n = Math.hypot(x, y, z) || 1;
+          vx = x / n; vy = y / n; vz = z / n;
+        }
+      }
+      geomTilt = Math.acos(Math.min(1, Math.abs(vy))) * (180 / Math.PI);
+    }
+    return { axisTilt: +axisTilt.toFixed(3), geomTilt: geomTilt == null ? null : +geomTilt.toFixed(3), axisY: +(axis.y / axisLen).toFixed(4) };
+  }
+  // World direction from the band centretion from the band centre to the diamond cluster (the stone row).
   function stoneHead(root) {
     const bounds = viewer.scene.getModelBounds(true, true, true);
     if (bounds.isEmpty()) return null;
@@ -186,7 +150,7 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
           if (!bandBox.isEmpty()) side = bandBox.getCenter(new Vector3()).dot(axis) >= center.dot(axis) ? 1 : -1;
         }
         resting = new Quaternion().setFromUnitVectors(axis.multiplyScalar(side), new Vector3(0, 1, 0));
-      } else resting = stableRotation(root, options);
+      } else resting = axisRotation(root, options);
       if (root.getWorldQuaternion) {
         // Half bands: yaw about world +Y so the stone row faces the camera as a
         // left-to-right front row (matching how a Full band presents in this view)
@@ -217,6 +181,10 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
         .multiply(parentRotation);
       root.quaternion.premultiply(rotation);
       root.updateWorldMatrix(true, true);
+      if (typeof globalThis !== 'undefined') {
+        const tilt = tiltDegrees(root);
+        globalThis.__ndwPose = { ...(globalThis.__ndwPose || {}), ...tilt };
+      }
       if (options.band) {
         // A set lying on its side rests on the head edge AND the shank, like a
         // ring dropped on a table. Tip it about the horizontal axis across the
