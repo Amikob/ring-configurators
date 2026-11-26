@@ -2,6 +2,14 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-26 - ND1063 added (new-editor configurator TuAfyxGdQvmvHmO7J_KXeg)
+
+- New page `nd1063/` (+ private client link `nd1063-21z12b0qvc/`) for Anton's ND1063 (bezel solitaire, split shank): 8 shapes (Round, Oval, Elongated Cushion, Elongated Radiant, Emerald, Old Cut Cushion, Marquise, Pear) with East-West versions of all but Round = 75 rings at 2, 3, 5, 6, 7 ct (the set has no 4 ct). Built from the ND1062 page; head gold = Metal 01, shank gold = Metal 02, Gem 01 mapped to the diamond material, opens on Oval 3 ct (North-South).
+- Rings load from the new iJewel configurator `TuAfyxGdQvmvHmO7J_KXeg` (75/75 files, public, Try-On button on). The published GLBs were checked against the source 3dm files (materials and size). Try-On fit in the configurator (read back through the API): model size 0.057735999944336154, rotation X 90, position 0 (same as ND1060, ND1062, ND1070, ND1072).
+- Source note: two of Anton's files (Oval East-West 2 ct and 6 ct) had the shank on layer Metal 03; renamed to Metal 02 in the box copies before upload.
+- The page carries the same pear/heart lying-pose code as `nd1062/` at commit 9ebe44e (steadiest stable rest with the point up).
+- `configurators.json`: one new entry `nd1063` (with `sku`); status `new`. Added `tests/nd1063.check.mjs`.
+
 ## 2026-11-26 - ND1070 and ND1072 hearts replaced (redesigned models)
 
 - Redesigned Heart models were uploaded in place into the iJewel configurators (same file ids, new GLB names): ND1070 Heart 4 ct and 6 ct (`IWGKKYGBQaWWprp9phMSfQ`), ND1072 Heart 3, 4, 6 and 8 ct (`Fl7ZE0k0QBm8PFA5j5W5tw`). ND1072 Heart 5 ct and every other ring are unchanged.
