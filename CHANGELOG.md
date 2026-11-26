@@ -2,6 +2,11 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-26 - ND1070 and ND1072: pear and heart point always up when the ring lies on its side
+
+- Problem: in the lying pose some pear and heart rings stood with the point on the floor and others with the point up (ND1070 4 and 5 ct, ND1072 3, 4 and 5 ct for pear and heart pointed down; 6 ct and up pointed up). The published iJewel files are consistent (every pear and heart point is at the same end, checked on the source 3dm and the GLBs); the flip came from the page's lying pose, which picks a different stable resting side per carat, so the finger axis is vertical and the point ends up above or below.
+- Fix, page side only (no iJewel change): `nd1070/ring-pose.js` and `nd1072/ring-pose.js` take a `tipUp` option; when it is set and the stone point would face the floor, the resting rotation is turned 180 degrees about the ring's head axis. `app.js` passes it for Pear and Heart. Upright pose, other shapes (Marquise is symmetric) and all other pages are unchanged. Cache strings bumped (`ring-pose.js?v=nd10xx-2`, `app.js?v=20261126tipup1`).
+
 ## 2026-11-25 - ND1070 added (new-editor configurator IWGKKYGBQaWWprp9phMSfQ)
 
 - New page `nd1070/` (+ private client link `nd1070-ib8eoc5vxd/`) for Anton's ND1070 (hidden-halo pave band): 8 shapes (Round, Oval, Elongated Cushion, Elongated Radiant, Emerald, Marquise, Pear, Heart) x 4, 5, 6, 8, 10 ct = 40 rings, no East-West. Built from the ND1060 page: head gold = Metal 02, shank gold = Metal 01 (white head + yellow shank default), Gem 01/02/03 mapped to the diamond material, opens on Oval 4 ct (smallest carat; the set has no 3 ct).

@@ -84,6 +84,19 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
         }
         resting = new Quaternion().setFromUnitVectors(axis.multiplyScalar(side), new Vector3(0, 1, 0));
       } else resting = stableRotation(root);
+      if (options.tipUp && root.getWorldQuaternion) {
+        // Pear and heart: the point is the narrow end of the centre stone, along the finger axis (3dm -Y = glTF +Z).
+        // Lying on its side the finger axis is vertical, and the hull pose may stand the ring either way up, which put
+        // the point on the floor for some carats. Turn the ring 180 degrees about its head axis so the point is always up.
+        const rootQ = root.getWorldQuaternion(new Quaternion());
+        const tip = new Vector3(0, 0, 1).applyQuaternion(rootQ).applyQuaternion(resting);
+        const headAxis = new Vector3(0, 1, 0).applyQuaternion(rootQ).applyQuaternion(resting);
+        if (tip.y < -0.05) {
+          headAxis.y = 0;
+          if (headAxis.lengthSq() < 1e-6) headAxis.set(1, 0, 0);
+          resting.premultiply(new Quaternion().setFromAxisAngle(headAxis.normalize(), Math.PI));
+        }
+      }
       if (root.getWorldQuaternion) {
         // Use the model's fixed forward direction, never the current camera.
         // Orbiting then replacing a ring must not turn its head toward us.
