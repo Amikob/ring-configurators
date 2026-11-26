@@ -2,6 +2,13 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-26 - ND1062 added (new-editor configurator ccUC7mvVQTyg4fgulXGTdQ)
+
+- New page `nd1062/` (+ private client link `nd1062-dezs17gr2c/`) for Anton's ND1062: 8 shapes (Round, Oval, Elongated Cushion, Elongated Radiant, Emerald, Old Cut Cushion, Marquise, Pear) with East-West versions of all but Round = 75 rings at 2, 3, 5, 6, 7 ct (the set has no 4 ct). Built from the ND1060 page; head gold = Metal 01, shank gold = Metal 02, Gem 01 mapped to the diamond material, opens on Oval 3 ct (North-South).
+- Rings load from the new iJewel configurator `ccUC7mvVQTyg4fgulXGTdQ` (75/75 files, public, Try-On button on). The published GLBs were checked against the source 3dm files (materials and size). Try-On fit saved in iJewel: model size 0.057735999944336154, rotation X 90 (same as ND1060, ND1070, ND1072).
+- The page ships with the pear/heart point-up fix for the lying pose (see the ND1070 and ND1072 entry below): North-South pears lie with the point up; East-West pears are left as they are.
+- `configurators.json`: one new entry `nd1062`; status `new`. Added `tests/nd1062.check.mjs`.
+
 ## 2026-11-26 - ND1070 and ND1072: pear and heart point always up when the ring lies on its side
 
 - Problem: in the lying pose some pear and heart rings stood with the point on the floor and others with the point up (ND1070 4 and 5 ct, ND1072 3, 4 and 5 ct for pear and heart pointed down; 6 ct and up pointed up). The published iJewel files are consistent (every pear and heart point is at the same end, checked on the source 3dm and the GLBs); the flip came from the page's lying pose, which picks a different stable resting side per carat, so the finger axis is vertical and the point ends up above or below.
