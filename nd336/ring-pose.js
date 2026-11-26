@@ -8,7 +8,7 @@ export function normalizePose(selection) {
 export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D, PosePlugin }) {
   let saved;
   const rotations = new Map();
-  function stableRotation(root) {
+  function stableRotations(root) {
     // The SDK hull includes hidden geometry. Supply only the displayed ring,
     // borrowing geometry without allocating GPU meshes or changing the scene.
     const proxy = new Object3D();
@@ -28,17 +28,20 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
     }
     collect(root);
     const key = signature.join(',');
-    if (rotations.has(key)) return rotations.get(key).clone();
+    if (rotations.has(key)) return rotations.get(key).map(rotation => rotation.clone());
     const poses = new PosePlugin().computeStablePoses(proxy);
     if (!poses.length) throw new Error('No stable resting pose was found.');
     // Same Y-up transform used by PosePlugin.setMostStablePose (pose zero).
     // Apply it ourselves to preserve the saved ground and AR configuration.
-    const transform = new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1))
-      .multiply(poses[0].xform.clone().invert());
-    const rotation = new Quaternion().setFromRotationMatrix(transform);
+    // Every stable pose is kept (most stable first) so a pear or heart can pick the one with its point up.
+    const list = poses.map(pose => new Quaternion().setFromRotationMatrix(
+      new Matrix4().lookAt(new Vector3(), new Vector3(0, 1, 0), new Vector3(0, 0, 1)).multiply(pose.xform.clone().invert())));
     if (rotations.size >= 8) rotations.delete(rotations.keys().next().value);
-    rotations.set(key, rotation.clone());
-    return rotation;
+    rotations.set(key, list.map(rotation => rotation.clone()));
+    return list;
+  }
+  function stableRotation(root) {
+    return stableRotations(root)[0];
   }
   function refresh() {
     viewer.scene.modelRoot.updateMatrixWorld(true);
@@ -63,7 +66,7 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
       let el = document.getElementById('tipdebug');
       if (!el) { el = document.createElement('pre'); el.id = 'tipdebug'; document.body.appendChild(el); }
       el.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;background:#fff;border:1px solid #000;padding:4px 6px;font:11px monospace;max-width:70vw;white-space:pre-wrap';
-      el.textContent = 'tip-up v5 requested=' + Boolean(requested) + ' ' + JSON.stringify(lastTip);
+      el.textContent = 'tip-up v6 requested=' + Boolean(requested) + ' ' + JSON.stringify(lastTip);
     } catch { /* diagnostic only */ }
   }
   // Which end of the local Z (finger) axis is the narrow end of the centre stone: +1, -1, or 1 if it cannot be measured.
@@ -118,7 +121,7 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
     saved = { root, position: root.position.clone(), quaternion: root.quaternion.clone() };
     try {
       const parentRotation = root.parent?.getWorldQuaternion(new Quaternion()) || new Quaternion();
-      const resting = stableRotation(root);
+      let resting = stableRotation(root);
       lastTip = null;
       if (options.tipUp && root.getWorldQuaternion) {
         // Pear and heart: the point is the narrow end of the centre stone along the finger axis (local Z). Lying on its
@@ -128,8 +131,17 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
         const rootQ = root.getWorldQuaternion(new Quaternion());
         const sign = narrowEndSign(root);
         const tip = new Vector3(0, 0, sign).applyQuaternion(rootQ).applyQuaternion(resting);
+        let flipped = false, rest = 0;
+        if (tip.y < 0.5) {
+          // Lie the ring the way it would really rest with the point up: pick the steadiest stable pose (a real
+          // floor contact, the shank plus the round end of the stone) whose point faces up.
+          const candidates = stableRotations(root);
+          for (let i = 1; i < candidates.length; i++) {
+            const candidateTip = new Vector3(0, 0, sign).applyQuaternion(rootQ).applyQuaternion(candidates[i]);
+            if (candidateTip.y >= 0.5) { resting = candidates[i]; tip.copy(candidateTip); rest = i; flipped = true; break; }
+          }
+        }
         const headAxis = new Vector3(0, 1, 0).applyQuaternion(rootQ).applyQuaternion(resting);
-        let flipped = false;
         if (tip.y < -0.05) {
           headAxis.y = 0;
           if (headAxis.lengthSq() < 1e-6) headAxis.set(1, 0, 0);
@@ -144,7 +156,7 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
           tip.applyQuaternion(lift);
           flipped = true;
         }
-        lastTip = { sign, tipY: Number(tip.y.toFixed(3)), flipped };
+        lastTip = { sign, tipY: Number(tip.y.toFixed(3)), flipped, rest };
       }
       tipDebug(options.tipUp);
       if (root.getWorldQuaternion) {

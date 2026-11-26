@@ -2,6 +2,14 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-26 - Pear and heart lie on the shank and the round end of the stone, point up
+
+- Koby's view (side view, lying pose): the earlier 180 degree turn about the head axis put the point up but left the ring leaning, not resting on the floor the way a real ring would.
+- Fix (`ring-pose.js` on every page below, page code only): instead of turning the steadiest hull pose over, the page now keeps every stable resting pose of the displayed ring and, for Pear and Heart, takes the steadiest one whose point faces up. In that pose the ring rests on two real floor contacts, the shank and the round end of the stone, with the point highest. The old turn and the stand-up safety net stay only as a fallback if no such pose exists.
+- Same pages and exclusions as the entry below (ring + band sets with a band shown, East-West stones, NDW200, earrings). Other shapes and the upright pose are unchanged.
+- `?tipdebug` still only shows the small diagnostic box (now `tip-up v6`, with `rest` = which stable pose was used). Nothing is shown without it.
+- Cache strings bumped: `ring-pose.js?v=<page>-tipup5`, `app.js` query `...-tipup6`.
+
 ## 2026-11-26 - Pear and heart point up when the ring lies on its side, on every ring page
 
 - Problem: in the lying pose the page picks a resting side per carat from the stone hull, so some pears and hearts stood with the point on the floor (on most older pages every carat did).
