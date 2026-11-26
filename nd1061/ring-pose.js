@@ -126,6 +126,13 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
           tip.applyQuaternion(new Quaternion().setFromAxisAngle(headAxis, Math.PI));
           flipped = true;
         }
+        if (tip.y < 0.5) {
+          // The hull picked an unusual resting pose in which the point is not clearly up: stand the point straight up.
+          const lift = new Quaternion().setFromUnitVectors(tip.clone().normalize(), new Vector3(0, 1, 0));
+          resting.premultiply(lift);
+          tip.applyQuaternion(lift);
+          flipped = true;
+        }
         lastTip = { sign, tipY: Number(tip.y.toFixed(3)), flipped };
       }
       if (root.getWorldQuaternion) {

@@ -8,7 +8,8 @@ All changes to the Next Diamonds ring configurators. Newest first.
 - Fix (page code only, no iJewel or fit changes): `ring-pose.js` takes a `tipUp` option. It measures which end of the centre stone is the narrow end (from the diamond mesh itself, not an assumed direction, because Anton's files differ: the point is at the opposite end in ND1060, ND1061, Aaron, Aiko, Alana, Dior, Eva, Malani, ND1050, Nicolette and Romy than in the other sets), and when that end faces the floor the ring is turned 180 degrees about its head axis. `app.js` passes it for Pear and Heart, North-South only (East-West stones lie sideways, the point is horizontal). Upright pose and every other shape are unchanged.
 - Pages (public + private link): Aaron, Ada, Aiko, Aimi, Alana, Ariella, Arlet, BN630, BN631, BN634, BN635, Dior, Eva, Malani, ND1043, ND1044, ND1045, ND1047, ND1050, ND1060, ND1061, ND1062, ND1070, ND1072, ND334PH, ND336, ND336PH, ND344P, ND366P, ND750, Nicolette, Romy.
 - Ring + band sets (Ada, Ariella, Arlet, Alana, Dior, ND344P with a band selected) are left as they were: the band is stacked on the side opposite the point, so turning the set to put the point up would put the band under the ring. Without a band the stone points up. NDW200 (separate logic, pears set around the band) and the four earring pages are not touched.
-- Cache strings bumped: `ring-pose.js?v=<page>-tipup2`, `app.js` query `...-tipup3` in each public and private `index.html`.
+- Safety net: if the hull ever picks an unusual resting pose where the point is not clearly up, the point is stood straight up.
+- Cache strings bumped: `ring-pose.js?v=<page>-tipup3`, `app.js` query `...-tipup4` in each public and private `index.html`.
 
 ## 2026-11-26 - ND1062 added (new-editor configurator ccUC7mvVQTyg4fgulXGTdQ)
 
