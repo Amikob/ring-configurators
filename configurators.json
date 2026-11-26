@@ -1570,6 +1570,36 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/ndw201_medium_fdff94d73f.png?h=ijewel3d.com",
       "status": "draft"
+    },
+    {
+      "id": "nd1072",
+      "name": "ND1072",
+      "sku": "ND1072",
+      "path": "nd1072/",
+      "ijewelProjectId": "Fl7ZE0k0QBm8PFA5j5W5tw",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Pear",
+        "Heart"
+      ],
+      "carats": [
+        3,
+        8
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_ec38bd3a7a.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }

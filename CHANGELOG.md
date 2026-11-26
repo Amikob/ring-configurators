@@ -2,6 +2,12 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-25 - ND1072 added (new-editor configurator Fl7ZE0k0QBm8PFA5j5W5tw)
+
+- New page `nd1072/` (+ private client link `nd1072-460j56ejaf/`) for Anton's ND1072: 8 shapes (Round, Oval, Elongated Cushion, Elongated Radiant, Emerald, Marquise, Pear, Heart) x 3, 4, 5, 6, 8 ct = 40 rings, no East-West. Built from the ND1060 page: head gold = Metal 02, shank gold = Metal 01 (white head + yellow shank default), Gem 01/02/03 mapped to the diamond material, opens on Oval 3 ct.
+- Rings load from the new iJewel configurator `Fl7ZE0k0QBm8PFA5j5W5tw` (40/40 files, public). The published GLBs were checked against the source 3dm files (positions identical to 0.001 mm, mm scale, origin unchanged, same triangle count, materials Metal 01/02 and Gem 01/02/03). Try-On fit saved in iJewel: model size 0.057735999944336154, rotation X 90 (same as Noya, BN631, ND1060).
+- `configurators.json`: one new entry `nd1072` with `sku` filled (`ND1072`); status `new`. Added `tests/nd1072.check.mjs`.
+
 ## 2026-11-25 - Test suite green again (ndw200 has its own view controls)
 
 - `tests/page-fixes.check.mjs` now skips `ndw200`, which has its own `view-controls.js` since 10e62f9 (keeps the camera on variant swaps) and is covered by `tests/ndw200.check.mjs`. `npm test` was red only because of this. No page or `configurators.json` change.
