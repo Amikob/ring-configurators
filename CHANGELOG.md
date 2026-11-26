@@ -9,7 +9,8 @@ All changes to the Next Diamonds ring configurators. Newest first.
 - Pages (public + private link): Aaron, Ada, Aiko, Aimi, Alana, Ariella, Arlet, BN630, BN631, BN634, BN635, Dior, Eva, Malani, ND1043, ND1044, ND1045, ND1047, ND1050, ND1060, ND1061, ND1062, ND1070, ND1072, ND334PH, ND336, ND336PH, ND344P, ND366P, ND750, Nicolette, Romy.
 - Ring + band sets (Ada, Ariella, Arlet, Alana, Dior, ND344P with a band selected) are left as they were: the band is stacked on the side opposite the point, so turning the set to put the point up would put the band under the ring. Without a band the stone points up. NDW200 (separate logic, pears set around the band) and the four earring pages are not touched.
 - Safety net: if the hull ever picks an unusual resting pose where the point is not clearly up, the point is stood straight up.
-- Cache strings bumped: `ring-pose.js?v=<page>-tipup3`, `app.js` query `...-tipup4` in each public and private `index.html`.
+- Diagnostic: opening any of these pages with `?tipdebug` at the end of the address shows a small box with `tip-up v5 requested=... {sign, tipY, flipped}` after the ring is laid down, so it can be seen on a screenshot whether the step ran. Nothing is shown without it.
+- Cache strings bumped: `ring-pose.js?v=<page>-tipup4`, `app.js` query `...-tipup5` in each public and private `index.html`.
 
 ## 2026-11-26 - ND1062 added (new-editor configurator ccUC7mvVQTyg4fgulXGTdQ)
 

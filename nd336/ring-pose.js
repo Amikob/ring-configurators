@@ -56,6 +56,16 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
     return true;
   }
   let lastTip = null;
+  // Diagnostic only: open the page with ?tipdebug to show whether the pear/heart tip-up step ran.
+  function tipDebug(requested) {
+    try {
+      if (typeof location === 'undefined' || !/[?&]tipdebug/.test(location.search)) return;
+      let el = document.getElementById('tipdebug');
+      if (!el) { el = document.createElement('pre'); el.id = 'tipdebug'; document.body.appendChild(el); }
+      el.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;background:#fff;border:1px solid #000;padding:4px 6px;font:11px monospace;max-width:70vw;white-space:pre-wrap';
+      el.textContent = 'tip-up v5 requested=' + Boolean(requested) + ' ' + JSON.stringify(lastTip);
+    } catch { /* diagnostic only */ }
+  }
   // Which end of the local Z (finger) axis is the narrow end of the centre stone: +1, -1, or 1 if it cannot be measured.
   function narrowEndSign(root) {
     try {
@@ -109,6 +119,7 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
     try {
       const parentRotation = root.parent?.getWorldQuaternion(new Quaternion()) || new Quaternion();
       const resting = stableRotation(root);
+      lastTip = null;
       if (options.tipUp && root.getWorldQuaternion) {
         // Pear and heart: the point is the narrow end of the centre stone along the finger axis (local Z). Lying on its
         // side the finger axis is vertical, and the hull pose may stand the ring either way up, which put the point on
@@ -135,6 +146,7 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
         }
         lastTip = { sign, tipY: Number(tip.y.toFixed(3)), flipped };
       }
+      tipDebug(options.tipUp);
       if (root.getWorldQuaternion) {
         // Use the model's fixed forward direction, never the current camera.
         // Orbiting then replacing a ring must not turn its head toward us.
