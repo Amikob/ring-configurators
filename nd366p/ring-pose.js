@@ -56,6 +56,47 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
     refresh();
     return true;
   }
+  let lastTip = null;
+  // Which end of the local Z (finger) axis is the narrow end of the centre stone: +1, -1, or 1 if it cannot be measured.
+  function narrowEndSign(root) {
+    try {
+      root.updateWorldMatrix(true, true);
+      const toRoot = new Matrix4().copy(root.matrixWorld).invert();
+      const v = new Vector3();
+      let best = null, bestVolume = 0;
+      root.traverse(mesh => {
+        const position = mesh.geometry?.attributes?.position;
+        if (!mesh.isMesh || !position) return;
+        for (let node = mesh; node; node = node.parent) if (node.visible === false) return;
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        if (!materials.some(material => material?.isDiamondMaterial)) return;
+        const m = new Matrix4().multiplyMatrices(toRoot, mesh.matrixWorld);
+        const points = new Float32Array(position.count * 3);
+        const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+        for (let i = 0; i < position.count; i++) {
+          v.set(position.getX(i), position.getY(i), position.getZ(i)).applyMatrix4(m);
+          points[i * 3] = v.x; points[i * 3 + 1] = v.y; points[i * 3 + 2] = v.z;
+          for (let k = 0; k < 3; k++) { lo[k] = Math.min(lo[k], points[i * 3 + k]); hi[k] = Math.max(hi[k], points[i * 3 + k]); }
+        }
+        const volume = (hi[0] - lo[0]) * (hi[1] - lo[1]) * (hi[2] - lo[2]);
+        if (volume > bestVolume) { bestVolume = volume; best = { points, zMin: lo[2], zMax: hi[2] }; }
+      });
+      if (!best) return 1;
+      const band = (best.zMax - best.zMin) * 0.25;
+      const spread = side => {
+        let n = 0, sum = 0, sumSq = 0;
+        for (let i = 0; i < best.points.length; i += 3) {
+          const z = best.points[i + 2];
+          if (side > 0 ? z < best.zMax - band : z > best.zMin + band) continue;
+          const x = best.points[i]; n++; sum += x; sumSq += x * x;
+        }
+        return n > 3 ? Math.sqrt(Math.max(0, sumSq / n - (sum / n) ** 2)) : Infinity;
+      };
+      const top = spread(1), bottom = spread(-1);
+      if (!Number.isFinite(top) || !Number.isFinite(bottom) || Math.abs(top - bottom) < 1e-6) return 1;
+      return top < bottom ? 1 : -1;
+    } catch { return 1; }
+  }
   function apply(pose, options = {}) {
     if (!POSES.includes(pose)) throw new Error('Unknown ring pose.');
     restore();
@@ -84,6 +125,25 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
         }
         resting = new Quaternion().setFromUnitVectors(axis.multiplyScalar(side), new Vector3(0, 1, 0));
       } else resting = stableRotation(root);
+      if (options.tipUp && root.getWorldQuaternion) {
+        // Pear and heart: the point is the narrow end of the centre stone along the finger axis (local Z). Lying on its
+        // side the finger axis is vertical, and the hull pose may stand the ring either way up, which put the point on
+        // the floor for some carats. Measure which end of the stone is the narrow one, and if it faces the floor turn
+        // the ring 180 degrees about its head axis so the point is up.
+        const rootQ = root.getWorldQuaternion(new Quaternion());
+        const sign = narrowEndSign(root);
+        const tip = new Vector3(0, 0, sign).applyQuaternion(rootQ).applyQuaternion(resting);
+        const headAxis = new Vector3(0, 1, 0).applyQuaternion(rootQ).applyQuaternion(resting);
+        let flipped = false;
+        if (tip.y < -0.05) {
+          headAxis.y = 0;
+          if (headAxis.lengthSq() < 1e-6) headAxis.set(1, 0, 0);
+          resting.premultiply(new Quaternion().setFromAxisAngle(headAxis.normalize(), Math.PI));
+          tip.applyQuaternion(new Quaternion().setFromAxisAngle(headAxis, Math.PI));
+          flipped = true;
+        }
+        lastTip = { sign, tipY: Number(tip.y.toFixed(3)), flipped };
+      }
       if (root.getWorldQuaternion) {
         // Use the model's fixed forward direction, never the current camera.
         // Orbiting then replacing a ring must not turn its head toward us.
@@ -167,5 +227,5 @@ export function manageRingPose(viewer, { Vector3, Quaternion, Matrix4, Object3D,
       refresh();
     } catch (error) { restore(); throw error; }
   }
-  return { apply, restore, get current() { return saved ? 'flat' : 'upright'; } };
+  return { apply, restore, get lastTip() { return lastTip; }, get current() { return saved ? 'flat' : 'upright'; } };
 }

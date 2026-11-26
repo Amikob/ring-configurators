@@ -4,7 +4,7 @@ import { renderProfile, applyRenderProfile } from './render-profile.js?v=nd336-1
 import { needsModelTransition, fadeViewer, paintViewer } from './viewer-transition.js?v=nofade-1';
 import { beginSceneUpdate, refreshSceneShadows, whenGemsShaded } from './scene-refresh.js?v=hold-6';
 import { manageTryonSession } from './tryon-session.js?v=steady1';
-import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd336-1';
+import { manageRingPose, normalizePose, POSES } from './ring-pose.js?v=nd336-tipup2';
 import { viewerDiagnostics } from './viewer-diagnostics.js?v=nd336-1';
 import { manageModelResources } from './model-resources.js?v=nd336-1';
 import { captureView, centerView } from './view-controls.js?v=nd336-1';
@@ -181,7 +181,7 @@ async function drain() {
         refreshDiamondCuts(viewer, profile);
         capturesReleased = false;
       }
-      if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat');
+      if (target.pose === 'flat' && ringPose.current !== 'flat') ringPose.apply('flat', { tipUp: ['pear', 'heart'].includes(target.shape) && target.orientation !== 'ew' });
       if (ringChanged) {
         modelResources?.endLoad();
         if (!liveSwap) modelResources?.cleanup();
