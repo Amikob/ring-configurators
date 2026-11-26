@@ -2,6 +2,11 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-26 - ND1070 and ND1072 hearts replaced (redesigned models)
+
+- Redesigned Heart models were uploaded in place into the iJewel configurators (same file ids, new GLB names): ND1070 Heart 4 ct and 6 ct (`IWGKKYGBQaWWprp9phMSfQ`), ND1072 Heart 3, 4, 6 and 8 ct (`Fl7ZE0k0QBm8PFA5j5W5tw`). ND1072 Heart 5 ct and every other ring are unchanged.
+- `nd1070/` and `nd1072/` (`project.json`, `saved-config.json`) now point to the new GLBs and thumbnails (swapped with `tools/cfg-migrate/repoint.mjs`; the GLB file names changed, so no stale browser cache). The new GLBs were checked against the source 3dm files: materials Metal 01/02 and Gem 01/02/03, triangle counts and bounding boxes match, and they differ from the old hearts. Try-On fit in both configurators is unchanged (model size 0.057735999944336154, rotation X 90).
+
 ## 2026-11-26 - Pear and heart lie on the shank and the round end of the stone, point up
 
 - Koby's view (side view, lying pose): the earlier 180 degree turn about the head axis put the point up but left the ring leaning, not resting on the floor the way a real ring would.
