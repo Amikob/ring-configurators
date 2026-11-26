@@ -2,6 +2,13 @@
 
 All changes to the Next Diamonds ring configurators. Newest first.
 
+## 2026-11-25 - ND1070 added (new-editor configurator IWGKKYGBQaWWprp9phMSfQ)
+
+- New page `nd1070/` (+ private client link `nd1070-ib8eoc5vxd/`) for Anton's ND1070 (hidden-halo pave band): 8 shapes (Round, Oval, Elongated Cushion, Elongated Radiant, Emerald, Marquise, Pear, Heart) x 4, 5, 6, 8, 10 ct = 40 rings, no East-West. Built from the ND1060 page: head gold = Metal 02, shank gold = Metal 01 (white head + yellow shank default), Gem 01/02/03 mapped to the diamond material, opens on Oval 4 ct (smallest carat; the set has no 3 ct).
+- Rings load from the new iJewel configurator `IWGKKYGBQaWWprp9phMSfQ` (40/40 files, public). The published GLBs were checked against the source 3dm files (positions identical to 0.001 mm, mm scale, origin unchanged, same triangle count, materials Metal 01/02 and Gem 01/02/03).
+- Try-On: the page's `project.json` and `saved-config.json` use the standard fit (model size 0.057735999944336154, rotation X 90, position 0), same as ND1072, Noya, BN631 and ND1060. The Try-On size saved inside the iJewel project is currently 0.06052425738648934 (the Playground's default; the size field would not accept input) and is not read by this page. It still needs to be corrected in iJewel for the Mac builder.
+- `configurators.json`: one new entry `nd1070` with `sku` filled (`ND1070`); status `new`. Added `tests/nd1070.check.mjs`.
+
 ## 2026-11-25 - ND1072 added (new-editor configurator Fl7ZE0k0QBm8PFA5j5W5tw)
 
 - New page `nd1072/` (+ private client link `nd1072-460j56ejaf/`) for Anton's ND1072: 8 shapes (Round, Oval, Elongated Cushion, Elongated Radiant, Emerald, Marquise, Pear, Heart) x 3, 4, 5, 6, 8 ct = 40 rings, no East-West. Built from the ND1060 page: head gold = Metal 02, shank gold = Metal 01 (white head + yellow shank default), Gem 01/02/03 mapped to the diamond material, opens on Oval 3 ct.

@@ -1600,6 +1600,36 @@
       ],
       "thumbnail": "https://amikob.ijewel3d.com/files/3_ct_oval_ec38bd3a7a.png?h=ijewel3d.com",
       "status": "new"
+    },
+    {
+      "id": "nd1070",
+      "name": "ND1070",
+      "sku": "ND1070",
+      "path": "nd1070/",
+      "ijewelProjectId": "IWGKKYGBQaWWprp9phMSfQ",
+      "shapes": [
+        "Round",
+        "Oval",
+        "Elongated Cushion",
+        "Elongated Radiant",
+        "Emerald",
+        "Marquise",
+        "Pear",
+        "Heart"
+      ],
+      "carats": [
+        4,
+        10
+      ],
+      "rings": 40,
+      "bands": null,
+      "eastWest": false,
+      "metalZones": [
+        "Head",
+        "Shank"
+      ],
+      "thumbnail": "https://amikob.ijewel3d.com/files/4_ct_oval_63a89be6f9.png?h=ijewel3d.com",
+      "status": "new"
     }
   ]
 }
